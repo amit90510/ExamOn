@@ -160,6 +160,7 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\logo\logo.png" />
     <Content Include="Content\sweetalert2.min.css" />
+    <Content Include="DBS\DBMaster.sql" />
     <Content Include="DBS\DBScripts.sql" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="myicon.ico" />
