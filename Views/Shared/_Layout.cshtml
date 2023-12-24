@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="~/myicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/myicon.ico" type="image/x-icon" />
+    <title>ExamOn : let's automate exam</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color: rgb(37, 150, 190) !important; height:60px !important">
+    </div>
+    
+    <div class="container body-content">
+        @Scripts.Render("~/bundles/jquery")
+        @RenderBody()
+
+        <footer class="py-0">
+            <div class="row">
+                <div class="d-flex flex-column flex-sm-row justify-content-between py-0 my-4 border-top">
+                    <p>© 2020 ExamOn, Inc. All rights reserved.</p>
+                    <ul class="list-unstyled d-flex">
+                        <li class="ms-3"><i class="fa fa-twitter" aria-hidden="true"></i></li>
+                        <li class="ms-3"><i class="fa fa-instagram" aria-hidden="true"></i></li>
+                        <li class="ms-3"><i class="fa fa-facebook" aria-hidden="true"></i></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-2 mb-3">
+                    <h5>Company</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-9 offset-md-1 mb-3" style="float:right;text-align:right">
+                    <form onkeydown="return event.key != 'Enter';">
+                        <h5>Subscribe to our newsletter</h5>
+                        <p>Monthly digest of what's new and exciting from us.</p>
+                        <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                            <label style="padding-top: 7px;" for="newsletter1" class="visually-hidden">Email address</label>&nbsp;&nbsp;
+                            <input id="newsletter1" type="text" class="form-control" maxlength="50" placeholder="Email address">&nbsp;&nbsp;
+                            <button class="btn btn-primary" onclick="SubscribeMe();" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </footer>
+    </div>   
+    @Scripts.Render("~/bundles/bootstraps")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        function SubscribeMe(obj) {
+            $(document).ready(() => {
+                if ($('#newsletter1').val()) {
+                    Swal.fire({
+                        title: "Newsletter",
+                        text: "Email is subscribed to newsletters, Please note: only valid emailid would get news.",
+                        icon: "success",
+                        footer: $('#newsletter1').val() ? $('#newsletter1').val().trim() : '<p>©ExamOn, Inc. All rights reserved.</p>'
+                    }).then(() => {
+                        $('#newsletter1').val('');
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
