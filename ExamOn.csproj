@@ -258,6 +258,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\SignOutController.cs" />
     <Compile Include="DataLayer\ApplicationDBContext.cs" />
     <Compile Include="DataLayer\ApplicationDbContext1.cs" />
     <Compile Include="DataLayer\DBConnection.cs" />
@@ -327,6 +328,7 @@
     <Compile Include="Models\tbltenant.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tblTenantMaster.cs" />
     <Compile Include="Models\tbluserProfile.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
@@ -577,9 +579,9 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\SignOut\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

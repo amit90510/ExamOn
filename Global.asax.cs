@@ -19,5 +19,13 @@ namespace ExamOn
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var urlHeler = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            Exception exception = Server.GetLastError();
+            Session["PlateFormError"] = exception.Message;
+            Response.Redirect(urlHeler.Action("Go", "SignOut", new { isError = exception is null ? "" : exception.Message  }));
+        }
     }
 }

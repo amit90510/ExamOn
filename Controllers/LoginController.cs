@@ -9,9 +9,9 @@ namespace ExamOn.Controllers
     public class LoginController : Controller
     {
         // GET: Login
-        public ActionResult Index()
+        public ActionResult Go()
         {
-            return View();
+            return View("Index");
         }
     }
 }
