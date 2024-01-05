@@ -14,20 +14,131 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="bin/Antlr3.Runtime.pdb">
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
+    <File Include="bin/Dapper.dll">
+      <publishTime>01/02/2024 21:05:36</publishTime>
+    </File>
+    <File Include="bin/de/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:28</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>10/23/2017 13:15:18</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>10/23/2017 13:15:20</publishTime>
+    </File>
+    <File Include="bin/es/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:24</publishTime>
+    </File>
     <File Include="bin/ExamOn.dll">
-      <publishTime>12/24/2023 12:56:15</publishTime>
+      <publishTime>01/05/2024 15:54:44</publishTime>
     </File>
     <File Include="bin/ExamOn.pdb">
-      <publishTime>12/24/2023 12:56:15</publishTime>
+      <publishTime>01/05/2024 15:54:44</publishTime>
+    </File>
+    <File Include="bin/fr/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:20</publishTime>
+    </File>
+    <File Include="bin/it/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:24</publishTime>
+    </File>
+    <File Include="bin/ja/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:30</publishTime>
+    </File>
+    <File Include="bin/ko/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:24</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Bcl.AsyncInterfaces.dll">
+      <publishTime>04/15/2020 04:09:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Bcl.HashCode.dll">
+      <publishTime>11/17/2020 02:45:16</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>09/05/2018 16:10:50</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Data.SqlClient.dll">
+      <publishTime>05/15/2020 23:07:26</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Data.SqlClient.pdb">
+      <publishTime>05/15/2020 23:01:48</publishTime>
+    </File>
+    <File Include="bin/Microsoft.EntityFrameworkCore.Abstractions.dll">
+      <publishTime>11/17/2022 01:36:14</publishTime>
+    </File>
+    <File Include="bin/Microsoft.EntityFrameworkCore.dll">
+      <publishTime>11/17/2022 01:36:32</publishTime>
+    </File>
+    <File Include="bin/Microsoft.EntityFrameworkCore.Relational.dll">
+      <publishTime>11/17/2022 01:36:36</publishTime>
+    </File>
+    <File Include="bin/Microsoft.EntityFrameworkCore.SqlServer.dll">
+      <publishTime>11/17/2022 01:36:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Caching.Abstractions.dll">
+      <publishTime>11/17/2022 00:11:46</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Caching.Memory.dll">
+      <publishTime>11/17/2022 00:12:16</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Configuration.Abstractions.dll">
+      <publishTime>11/17/2022 00:12:06</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Configuration.Binder.dll">
+      <publishTime>11/17/2022 00:12:12</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Configuration.dll">
+      <publishTime>11/17/2022 00:12:06</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.DependencyInjection.Abstractions.dll">
+      <publishTime>11/17/2022 00:12:48</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.DependencyInjection.dll">
+      <publishTime>11/17/2022 00:11:56</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Logging.Abstractions.dll">
+      <publishTime>11/17/2022 00:12:54</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Logging.dll">
+      <publishTime>11/17/2022 00:12:48</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Options.dll">
+      <publishTime>11/17/2022 00:12:08</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Primitives.dll">
+      <publishTime>11/17/2022 00:12:18</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Identity.Client.dll">
+      <publishTime>04/29/2019 22:04:14</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.JsonWebTokens.dll">
+      <publishTime>06/24/2019 19:50:48</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.Logging.dll">
+      <publishTime>06/24/2019 19:52:42</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.Protocols.dll">
+      <publishTime>06/24/2019 19:54:26</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll">
+      <publishTime>06/24/2019 19:59:24</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IdentityModel.Tokens.dll">
+      <publishTime>06/24/2019 19:55:56</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.dll">
+      <publishTime>01/18/2019 20:50:30</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>07/25/2012 11:48:56</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>04/22/2019 01:06:16</publishTime>
+    </File>
+    <File Include="bin/Owin.dll">
+      <publishTime>11/13/2012 12:19:34</publishTime>
+    </File>
+    <File Include="bin/pt-BR/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:26</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>08/08/2018 05:38:48</publishTime>
@@ -176,8 +287,38 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
       <publishTime>08/08/2018 12:18:16</publishTime>
     </File>
+    <File Include="bin/ru/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:24</publishTime>
+    </File>
+    <File Include="bin/System.Buffers.dll">
+      <publishTime>02/19/2020 15:35:18</publishTime>
+    </File>
+    <File Include="bin/System.Collections.Immutable.dll">
+      <publishTime>04/15/2020 04:09:26</publishTime>
+    </File>
+    <File Include="bin/System.ComponentModel.Annotations.dll">
+      <publishTime>05/15/2018 13:29:36</publishTime>
+    </File>
+    <File Include="bin/System.Diagnostics.DiagnosticSource.dll">
+      <publishTime>04/15/2020 04:19:20</publishTime>
+    </File>
+    <File Include="bin/System.IdentityModel.Tokens.Jwt.dll">
+      <publishTime>06/24/2019 19:49:42</publishTime>
+    </File>
+    <File Include="bin/System.Memory.dll">
+      <publishTime>02/19/2020 15:35:18</publishTime>
+    </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>11/28/2018 13:00:36</publishTime>
+    </File>
+    <File Include="bin/System.Numerics.Vectors.dll">
+      <publishTime>05/15/2018 13:29:44</publishTime>
+    </File>
+    <File Include="bin/System.Runtime.CompilerServices.Unsafe.dll">
+      <publishTime>02/21/2020 03:58:04</publishTime>
+    </File>
+    <File Include="bin/System.Threading.Tasks.Extensions.dll">
+      <publishTime>02/19/2020 10:05:18</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>11/28/2018 13:04:24</publishTime>
@@ -208,6 +349,24 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 13:57:34</publishTime>
+    </File>
+    <File Include="bin/x64/SNI.dll">
+      <publishTime>10/18/2019 23:02:38</publishTime>
+    </File>
+    <File Include="bin/x64/SNI.pdb">
+      <publishTime>10/18/2019 22:57:04</publishTime>
+    </File>
+    <File Include="bin/x86/SNI.dll">
+      <publishTime>10/18/2019 23:02:36</publishTime>
+    </File>
+    <File Include="bin/x86/SNI.pdb">
+      <publishTime>10/18/2019 22:57:04</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:26</publishTime>
+    </File>
+    <File Include="bin/zh-Hant/Microsoft.Data.SqlClient.resources.dll">
+      <publishTime>05/15/2020 23:07:24</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.css">
       <publishTime>12/22/2023 15:29:47</publishTime>
@@ -320,6 +479,15 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Content/sweetalert2.min.css">
       <publishTime>12/23/2023 15:53:12</publishTime>
     </File>
+    <File Include="DBS/AddDBUser.sql">
+      <publishTime>01/05/2024 14:18:26</publishTime>
+    </File>
+    <File Include="DBS/AddServerLogin.sql">
+      <publishTime>01/05/2024 14:17:47</publishTime>
+    </File>
+    <File Include="DBS/DBMaster.sql">
+      <publishTime>12/24/2023 14:25:01</publishTime>
+    </File>
     <File Include="DBS/DBScripts.sql">
       <publishTime>12/24/2023 12:19:07</publishTime>
     </File>
@@ -344,6 +512,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Global.asax">
       <publishTime>12/21/2023 19:27:19</publishTime>
     </File>
+    <File Include="Models/ExamOn.edmx.diagram">
+      <publishTime>01/05/2024 14:24:22</publishTime>
+    </File>
     <File Include="myicon.ico">
       <publishTime>12/22/2023 15:01:51</publishTime>
     </File>
@@ -354,10 +525,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="Release/bin/ExamOn.dll">
-      <publishTime>12/24/2023 12:48:49</publishTime>
+      <publishTime>12/24/2023 12:56:15</publishTime>
     </File>
     <File Include="Release/bin/ExamOn.pdb">
-      <publishTime>12/24/2023 12:48:49</publishTime>
+      <publishTime>12/24/2023 12:56:15</publishTime>
     </File>
     <File Include="Release/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>09/05/2018 16:10:50</publishTime>
@@ -854,6 +1025,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Views/Shared/_Layout.cshtml">
       <publishTime>12/23/2023 16:16:36</publishTime>
     </File>
+    <File Include="Views/SignOut/Index.cshtml">
+      <publishTime>01/05/2024 15:44:05</publishTime>
+    </File>
     <File Include="Views/Web.config">
       <publishTime>12/21/2023 19:27:19</publishTime>
     </File>
@@ -861,7 +1035,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>12/21/2023 19:27:19</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/24/2023 12:48:49</publishTime>
+      <publishTime>01/05/2024 15:54:45</publishTime>
     </File>
   </ItemGroup>
 </Project>
