@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="064d11bd3bb6413fa5c1307a0a7b8e6f" Name="Diagram1">
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblactivityHistory" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblAnswer" Width="1.5" PointX="8" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblBatch" Width="1.5" PointX="10" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblClass" Width="1.5" PointX="7.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblEmailCrediential" Width="1.5" PointX="10.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblexam" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblexamLive" Width="1.5" PointX="8" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblexamQuestion" Width="1.5" PointX="8" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblexamSection" Width="1.5" PointX="5.75" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblexamStudent" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tbllogin" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblloginType" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblQuestion" Width="1.5" PointX="5.75" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblSection" Width="1.5" PointX="3.5" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblshift" Width="1.5" PointX="12.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tbltenant" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tbluserProfile" Width="1.5" PointX="14.5" PointY="2.125" IsExpanded="true" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblactivityHistory_tbllogin" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblAnswers_tblQuestions" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblBatch_tblClass" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblshift_tblBatch" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblexamLive_tblexam" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblexamSections_tblexam" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblexamStudents_tblexam" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblexamLive_tblQuestions" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblexamQuestions_tblexamSections" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblexamQuestions_tblQuestions" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblexamSections_tblSection" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblexamStudents_tbllogin" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tbllogin_tblloginType" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tbllogin_tbltenant" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tbluserProfile_tbllogin" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

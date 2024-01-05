@@ -1,0 +1,1182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ExamOn_DummyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblactivityHistory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Activity" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Module" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="createdate" Type="date" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblAnswers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Question" Type="bigint" Nullable="false" />
+          <Property Name="OptionText" Type="varchar" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblBatch">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Batch" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Class" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblClass">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblEmailCredientials">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmailFromAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblexam">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExamName" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Instructions" Type="varchar" MaxLength="1500" />
+          <Property Name="StartExam" Type="datetime" Nullable="false" />
+          <Property Name="EndExam" Type="datetime" Nullable="false" />
+          <Property Name="EntryAllowedTill" Type="datetime" Nullable="false" />
+          <Property Name="KeyBoardBlock" Type="bit" Nullable="false" />
+          <Property Name="FullScreen" Type="bit" Nullable="false" />
+          <Property Name="ResultAfterExam" Type="bit" Nullable="false" />
+          <Property Name="ReviewAfterExam" Type="bit" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblexamLive">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Exam" Type="bigint" Nullable="false" />
+          <Property Name="Question" Type="bigint" Nullable="false" />
+          <Property Name="ChoosedOption" Type="int" />
+          <Property Name="TimeTaken" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblexamQuestions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sections" Type="bigint" Nullable="false" />
+          <Property Name="Question" Type="bigint" Nullable="false" />
+          <Property Name="PlusMarks" Type="int" Nullable="false" />
+          <Property Name="NegativeMark" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblexamSections">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Exam" Type="bigint" Nullable="false" />
+          <Property Name="Sections" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblexamStudents">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Exam" Type="bigint" Nullable="false" />
+          <Property Name="UserName" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbllogin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmailId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Mobile" Type="varchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="BlockLogin" Type="bit" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="TenantToken" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="BlockMessage" Type="varbinary" MaxLength="500" />
+          <Property Name="LoginType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblloginType">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TypeName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblQuestions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Question" Type="varbinary(max)" Nullable="false" />
+          <Property Name="QuestionType" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="CorrectAnswer" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblSection">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Section" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblshift">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Shift" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Batch" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbltenant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TenantName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TenantAddress" Type="varchar" MaxLength="500" />
+          <Property Name="TenantEmail" Type="varchar" MaxLength="100" />
+          <Property Name="TenantMobile" Type="varchar" MaxLength="20" />
+          <Property Name="CreatedOn" Type="date" Nullable="false" />
+          <Property Name="SubscriptionEndDate" Type="date" Nullable="false" />
+          <Property Name="SubscriptionEndMessage" Type="varchar" MaxLength="500" />
+          <Property Name="LastRechargeOn" Type="date" Nullable="false" />
+          <Property Name="RechargeAmount" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbluserProfile">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="varchar" MaxLength="50" />
+          <Property Name="Shift" Type="bigint" />
+          <Property Name="RealName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblactivityHistory_tbllogin">
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblactivityHistory" Type="Self.tblactivityHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbllogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblactivityHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAnswers_tblQuestions">
+          <End Role="tblQuestions" Type="Self.tblQuestions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblAnswers" Type="Self.tblAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblAnswers">
+              <PropertyRef Name="Question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBatch_tblClass">
+          <End Role="tblClass" Type="Self.tblClass" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblBatch" Type="Self.tblBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClass">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblBatch">
+              <PropertyRef Name="Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamLive_tblexam">
+          <End Role="tblexam" Type="Self.tblexam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamLive" Type="Self.tblexamLive" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblexam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamLive">
+              <PropertyRef Name="Exam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamLive_tblQuestions">
+          <End Role="tblQuestions" Type="Self.tblQuestions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamLive" Type="Self.tblexamLive" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamLive">
+              <PropertyRef Name="Question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamQuestions_tblexamSections">
+          <End Role="tblexamSections" Type="Self.tblexamSections" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamQuestions" Type="Self.tblexamQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblexamSections">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamQuestions">
+              <PropertyRef Name="Sections" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamQuestions_tblQuestions">
+          <End Role="tblQuestions" Type="Self.tblQuestions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamQuestions" Type="Self.tblexamQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamQuestions">
+              <PropertyRef Name="Question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamSections_tblexam">
+          <End Role="tblexam" Type="Self.tblexam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamSections" Type="Self.tblexamSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblexam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamSections">
+              <PropertyRef Name="Exam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamSections_tblSection">
+          <End Role="tblSection" Type="Self.tblSection" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamSections" Type="Self.tblexamSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSection">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamSections">
+              <PropertyRef Name="Sections" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamStudents_tblexam">
+          <End Role="tblexam" Type="Self.tblexam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamStudents" Type="Self.tblexamStudents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblexam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamStudents">
+              <PropertyRef Name="Exam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamStudents_tbllogin">
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamStudents" Type="Self.tblexamStudents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbllogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamStudents">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbllogin_tblloginType">
+          <End Role="tblloginType" Type="Self.tblloginType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblloginType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbllogin">
+              <PropertyRef Name="LoginType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbllogin_tbltenant">
+          <End Role="tbltenant" Type="Self.tbltenant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltenant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbllogin">
+              <PropertyRef Name="TenantToken" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblshift_tblBatch">
+          <End Role="tblBatch" Type="Self.tblBatch" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblshift" Type="Self.tblshift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBatch">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblshift">
+              <PropertyRef Name="Batch" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbluserProfile_tbllogin">
+          <End Role="tblshift" Type="Self.tblshift" Multiplicity="0..1" />
+          <End Role="tbluserProfile" Type="Self.tbluserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshift">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbluserProfile">
+              <PropertyRef Name="Shift" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamOn_DummyModelStoreContainer">
+          <EntitySet Name="tblactivityHistory" EntityType="Self.tblactivityHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblAnswers" EntityType="Self.tblAnswers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblBatch" EntityType="Self.tblBatch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblClass" EntityType="Self.tblClass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblEmailCredientials" EntityType="Self.tblEmailCredientials" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblexam" EntityType="Self.tblexam" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblexamLive" EntityType="Self.tblexamLive" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblexamQuestions" EntityType="Self.tblexamQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblexamSections" EntityType="Self.tblexamSections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblexamStudents" EntityType="Self.tblexamStudents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbllogin" EntityType="Self.tbllogin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblloginType" EntityType="Self.tblloginType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblQuestions" EntityType="Self.tblQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSection" EntityType="Self.tblSection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblshift" EntityType="Self.tblshift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbltenant" EntityType="Self.tbltenant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbluserProfile" EntityType="Self.tbluserProfile" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblactivityHistory_tbllogin" Association="Self.FK_tblactivityHistory_tbllogin">
+            <End Role="tbllogin" EntitySet="tbllogin" />
+            <End Role="tblactivityHistory" EntitySet="tblactivityHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAnswers_tblQuestions" Association="Self.FK_tblAnswers_tblQuestions">
+            <End Role="tblQuestions" EntitySet="tblQuestions" />
+            <End Role="tblAnswers" EntitySet="tblAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBatch_tblClass" Association="Self.FK_tblBatch_tblClass">
+            <End Role="tblClass" EntitySet="tblClass" />
+            <End Role="tblBatch" EntitySet="tblBatch" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamLive_tblexam" Association="Self.FK_tblexamLive_tblexam">
+            <End Role="tblexam" EntitySet="tblexam" />
+            <End Role="tblexamLive" EntitySet="tblexamLive" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamLive_tblQuestions" Association="Self.FK_tblexamLive_tblQuestions">
+            <End Role="tblQuestions" EntitySet="tblQuestions" />
+            <End Role="tblexamLive" EntitySet="tblexamLive" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamQuestions_tblexamSections" Association="Self.FK_tblexamQuestions_tblexamSections">
+            <End Role="tblexamSections" EntitySet="tblexamSections" />
+            <End Role="tblexamQuestions" EntitySet="tblexamQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamQuestions_tblQuestions" Association="Self.FK_tblexamQuestions_tblQuestions">
+            <End Role="tblQuestions" EntitySet="tblQuestions" />
+            <End Role="tblexamQuestions" EntitySet="tblexamQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamSections_tblexam" Association="Self.FK_tblexamSections_tblexam">
+            <End Role="tblexam" EntitySet="tblexam" />
+            <End Role="tblexamSections" EntitySet="tblexamSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamSections_tblSection" Association="Self.FK_tblexamSections_tblSection">
+            <End Role="tblSection" EntitySet="tblSection" />
+            <End Role="tblexamSections" EntitySet="tblexamSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamStudents_tblexam" Association="Self.FK_tblexamStudents_tblexam">
+            <End Role="tblexam" EntitySet="tblexam" />
+            <End Role="tblexamStudents" EntitySet="tblexamStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamStudents_tbllogin" Association="Self.FK_tblexamStudents_tbllogin">
+            <End Role="tbllogin" EntitySet="tbllogin" />
+            <End Role="tblexamStudents" EntitySet="tblexamStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbllogin_tblloginType" Association="Self.FK_tbllogin_tblloginType">
+            <End Role="tblloginType" EntitySet="tblloginType" />
+            <End Role="tbllogin" EntitySet="tbllogin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbllogin_tbltenant" Association="Self.FK_tbllogin_tbltenant">
+            <End Role="tbltenant" EntitySet="tbltenant" />
+            <End Role="tbllogin" EntitySet="tbllogin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblshift_tblBatch" Association="Self.FK_tblshift_tblBatch">
+            <End Role="tblBatch" EntitySet="tblBatch" />
+            <End Role="tblshift" EntitySet="tblshift" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbluserProfile_tbllogin" Association="Self.FK_tbluserProfile_tbllogin">
+            <End Role="tblshift" EntitySet="tblshift" />
+            <End Role="tbluserProfile" EntitySet="tbluserProfile" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExamOn_DummyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblactivityHistory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Activity" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Module" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="createdate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="tbllogin" Relationship="Self.FK_tblactivityHistory_tbllogin" FromRole="tblactivityHistory" ToRole="tbllogin" />
+        </EntityType>
+        <EntityType Name="tblAnswer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Question" Type="Int64" Nullable="false" />
+          <Property Name="OptionText" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblQuestion" Relationship="Self.FK_tblAnswers_tblQuestions" FromRole="tblAnswers" ToRole="tblQuestions" />
+        </EntityType>
+        <EntityType Name="tblBatch">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Batch" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Class" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblClass" Relationship="Self.FK_tblBatch_tblClass" FromRole="tblBatch" ToRole="tblClass" />
+          <NavigationProperty Name="tblshifts" Relationship="Self.FK_tblshift_tblBatch" FromRole="tblBatch" ToRole="tblshift" />
+        </EntityType>
+        <EntityType Name="tblClass">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblBatches" Relationship="Self.FK_tblBatch_tblClass" FromRole="tblClass" ToRole="tblBatch" />
+        </EntityType>
+        <EntityType Name="tblEmailCrediential">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmailFromAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblexam">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExamName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Instructions" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="StartExam" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndExam" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EntryAllowedTill" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="KeyBoardBlock" Type="Boolean" Nullable="false" />
+          <Property Name="FullScreen" Type="Boolean" Nullable="false" />
+          <Property Name="ResultAfterExam" Type="Boolean" Nullable="false" />
+          <Property Name="ReviewAfterExam" Type="Boolean" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="tblexamLives" Relationship="Self.FK_tblexamLive_tblexam" FromRole="tblexam" ToRole="tblexamLive" />
+          <NavigationProperty Name="tblexamSections" Relationship="Self.FK_tblexamSections_tblexam" FromRole="tblexam" ToRole="tblexamSections" />
+          <NavigationProperty Name="tblexamStudents" Relationship="Self.FK_tblexamStudents_tblexam" FromRole="tblexam" ToRole="tblexamStudents" />
+        </EntityType>
+        <EntityType Name="tblexamLive">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Exam" Type="Int64" Nullable="false" />
+          <Property Name="Question" Type="Int64" Nullable="false" />
+          <Property Name="ChoosedOption" Type="Int32" />
+          <Property Name="TimeTaken" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblexam" Relationship="Self.FK_tblexamLive_tblexam" FromRole="tblexamLive" ToRole="tblexam" />
+          <NavigationProperty Name="tblQuestion" Relationship="Self.FK_tblexamLive_tblQuestions" FromRole="tblexamLive" ToRole="tblQuestions" />
+        </EntityType>
+        <EntityType Name="tblexamQuestion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sections" Type="Int64" Nullable="false" />
+          <Property Name="Question" Type="Int64" Nullable="false" />
+          <Property Name="PlusMarks" Type="Int32" Nullable="false" />
+          <Property Name="NegativeMark" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblexamSection" Relationship="Self.FK_tblexamQuestions_tblexamSections" FromRole="tblexamQuestions" ToRole="tblexamSections" />
+          <NavigationProperty Name="tblQuestion" Relationship="Self.FK_tblexamQuestions_tblQuestions" FromRole="tblexamQuestions" ToRole="tblQuestions" />
+        </EntityType>
+        <EntityType Name="tblexamSection">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Exam" Type="Int64" Nullable="false" />
+          <Property Name="Sections" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblexam" Relationship="Self.FK_tblexamSections_tblexam" FromRole="tblexamSections" ToRole="tblexam" />
+          <NavigationProperty Name="tblexamQuestions" Relationship="Self.FK_tblexamQuestions_tblexamSections" FromRole="tblexamSections" ToRole="tblexamQuestions" />
+          <NavigationProperty Name="tblSection" Relationship="Self.FK_tblexamSections_tblSection" FromRole="tblexamSections" ToRole="tblSection" />
+        </EntityType>
+        <EntityType Name="tblexamStudent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Exam" Type="Int64" Nullable="false" />
+          <Property Name="UserName" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="tblexam" Relationship="Self.FK_tblexamStudents_tblexam" FromRole="tblexamStudents" ToRole="tblexam" />
+          <NavigationProperty Name="tbllogin" Relationship="Self.FK_tblexamStudents_tbllogin" FromRole="tblexamStudents" ToRole="tbllogin" />
+        </EntityType>
+        <EntityType Name="tbllogin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="BlockLogin" Type="Boolean" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="TenantToken" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BlockMessage" Type="Binary" MaxLength="500" FixedLength="false" />
+          <Property Name="LoginType" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblactivityHistories" Relationship="Self.FK_tblactivityHistory_tbllogin" FromRole="tbllogin" ToRole="tblactivityHistory" />
+          <NavigationProperty Name="tblexamStudents" Relationship="Self.FK_tblexamStudents_tbllogin" FromRole="tbllogin" ToRole="tblexamStudents" />
+          <NavigationProperty Name="tblloginType" Relationship="Self.FK_tbllogin_tblloginType" FromRole="tbllogin" ToRole="tblloginType" />
+          <NavigationProperty Name="tbltenant" Relationship="Self.FK_tbllogin_tbltenant" FromRole="tbllogin" ToRole="tbltenant" />
+        </EntityType>
+        <EntityType Name="tblloginType">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tbllogins" Relationship="Self.FK_tbllogin_tblloginType" FromRole="tblloginType" ToRole="tbllogin" />
+        </EntityType>
+        <EntityType Name="tblQuestion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Question" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="QuestionType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CorrectAnswer" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="tblAnswers" Relationship="Self.FK_tblAnswers_tblQuestions" FromRole="tblQuestions" ToRole="tblAnswers" />
+          <NavigationProperty Name="tblexamLives" Relationship="Self.FK_tblexamLive_tblQuestions" FromRole="tblQuestions" ToRole="tblexamLive" />
+          <NavigationProperty Name="tblexamQuestions" Relationship="Self.FK_tblexamQuestions_tblQuestions" FromRole="tblQuestions" ToRole="tblexamQuestions" />
+        </EntityType>
+        <EntityType Name="tblSection">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Section" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblexamSections" Relationship="Self.FK_tblexamSections_tblSection" FromRole="tblSection" ToRole="tblexamSections" />
+        </EntityType>
+        <EntityType Name="tblshift">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Shift" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Batch" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblBatch" Relationship="Self.FK_tblshift_tblBatch" FromRole="tblshift" ToRole="tblBatch" />
+          <NavigationProperty Name="tbluserProfiles" Relationship="Self.FK_tbluserProfile_tbllogin" FromRole="tblshift" ToRole="tbluserProfile" />
+        </EntityType>
+        <EntityType Name="tbltenant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TenantName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TenantAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TenantEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TenantMobile" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SubscriptionEndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SubscriptionEndMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="LastRechargeOn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RechargeAmount" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="tbllogins" Relationship="Self.FK_tbllogin_tbltenant" FromRole="tbltenant" ToRole="tbllogin" />
+        </EntityType>
+        <EntityType Name="tbluserProfile">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Shift" Type="Int64" />
+          <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblshift" Relationship="Self.FK_tbluserProfile_tbllogin" FromRole="tbluserProfile" ToRole="tblshift" />
+        </EntityType>
+        <Association Name="FK_tblactivityHistory_tbllogin">
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblactivityHistory" Type="Self.tblactivityHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbllogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblactivityHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAnswers_tblQuestions">
+          <End Role="tblQuestions" Type="Self.tblQuestion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblAnswers" Type="Self.tblAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblAnswers">
+              <PropertyRef Name="Question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBatch_tblClass">
+          <End Role="tblClass" Type="Self.tblClass" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblBatch" Type="Self.tblBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClass">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblBatch">
+              <PropertyRef Name="Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblshift_tblBatch">
+          <End Role="tblBatch" Type="Self.tblBatch" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblshift" Type="Self.tblshift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBatch">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblshift">
+              <PropertyRef Name="Batch" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamLive_tblexam">
+          <End Role="tblexam" Type="Self.tblexam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamLive" Type="Self.tblexamLive" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblexam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamLive">
+              <PropertyRef Name="Exam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamSections_tblexam">
+          <End Role="tblexam" Type="Self.tblexam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamSections" Type="Self.tblexamSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblexam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamSections">
+              <PropertyRef Name="Exam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamStudents_tblexam">
+          <End Role="tblexam" Type="Self.tblexam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamStudents" Type="Self.tblexamStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblexam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamStudents">
+              <PropertyRef Name="Exam" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamLive_tblQuestions">
+          <End Role="tblQuestions" Type="Self.tblQuestion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamLive" Type="Self.tblexamLive" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamLive">
+              <PropertyRef Name="Question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamQuestions_tblexamSections">
+          <End Role="tblexamSections" Type="Self.tblexamSection" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamQuestions" Type="Self.tblexamQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblexamSections">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamQuestions">
+              <PropertyRef Name="Sections" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamQuestions_tblQuestions">
+          <End Role="tblQuestions" Type="Self.tblQuestion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamQuestions" Type="Self.tblexamQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamQuestions">
+              <PropertyRef Name="Question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamSections_tblSection">
+          <End Role="tblSection" Type="Self.tblSection" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamSections" Type="Self.tblexamSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSection">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamSections">
+              <PropertyRef Name="Sections" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblexamStudents_tbllogin">
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblexamStudents" Type="Self.tblexamStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbllogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexamStudents">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbllogin_tblloginType">
+          <End Role="tblloginType" Type="Self.tblloginType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblloginType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbllogin">
+              <PropertyRef Name="LoginType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbllogin_tbltenant">
+          <End Role="tbltenant" Type="Self.tbltenant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltenant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbllogin">
+              <PropertyRef Name="TenantToken" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbluserProfile_tbllogin">
+          <End Role="tblshift" Type="Self.tblshift" Multiplicity="0..1" />
+          <End Role="tbluserProfile" Type="Self.tbluserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshift">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbluserProfile">
+              <PropertyRef Name="Shift" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamOn_DummyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblactivityHistories" EntityType="Self.tblactivityHistory" />
+          <EntitySet Name="tblAnswers" EntityType="Self.tblAnswer" />
+          <EntitySet Name="tblBatches" EntityType="Self.tblBatch" />
+          <EntitySet Name="tblClasses" EntityType="Self.tblClass" />
+          <EntitySet Name="tblEmailCredientials" EntityType="Self.tblEmailCrediential" />
+          <EntitySet Name="tblexams" EntityType="Self.tblexam" />
+          <EntitySet Name="tblexamLives" EntityType="Self.tblexamLive" />
+          <EntitySet Name="tblexamQuestions" EntityType="Self.tblexamQuestion" />
+          <EntitySet Name="tblexamSections" EntityType="Self.tblexamSection" />
+          <EntitySet Name="tblexamStudents" EntityType="Self.tblexamStudent" />
+          <EntitySet Name="tbllogins" EntityType="Self.tbllogin" />
+          <EntitySet Name="tblloginTypes" EntityType="Self.tblloginType" />
+          <EntitySet Name="tblQuestions" EntityType="Self.tblQuestion" />
+          <EntitySet Name="tblSections" EntityType="Self.tblSection" />
+          <EntitySet Name="tblshifts" EntityType="Self.tblshift" />
+          <EntitySet Name="tbltenants" EntityType="Self.tbltenant" />
+          <EntitySet Name="tbluserProfiles" EntityType="Self.tbluserProfile" />
+          <AssociationSet Name="FK_tblactivityHistory_tbllogin" Association="Self.FK_tblactivityHistory_tbllogin">
+            <End Role="tbllogin" EntitySet="tbllogins" />
+            <End Role="tblactivityHistory" EntitySet="tblactivityHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAnswers_tblQuestions" Association="Self.FK_tblAnswers_tblQuestions">
+            <End Role="tblQuestions" EntitySet="tblQuestions" />
+            <End Role="tblAnswers" EntitySet="tblAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBatch_tblClass" Association="Self.FK_tblBatch_tblClass">
+            <End Role="tblClass" EntitySet="tblClasses" />
+            <End Role="tblBatch" EntitySet="tblBatches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblshift_tblBatch" Association="Self.FK_tblshift_tblBatch">
+            <End Role="tblBatch" EntitySet="tblBatches" />
+            <End Role="tblshift" EntitySet="tblshifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamLive_tblexam" Association="Self.FK_tblexamLive_tblexam">
+            <End Role="tblexam" EntitySet="tblexams" />
+            <End Role="tblexamLive" EntitySet="tblexamLives" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamSections_tblexam" Association="Self.FK_tblexamSections_tblexam">
+            <End Role="tblexam" EntitySet="tblexams" />
+            <End Role="tblexamSections" EntitySet="tblexamSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamStudents_tblexam" Association="Self.FK_tblexamStudents_tblexam">
+            <End Role="tblexam" EntitySet="tblexams" />
+            <End Role="tblexamStudents" EntitySet="tblexamStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamLive_tblQuestions" Association="Self.FK_tblexamLive_tblQuestions">
+            <End Role="tblQuestions" EntitySet="tblQuestions" />
+            <End Role="tblexamLive" EntitySet="tblexamLives" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamQuestions_tblexamSections" Association="Self.FK_tblexamQuestions_tblexamSections">
+            <End Role="tblexamSections" EntitySet="tblexamSections" />
+            <End Role="tblexamQuestions" EntitySet="tblexamQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamQuestions_tblQuestions" Association="Self.FK_tblexamQuestions_tblQuestions">
+            <End Role="tblQuestions" EntitySet="tblQuestions" />
+            <End Role="tblexamQuestions" EntitySet="tblexamQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamSections_tblSection" Association="Self.FK_tblexamSections_tblSection">
+            <End Role="tblSection" EntitySet="tblSections" />
+            <End Role="tblexamSections" EntitySet="tblexamSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexamStudents_tbllogin" Association="Self.FK_tblexamStudents_tbllogin">
+            <End Role="tbllogin" EntitySet="tbllogins" />
+            <End Role="tblexamStudents" EntitySet="tblexamStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbllogin_tblloginType" Association="Self.FK_tbllogin_tblloginType">
+            <End Role="tblloginType" EntitySet="tblloginTypes" />
+            <End Role="tbllogin" EntitySet="tbllogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbllogin_tbltenant" Association="Self.FK_tbllogin_tbltenant">
+            <End Role="tbltenant" EntitySet="tbltenants" />
+            <End Role="tbllogin" EntitySet="tbllogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbluserProfile_tbllogin" Association="Self.FK_tbluserProfile_tbllogin">
+            <End Role="tblshift" EntitySet="tblshifts" />
+            <End Role="tbluserProfile" EntitySet="tbluserProfiles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExamOn_DummyModelStoreContainer" CdmEntityContainer="ExamOn_DummyEntities">
+          <EntitySetMapping Name="tblactivityHistories">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblactivityHistory">
+              <MappingFragment StoreEntitySet="tblactivityHistory">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+                <ScalarProperty Name="Module" ColumnName="Module" />
+                <ScalarProperty Name="createdate" ColumnName="createdate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAnswers">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblAnswer">
+              <MappingFragment StoreEntitySet="tblAnswers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="OptionText" ColumnName="OptionText" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblBatches">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblBatch">
+              <MappingFragment StoreEntitySet="tblBatch">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Batch" ColumnName="Batch" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblClasses">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblClass">
+              <MappingFragment StoreEntitySet="tblClass">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblEmailCredientials">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblEmailCrediential">
+              <MappingFragment StoreEntitySet="tblEmailCredientials">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="EmailFromAddress" ColumnName="EmailFromAddress" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblexams">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblexam">
+              <MappingFragment StoreEntitySet="tblexam">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ExamName" ColumnName="ExamName" />
+                <ScalarProperty Name="Instructions" ColumnName="Instructions" />
+                <ScalarProperty Name="StartExam" ColumnName="StartExam" />
+                <ScalarProperty Name="EndExam" ColumnName="EndExam" />
+                <ScalarProperty Name="EntryAllowedTill" ColumnName="EntryAllowedTill" />
+                <ScalarProperty Name="KeyBoardBlock" ColumnName="KeyBoardBlock" />
+                <ScalarProperty Name="FullScreen" ColumnName="FullScreen" />
+                <ScalarProperty Name="ResultAfterExam" ColumnName="ResultAfterExam" />
+                <ScalarProperty Name="ReviewAfterExam" ColumnName="ReviewAfterExam" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblexamLives">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblexamLive">
+              <MappingFragment StoreEntitySet="tblexamLive">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Exam" ColumnName="Exam" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="ChoosedOption" ColumnName="ChoosedOption" />
+                <ScalarProperty Name="TimeTaken" ColumnName="TimeTaken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblexamQuestions">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblexamQuestion">
+              <MappingFragment StoreEntitySet="tblexamQuestions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Sections" ColumnName="Sections" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="PlusMarks" ColumnName="PlusMarks" />
+                <ScalarProperty Name="NegativeMark" ColumnName="NegativeMark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblexamSections">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblexamSection">
+              <MappingFragment StoreEntitySet="tblexamSections">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Exam" ColumnName="Exam" />
+                <ScalarProperty Name="Sections" ColumnName="Sections" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblexamStudents">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblexamStudent">
+              <MappingFragment StoreEntitySet="tblexamStudents">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Exam" ColumnName="Exam" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbllogins">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tbllogin">
+              <MappingFragment StoreEntitySet="tbllogin">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="BlockLogin" ColumnName="BlockLogin" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="TenantToken" ColumnName="TenantToken" />
+                <ScalarProperty Name="BlockMessage" ColumnName="BlockMessage" />
+                <ScalarProperty Name="LoginType" ColumnName="LoginType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblloginTypes">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblloginType">
+              <MappingFragment StoreEntitySet="tblloginType">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblQuestions">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblQuestion">
+              <MappingFragment StoreEntitySet="tblQuestions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="QuestionType" ColumnName="QuestionType" />
+                <ScalarProperty Name="CorrectAnswer" ColumnName="CorrectAnswer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSections">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblSection">
+              <MappingFragment StoreEntitySet="tblSection">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblshifts">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblshift">
+              <MappingFragment StoreEntitySet="tblshift">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Batch" ColumnName="Batch" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbltenants">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tbltenant">
+              <MappingFragment StoreEntitySet="tbltenant">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="TenantName" ColumnName="TenantName" />
+                <ScalarProperty Name="TenantAddress" ColumnName="TenantAddress" />
+                <ScalarProperty Name="TenantEmail" ColumnName="TenantEmail" />
+                <ScalarProperty Name="TenantMobile" ColumnName="TenantMobile" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="SubscriptionEndDate" ColumnName="SubscriptionEndDate" />
+                <ScalarProperty Name="SubscriptionEndMessage" ColumnName="SubscriptionEndMessage" />
+                <ScalarProperty Name="LastRechargeOn" ColumnName="LastRechargeOn" />
+                <ScalarProperty Name="RechargeAmount" ColumnName="RechargeAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbluserProfiles">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tbluserProfile">
+              <MappingFragment StoreEntitySet="tbluserProfile">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
