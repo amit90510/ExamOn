@@ -380,6 +380,8 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Animate.css" />
+    <Content Include="Content\logo\logo-Compress.png" />
     <Content Include="Content\logo\logo.png" />
     <Content Include="Content\sweetalert2.min.css" />
     <Content Include="DBS\AddDBUser.sql" />

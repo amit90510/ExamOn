@@ -18,6 +18,7 @@ namespace ExamOn.Controllers
 
         public JsonResult LongRunningProcess()
         {
+            HubContext.Notify(true, "yes, this is working", "this is working too animate css", true, true, false);
             return Json("", JsonRequestBehavior.AllowGet);
         }
     }

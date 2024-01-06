@@ -20,10 +20,10 @@ namespace ExamOn
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new Bundle("~/bundles/bootstraps").Include(
-                      "~/Scripts/bootstrap.js", "~/Scripts/bootstrap.bundle.min.js", "~/Scripts/sweetalert2.all.min.js", "~/Scripts/jquery.signalR-2.4.3.min.js"));
+                      "~/Scripts/bootstrap.min.js", "~/Scripts/bootstrap.bundle.min.js", "~/Scripts/sweetalert2.all.min.js", "~/Scripts/jquery.signalR-2.4.3.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.min.css", "~/Content/bootstrap-grid.min.css","~/Content/font-awesome.css", "~/Content/sweetalert2.min.css"));
+                      "~/Content/bootstrap.min.css", "~/Content/bootstrap-grid.min.css","~/Content/font-awesome.css", "~/Content/sweetalert2.min.css","~/Content/Animate.css"));
         }
     }
 }
