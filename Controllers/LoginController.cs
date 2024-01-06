@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ExamOn.SignalRPush;
+using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +14,11 @@ namespace ExamOn.Controllers
         public ActionResult Go()
         {
             return View("Index");
+        }
+
+        public JsonResult LongRunningProcess()
+        {
+            return Json("", JsonRequestBehavior.AllowGet);
         }
     }
 }

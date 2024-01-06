@@ -32,8 +32,18 @@
                 </div>
             </div>
             <div class="card-footer text-muted " style="text-align:center; margin:auto 0">
-                <button type="submit" class="btn btn-primary" style="text-align:Center">Login (लॉग इन करें)</button>
+                <button type="submit" class="btn btn-primary" onclick="StartProcess()" style="text-align:Center">Login (लॉग इन करें)</button>
             </div>
         </div>
     </div>
 </div>
+<script>//CALLING METHOD IN THE CONTROLLER TO DO SOME WORK
+    function StartProcess() {
+
+        $.getJSON("/Login/LongRunningProcess",
+        {},
+        function (data) {
+           
+        });
+    }
+</script>
