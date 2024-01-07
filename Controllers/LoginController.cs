@@ -10,7 +10,7 @@ namespace ExamOn.Controllers
 {
     public class LoginController : Controller
     {
-        // GET: Login
+        [AllowAnonymous]
         public ActionResult Go()
         {
             return View("Index");

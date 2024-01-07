@@ -11,6 +11,7 @@ namespace ExamOn
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static string plateformError;
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -24,7 +25,7 @@ namespace ExamOn
         {
             var urlHeler = new UrlHelper(HttpContext.Current.Request.RequestContext);
             Exception exception = Server.GetLastError();
-            Session["PlateFormError"] = exception.Message;
+            plateformError = exception.Message;
             Response.Redirect(urlHeler.Action("Go", "SignOut", new { isError = exception is null ? "" : exception.Message  }));
         }
     }

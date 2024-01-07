@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace ExamOn.Controllers
 {
@@ -11,17 +12,14 @@ namespace ExamOn.Controllers
         // GET: SignOut
         public ActionResult Go(string isError)
         {
-            Session["S"] = "";
-            Session["A"] = "";
-            Session["W"] = "";
-            Session["T"] = "";
-            string PlateformError = (string)Session["PlateFormError"];
-            if (!string.IsNullOrEmpty(isError) && !string.IsNullOrEmpty(PlateformError))
+            if (!string.IsNullOrEmpty(isError) && !string.IsNullOrEmpty(ExamOn.MvcApplication.plateformError))
             {
                 ViewBag.Error = isError;
-                Session["PlateFormError"] = string.Empty;
+                ExamOn.MvcApplication.plateformError = "";
+                FormsAuthentication.SignOut();
                 return View("index");
             }
+            FormsAuthentication.SignOut();
             return RedirectToAction("Go", "Login");
         }
     }
