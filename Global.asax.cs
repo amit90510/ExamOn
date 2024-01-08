@@ -26,7 +26,12 @@ namespace ExamOn
             var urlHeler = new UrlHelper(HttpContext.Current.Request.RequestContext);
             Exception exception = Server.GetLastError();
             plateformError = exception.Message;
-            Response.Redirect(urlHeler.Action("Go", "SignOut", new { isError = exception is null ? "" : exception.Message  }));
+            try
+            {
+                if (!Response.IsRequestBeingRedirected)
+                    Response.Redirect(urlHeler.Action("Go", "SignOut", new { isError = exception is null ? "" : exception.Message }));
+            }
+            catch { }
         }
     }
 }

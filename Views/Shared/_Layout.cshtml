@@ -15,6 +15,7 @@
 
     <div class="container body-content">
         @Scripts.Render("~/bundles/jquery")
+        @Html.AntiForgeryToken()
         @RenderBody()
         <footer class="py-0">
             <div class="row">
@@ -64,7 +65,7 @@
                 });
             }
         }
-        $(document).ready(function () {            
+        $(document).ready(function () {
             var hub = $.connection.notificationHub;
             hub.client.addNewMessageToPage = function (isHeader, header, finalBody, showProgress, showFooter, closeModal) {
                 if ($('#signalRModal') && $('#signalRModal').hasClass('show')) {
@@ -88,8 +89,7 @@
                     console.log("Realtime hub can not be connected!");
                 });
 
-            function handleModal(isHeader, header, finalBody, showProgress, showFooter, closeModal)
-            {
+            function handleModal(isHeader, header, finalBody, showProgress, showFooter, closeModal) {
                 $("#signalRModalTitle").text(header);
                 $("#signalRModalBody").html(finalBody);
                 isHeader ? $("#signalRModalTitleVisible").show() : $("#signalRModalTitleVisible").hide();
@@ -115,11 +115,19 @@
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="modal-footer" id="signalRModalBodyFooterVisible">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK (ठीक है)</button>
+                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">OK (ठीक है)</button>
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
     </div>
+    <script type="text/javascript">
+        var sc_project = 12955538;
+        var sc_invisible = 0;
+        var sc_security = "35c4fa6d";
+        var scJsHost = "https://";
+        document.write("<sc" + "ript type='text/javascript' src='" + scJsHost +
+            "statcounter.com/counter/counter.js'></" + "script>");
+    </script>
 </body>
 </html>

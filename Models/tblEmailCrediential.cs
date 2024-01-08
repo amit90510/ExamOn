@@ -9,10 +9,11 @@
 
 namespace ExamOn.Models
 {
+    using ExamOn.DataLayer;
     using System;
     using System.Collections.Generic;
     
-    public partial class tblEmailCrediential
+    public partial class tblEmailCrediential : GenericModel
     {
         public int id { get; set; }
         public string EmailFromAddress { get; set; }

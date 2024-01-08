@@ -9,10 +9,11 @@
 
 namespace ExamOn.Models
 {
+    using ExamOn.DataLayer;
     using System;
     using System.Collections.Generic;
     
-    public partial class tbllogin
+    public partial class tbllogin : GenericModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbllogin()

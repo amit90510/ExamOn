@@ -2,7 +2,7 @@
     <div class="row justify-content-center py-4">
         <div class="card" style="max-width: fit-content !important;">
             <div class="card-header" style="text-align: center; text-decoration: underline;">
-                ExamOn Login Portal V1.0.0
+                ExamOn Login Portal @ViewBag.Version
             </div>
             <div class="card-body">
                 <div style="display: inline-grid; grid-template-columns: 1fr 2fr; justify-content: space-evenly; align-content: center; align-items: center; justify-items: center; ">
@@ -32,18 +32,22 @@
                 </div>
             </div>
             <div class="card-footer text-muted " style="text-align:center; margin:auto 0">
-                <button type="submit" class="btn btn-primary" onclick="StartProcess()" style="text-align:Center">Login (लॉग इन करें)</button>
+                <button type="submit" class="btn btn-primary" onclick="login();" style="text-align:Center">Login (लॉग इन करें)</button>
             </div>
         </div>
     </div>
 </div>
-<script>//CALLING METHOD IN THE CONTROLLER TO DO SOME WORK
-    function StartProcess() {
-
-        $.getJSON("/Login/LongRunningProcess",
-        {},
-        function (data) {
-           
-        });
+<script type="text/javascript">
+    function login() {
+        if ($("#txtUserName").val() && $("#txtPassword").val()) {
+            var loginObj = {
+                "username": $("#txtUserName").val().trim(),
+                "Password": $("#txtPassword").val().trim()
+            }
+            ServerData("/Login/ExamOnSignIn", "Post", loginObj, (data) => { console.log(data); }, () => { $("#txtUserName").val(''); $("#txtPassword").val(''); });
+        }
+        else {
+            SwalFire("ExamOn", "Please enter username or password. (कृपया उपयोगकर्ता नाम और पासवर्ड दर्ज करें.)", "error", "", () => { });
+        }
     }
 </script>

@@ -1,11 +1,18 @@
-﻿using ExamOn.SignalRPush;
-using Microsoft.AspNet.SignalR;
+﻿using Dapper;
+using ExamOn.Authorize;
+using ExamOn.DataLayer;
+using ExamOn.Models;
+using ExamOn.ServiceLayer;
+using ExamOn.SignalRPush;
+using ExamOn.Utility;
 using System;
-using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
+using System.Net;
+using System.Net.Mail;
+using System.Web.Configuration;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace ExamOn.Controllers
 {
@@ -14,14 +21,104 @@ namespace ExamOn.Controllers
         [AllowAnonymous]
         public ActionResult Go()
         {
-           // User.Identity.Name
+            // User.Identity.Name
+            ViewBag.Version = WebConfigurationManager.AppSettings["ExamOnVersion"];
             return View("Index");
         }
 
-        public JsonResult LongRunningProcess()
+        [HttpPost]
+        [AllowAnonymous]
+        [ForgeryTokenAuthorize]
+        [Route("Login/{ExamOnSignIn}")]
+        public JsonResult LoginIn([System.Web.Http.FromBody] tbllogin loginparams)
         {
-            HubContext.Notify(true, "yes, this is working", "this is working too animate css", true, true, false);
-            return Json("", JsonRequestBehavior.AllowGet);
+            JsonData jsonData = new JsonData();
+            try
+            {
+                using (IDbConnection db = new SqlConnection(DBConnection.GetConnectionString("ExamOn_Master")))
+                {
+                    string[] token = loginparams.UserName.Split('-');
+                    var tenantMasters = db.Query<tblTenantMaster>("select * from tbltenantmaster where TenantUniqueKey = @keyvalue", new { keyvalue = token });
+                    if (tenantMasters != null && tenantMasters.Any())
+                    {
+                        jsonData.StatusCode = 200;
+                        using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString(tenantMasters.Select(e => e.TenantDBName).FirstOrDefault())))
+                        {
+                            var tbllogin = mainDB.Query<tbllogin>("select * from tbllogin where username = @username and Password = @password", new { username = loginparams.UserName, password = loginparams.Password });
+                            if(tbllogin != null && tbllogin.Any())
+                            {
+
+                            }
+                            else
+                            {
+                                HubContext.Notify(true, "ExamOn Alert", "Invalid username and password. <br/> कृपया आपको दिया गया सही उपयोगकर्ता नाम और पासवर्ड दर्ज करें।", false, true, false);
+                            }
+                        }                        
+                    }
+                    else
+                    {
+                        jsonData.StatusCode = 500;
+                        HubContext.Notify(true, "ExamOn Alert", "Invalid User Name <br/>(अमान्य उपयोगकर्ता नाम)", false, true, false);
+                    }
+                }
+            }
+            catch (Exception e) {
+                jsonData.StatusCode = 500;
+                jsonData.Error = e.Message;
+                HubContext.Notify(true, "ExamOn Alert", e.Message,false, true, false);
+            }     
+            return Json(JsonResponse.JsonResponseData(jsonData), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ForgeryTokenAuthorize]
+        [Route("Login/{ExamOnForgetPassword}")]
+        public JsonResult ForgotMyPassword([System.Web.Http.FromBody] tbllogin loginparams)
+        {
+            JsonData jsonData = new JsonData();
+            try
+            {
+                using (IDbConnection db = new SqlConnection(DBConnection.GetConnectionString("ExamOn_Master")))
+                {
+                    string[] token = loginparams.UserName.Split('-');
+                    var tenantMasters = db.Query<tblTenantMaster>("select * from tbltenantmaster where TenantUniqueKey = @keyvalue", new { keyvalue = token });
+                    if (tenantMasters != null && tenantMasters.Any())
+                    {
+                        jsonData.StatusCode = 200;
+                        var _logindata = DapperService.GetDapperData<tbllogin>("select top 1 * from tbllogin where username = @username", new { username = loginparams.UserName}, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
+                        if(_logindata != null && _logindata.Any())
+                        {
+                            if(_logindata.FirstOrDefault().Active)
+                            {
+
+                            }
+                            else
+                            {
+                                HubContext.Notify(false, "", "Please wait, while we are checking your instituion  <br/> कृपया प्रतीक्षा करें।", true, false, false);
+                                var _tenantdata = DapperService.GetDapperData<tbltenant>("select top 1 * from tbltenant where username = @username", new { username = loginparams.UserName }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
+
+                            }
+                        }
+                        else
+                        {
+                            HubContext.Notify(true, "ExamOn Alert", "Invalid username and password. <br/> कृपया आपको दिया गया सही उपयोगकर्ता नाम दर्ज करें।", false, true, false);
+                        }
+                    }
+                    else
+                    {
+                        jsonData.StatusCode = 500;
+                        HubContext.Notify(true, "ExamOn Alert", "Invalid User Name <br/>(अमान्य उपयोगकर्ता नाम)", false, true, false);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                jsonData.StatusCode = 500;
+                jsonData.Error = e.Message;
+                HubContext.Notify(true, "ExamOn Alert", e.Message, false, true, false);
+            }
+            return Json(JsonResponse.JsonResponseData(jsonData), JsonRequestBehavior.AllowGet);
         }
     }
 }
