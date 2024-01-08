@@ -17,8 +17,7 @@ namespace ExamOn.Authorize
             {
                 context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                 {
-                    controller = "Login",
-                    action = "Go"
+                    controller = "Login"
                 }));
             }
         }

@@ -8,6 +8,11 @@ namespace ExamOn.Authorize
     public static class AuthorizeService
     {
         //format UserId?DBTOKEN?DBNAME
+
+        public static string SetIdentityCookieValue(long userId, string DBToken, string dbName)
+        {
+            return $"{userId}?{DBToken}?{dbName}";
+        }
         public static string GetUserId(string userKey)
         {
             string userId = string.Empty;

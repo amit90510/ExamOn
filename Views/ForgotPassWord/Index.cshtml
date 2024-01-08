@@ -1,0 +1,46 @@
+﻿<div class="container">
+    <div class="row justify-content-center py-4">
+        <div class="card" style="max-width: fit-content !important;">
+            <div class="card-header" style="text-align: center; text-decoration: underline;">
+                ExamOn Forgot Password @ViewBag.Version
+            </div>
+            <div class="card-body">
+                <div style="display: inline-grid; grid-template-columns: 1fr 2fr; justify-content: space-evenly; align-content: center; align-items: center; justify-items: center; ">
+                    <div style="display: inline-block; ">
+                        <img alt="ExamOn Logo" src="~/Content/logo/logo-Compress.png" height="170" width="150" href="#" dropzone="" draggable="false" title="Logo" contenteditable="false" contextmenu="" itemscope="" />
+                    </div>
+                    <div style="display: inline-block;" class="col-sm-10">
+
+                        <div class="form-group">
+                            <label for="txtforgotUserName">User Name: </label>
+                            <br />
+                            <input type="text" class="form-control form-control-sm" id="txtforgotUserName" autocomplete="off" autofocus="0" placeholder="अपने उपयोगकर्ता नाम दर्ज करें" required maxlength="50">
+                        </div>
+                        <br />
+                        <br />
+                        <small class="animate__animated animate_animate__flash">we will send your password on mail <br/> (हम आपका पासवर्ड आपके मेल पर भेज देंगे)</small>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted " style="text-align:center; margin:auto 0">
+                <a type="button" class="btn btn-secondary" id="btnGoLogin" href="~/Login">Go to Login (लॉग इन पर जाएं)</a>
+                <button type="button" class="btn btn-primary" onclick="forgotPassd();">Mail (मेल कर दें)</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function forgotPassd() {
+        if ($("#txtforgotUserName").val()) {
+            var PassObj = {
+                "username": $("#txtforgotUserName").val().trim(),
+            }
+            ServerData("/ForgotPassWord/ExamOnForgetPassword", "Post", PassObj, (data) => { if (data && data.StatusCode == "1") { $("#txtforgotUserName").val(''); setTimeout(() => { document.getElementById("btnGoLogin").click(); }, 3500); } }, () => { $("#txtforgotUserName").val('') });
+        }
+        else {
+            SwalFire("ExamOn", "Please enter username (कृपया उपयोगकर्ता नाम दर्ज करें.)", "error", "", () => { $('#txtforgotUserName').focus(); });
+        }
+    }
+</script>
