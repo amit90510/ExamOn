@@ -55,3 +55,7 @@ dkms.conf
 Release
 Obj/
 bin/
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
