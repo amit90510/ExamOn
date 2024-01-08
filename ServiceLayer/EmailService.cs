@@ -77,5 +77,43 @@ namespace ExamOn.ServiceLayer
             }
             catch { }
         }
+
+        public static string SendEmailResponse(string[] Toaddress, string subject, string bodyHeader, string bodyText, string dbName="")
+        {
+            string isError = string.Empty;
+            try
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    var _data = DapperService.GetDapperData<tblEmailCrediential>("select top 1 * from tblEmailCredientials",null, dbName);
+                    if (_data != null && _data.Any())
+                    {
+                        mail.From = new MailAddress(_data.FirstOrDefault().EmailFromAddress);
+                        foreach (var addr in Toaddress)
+                        {
+                            mail.To.Add(addr);
+                        }
+                        mail.Subject = subject;
+                        StreamReader sr = new StreamReader(HttpContext.Current.Server.MapPath("~/content/Template/EmailTemplate.html"));
+                        string templatebody = sr.ReadToEnd();
+                        sr.Close();
+                        templatebody = templatebody.Replace("{title}", bodyHeader).Replace("{text}", bodyText).Replace("{HrefLink}", HttpContext.Current.Request.Url.OriginalString).Replace("{Version}", WebConfigurationManager.AppSettings["ExamOnVersion"].ToString());
+                        mail.Body = templatebody;
+                        mail.IsBodyHtml = true;
+                        using (SmtpClient smtp = new SmtpClient(WebConfigurationManager.AppSettings["SMTPClient"].ToString(), Int32.Parse(WebConfigurationManager.AppSettings["SMTPPort"].ToString())))
+                        {
+                            smtp.Credentials = new NetworkCredential(_data.FirstOrDefault().EmailFromAddress, EncryptionDecryption.DecryptString(_data.FirstOrDefault().Password));
+                            smtp.EnableSsl = true;
+                            smtp.Send(mail);
+                        }
+                    }
+                }
+            }
+            catch (Exception TT) {
+                isError = TT.Message;
+            }
+
+            return isError;
+        }
     }
 }

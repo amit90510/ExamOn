@@ -91,13 +91,33 @@ namespace ExamOn.Controllers
                         {
                             if(_logindata.FirstOrDefault().Active)
                             {
-
+                                HubContext.Notify(false, "", $"Please wait, while we are sending your Pasword on {_logindata.FirstOrDefault().EmailId} <br/> कृपया प्रतीक्षा करें। हम आपका पासवर्ड भेज रहे हैं", true, false, false);
+                               var response = EmailService.SendEmailResponse(new string[] { _logindata.FirstOrDefault().EmailId }, "Examon - Forgot/Retrieve Password", "पासवर्ड भूल गए/पुनः प्राप्त करें",$"Hi <b> {_logindata.FirstOrDefault().UserName} </b> <br/> your password is (your password is) - <b>{ EncryptionDecryption.DecryptString(_logindata.FirstOrDefault().Password)} </b>", tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
+                                if(!string.IsNullOrEmpty(response))
+                                {
+                                    HubContext.Notify(true, "ExamOn- Alert", $"Email can not be sent due to {response}<br/> हम पासवर्ड नहीं भेज सकते", false, true, false);
+                                }
+                                else
+                                {
+                                    RedirectToAction("Go");
+                                    HubContext.Notify(true, "ExamOn- Alert", $"We have send your password on your mail.<br/> हमने आपका पासवर्ड आपके मेल पर भेज दिया है।", false, true, false);
+                                }
                             }
                             else
                             {
                                 HubContext.Notify(false, "", "Please wait, while we are checking your instituion  <br/> कृपया प्रतीक्षा करें।", true, false, false);
-                                var _tenantdata = DapperService.GetDapperData<tbltenant>("select top 1 * from tbltenant where username = @username", new { username = loginparams.UserName }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
+                                var _tenantdata = DapperService.GetDapperData<tbltenant>("select top 1 * from tbltenant where id = @tenantToken", new { tenantToken = _logindata.FirstOrDefault().TenantToken }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
+                                if(_tenantdata != null && _tenantdata.Any())
+                                {
+                                    jsonData.StatusCode = 500;
+                                    HubContext.Notify(true, "ExamOn Alert", $"Your login is disabled, Please contact to {_tenantdata.FirstOrDefault().TenantName} <br/> कृपया अपने संस्थान से संपर्क करें।", false, true, false);
 
+                                }
+                                else
+                                {
+                                    jsonData.StatusCode = 500;
+                                    HubContext.Notify(true, "ExamOn Alert", "We could not find your instituition, Please contact adminisitator. <br/> कृपया अपने संस्थान से संपर्क करें।", false, true, false);
+                                }
                             }
                         }
                         else
