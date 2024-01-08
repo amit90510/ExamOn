@@ -10,7 +10,7 @@
                         <img alt="ExamOn Logo" src="~/Content/logo/logo-Compress.png" height="170" width="150" href="#" dropzone="" draggable="false" title="Logo" contenteditable="false" contextmenu="" itemscope="" />
                     </div>
                     <div style="display: inline-block;" class="col-sm-10">
-                        <form>
+                        
                             <div class="form-group">
                                 <label for="txtUserName">User Name: </label>
                                 <br />
@@ -24,15 +24,42 @@
                             </div>
                             <br />
                             <div class="form-group" style="text-align:right" tabindex="-1">
-                                <a class="dropdown-item" href="#" style="float:left">Forgot password?</a>
+                                <a class="dropdown-item" style="float: left;cursor:pointer" href="" data-bs-toggle="modal" data-bs-target="#ForgotPasswordModal">Forgot password?</a>
                             </div>
                             <br />
-                        </form>
+                        
                     </div>
                 </div>
             </div>
             <div class="card-footer text-muted " style="text-align:center; margin:auto 0">
                 <button type="submit" class="btn btn-primary" onclick="login();" style="text-align:Center">Login (लॉग इन करें)</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade fade-scale" id="ForgotPasswordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ForgotPasswordModal" aria-hidden="true">
+    <div class="modal-dialog animate__animated animate__pulse modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">Forget Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="txtforgotUserName">User Name: </label>
+                    <br />
+                    <input type="text" class="form-control form-control-sm" id="txtforgotUserName" autocomplete="off" placeholder="अपने उपयोगकर्ता नाम दर्ज करें" required maxlength="50">
+                </div>
+                <br />
+                <br />
+                <small class="animate__animated animate_animate__flash">we will send your password on your mail (हम आपका पासवर्ड आपके मेल पर भेज देंगे)</small>
+
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close (बंद करें)</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="forgotPassd();">Mail (मेल कर दें)</button>
+                </div>
             </div>
         </div>
     </div>
@@ -44,10 +71,25 @@
                 "username": $("#txtUserName").val().trim(),
                 "Password": $("#txtPassword").val().trim()
             }
-            ServerData("/Login/ExamOnSignIn", "Post", loginObj, (data) => { console.log(data); }, () => { $("#txtUserName").val(''); $("#txtPassword").val(''); });
+            ServerData("/Login/ExamOnSignIn", "Post", loginObj, (data) => { }, () => { $("#txtUserName").val(''); $("#txtPassword").val(''); });
         }
         else {
             SwalFire("ExamOn", "Please enter username or password. (कृपया उपयोगकर्ता नाम और पासवर्ड दर्ज करें.)", "error", "", () => { });
         }
     }
+    function forgotPassd() {
+        if ($("#txtforgotUserName").val()) {
+            var PassObj = {
+                "username": $("#txtforgotUserName").val().trim(),
+            }
+            ServerData("/LoginPass/ExamOnForgetPassword", "Post", PassObj, (data) => { console.log(data); }, () => { $("#txtforgotUserName").val('')});
+        }
+        else {
+            SwalFire("ExamOn", "Please enter username (कृपया उपयोगकर्ता नाम दर्ज करें.)", "error", "", () => { $('#txtforgotUserName').focus();});
+        }
+    }
+    $('#ForgotPasswordModal').on('shown.bs.modal', function () {
+        $('#txtforgotUserName').focus();
+        $('#txtforgotUserName').val('')
+    })
 </script>

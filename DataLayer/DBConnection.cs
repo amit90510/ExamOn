@@ -26,6 +26,6 @@ namespace ExamOn.DataLayer
             }
 
             return ($"Server=AMIT-LAPTOP\\SQLEXPRESS; Database={db};user id=examon;password=Welcome@90510;asynchronous processing=True;trustservercertificate=True; Trusted_Connection = true");
-        }
+        }       
     }
 }

@@ -73,7 +73,7 @@ namespace ExamOn.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ForgeryTokenAuthorize]
-        [Route("Login/{ExamOnForgetPassword}")]
+        [Route("LoginPass/{ExamOnForgetPassword}")]
         public JsonResult ForgotMyPassword([System.Web.Http.FromBody] tbllogin loginparams)
         {
             JsonData jsonData = new JsonData();

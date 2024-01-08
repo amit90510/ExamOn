@@ -7,34 +7,35 @@ namespace ExamOn.Authorize
 {
     public static class AuthorizeService
     {
-        public static string GetUserName(string userKey)
+        //format UserId?DBTOKEN?DBNAME
+        public static string GetUserId(string userKey)
         {
-            string userName = string.Empty;
+            string userId = string.Empty;
             if(!string.IsNullOrEmpty(userKey))
             {
                 try
                 {
-                    userName = userKey.Split('?')[0].ToString();
+                    userId = userKey.Split('?')[0].ToString();
                 }
                 catch
                 { }
             }
-            return userName;
+            return userId;
         }
 
-        public static string GetUserRole(string userKey)
+        public static string GetDBToken(string userKey)
         {
-            string userRole = string.Empty;
+            string userDBToken = string.Empty;
             if (!string.IsNullOrEmpty(userKey))
             {
                 try
                 {
-                    userRole = userKey.Split('?')[1].ToString();
+                    userDBToken = userKey.Split('?')[1].ToString();
                 }
                 catch
                 { }
             }
-            return userRole;
+            return userDBToken;
         }
 
         public static string GetUserDBName(string userKey)
