@@ -4,8 +4,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>D:\ExamOn\Release</_PublishTargetUrl>
-    <History>False|2024-01-06T16:02:39.7439328Z;False|2024-01-06T19:36:05.1449783+05:30;False|2024-01-06T19:35:08.3512853+05:30;False|2024-01-06T19:34:46.6660971+05:30;False|2024-01-06T19:34:38.3133634+05:30;True|2023-12-24T12:56:17.2104825+05:30;True|2023-12-24T12:48:51.0760265+05:30;</History>
+    <_PublishTargetUrl>D:\ExamOnRelease</_PublishTargetUrl>
+    <History>True|2024-01-09T04:32:36.6129650Z;False|2024-01-06T21:32:39.7439328+05:30;False|2024-01-06T19:36:05.1449783+05:30;False|2024-01-06T19:35:08.3512853+05:30;False|2024-01-06T19:34:46.6660971+05:30;False|2024-01-06T19:34:38.3133634+05:30;True|2023-12-24T12:56:17.2104825+05:30;True|2023-12-24T12:48:51.0760265+05:30;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Antlr3.Runtime.dll">
@@ -30,10 +30,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/15/2020 23:07:24</publishTime>
     </File>
     <File Include="bin/ExamOn.dll">
-      <publishTime>01/05/2024 15:54:44</publishTime>
+      <publishTime>01/09/2024 10:02:33</publishTime>
     </File>
     <File Include="bin/ExamOn.pdb">
-      <publishTime>01/05/2024 15:54:44</publishTime>
+      <publishTime>01/09/2024 10:02:33</publishTime>
     </File>
     <File Include="bin/fr/Microsoft.Data.SqlClient.resources.dll">
       <publishTime>05/15/2020 23:07:20</publishTime>
@@ -46,6 +46,24 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="bin/ko/Microsoft.Data.SqlClient.resources.dll">
       <publishTime>05/15/2020 23:07:24</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
+      <publishTime>06/21/2023 15:46:52</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
+      <publishTime>06/21/2023 15:46:52</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.Core.dll">
+      <publishTime>01/14/2022 08:10:14</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.Core.pdb">
+      <publishTime>01/14/2022 08:02:32</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.SystemWeb.dll">
+      <publishTime>01/14/2022 08:10:14</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.SystemWeb.pdb">
+      <publishTime>01/14/2022 08:04:16</publishTime>
     </File>
     <File Include="bin/Microsoft.Bcl.AsyncInterfaces.dll">
       <publishTime>04/15/2020 04:09:20</publishTime>
@@ -127,6 +145,18 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="bin/Microsoft.Owin.dll">
       <publishTime>01/18/2019 20:50:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
+      <publishTime>01/13/2014 16:11:04</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Cookies.dll">
+      <publishTime>02/13/2015 13:16:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.dll">
+      <publishTime>02/13/2015 13:16:36</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.OAuth.dll">
+      <publishTime>02/13/2015 13:16:40</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>07/25/2012 11:48:56</publishTime>
@@ -368,6 +398,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="bin/zh-Hant/Microsoft.Data.SqlClient.resources.dll">
       <publishTime>05/15/2020 23:07:24</publishTime>
     </File>
+    <File Include="Content/Animate.css">
+      <publishTime>01/06/2024 21:02:23</publishTime>
+    </File>
     <File Include="Content/bootstrap-grid.css">
       <publishTime>12/22/2023 15:29:47</publishTime>
     </File>
@@ -470,14 +503,20 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Content/font-awesome.min.css">
       <publishTime>12/22/2023 15:40:36</publishTime>
     </File>
+    <File Include="Content/logo/logo-Compress.png">
+      <publishTime>01/06/2024 21:28:58</publishTime>
+    </File>
     <File Include="Content/logo/logo.png">
       <publishTime>12/22/2023 15:20:12</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>12/21/2023 19:27:19</publishTime>
+      <publishTime>01/06/2024 20:45:31</publishTime>
     </File>
     <File Include="Content/sweetalert2.min.css">
       <publishTime>12/23/2023 15:53:12</publishTime>
+    </File>
+    <File Include="Content/Template/EmailTemplate.html">
+      <publishTime>01/07/2024 20:32:53</publishTime>
     </File>
     <File Include="DBS/AddDBUser.sql">
       <publishTime>01/05/2024 14:18:26</publishTime>
@@ -489,7 +528,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>12/24/2023 14:25:01</publishTime>
     </File>
     <File Include="DBS/DBScripts.sql">
-      <publishTime>12/24/2023 12:19:07</publishTime>
+      <publishTime>01/08/2024 10:02:11</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.eot">
       <publishTime>12/22/2023 15:40:36</publishTime>
@@ -998,6 +1037,12 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Scripts/jquery-3.7.1.slim.min.map">
       <publishTime>12/22/2023 15:30:20</publishTime>
     </File>
+    <File Include="Scripts/jquery.signalR-2.4.3.js">
+      <publishTime>01/05/2024 16:12:15</publishTime>
+    </File>
+    <File Include="Scripts/jquery.signalR-2.4.3.min.js">
+      <publishTime>01/05/2024 16:12:15</publishTime>
+    </File>
     <File Include="Scripts/jquery.validate.js">
       <publishTime>12/22/2023 15:30:35</publishTime>
     </File>
@@ -1010,23 +1055,32 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Scripts/jquery.validate.unobtrusive.min.js">
       <publishTime>12/21/2023 19:27:31</publishTime>
     </File>
+    <File Include="Scripts/JqueryPost.js">
+      <publishTime>01/07/2024 16:55:47</publishTime>
+    </File>
     <File Include="Scripts/modernizr-2.8.3.js">
       <publishTime>12/21/2023 19:27:30</publishTime>
     </File>
     <File Include="Scripts/sweetalert2.all.min.js">
       <publishTime>12/23/2023 15:53:26</publishTime>
     </File>
+    <File Include="Views/ForgotPassWord/Index.cshtml">
+      <publishTime>01/08/2024 16:50:37</publishTime>
+    </File>
     <File Include="Views/Login/Index.cshtml">
-      <publishTime>12/24/2023 12:08:45</publishTime>
+      <publishTime>01/08/2024 17:44:05</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>12/21/2023 19:27:19</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>12/23/2023 16:16:36</publishTime>
+      <publishTime>01/08/2024 15:52:15</publishTime>
     </File>
     <File Include="Views/SignOut/Index.cshtml">
       <publishTime>01/05/2024 15:44:05</publishTime>
+    </File>
+    <File Include="Views/StudDashboard/Index.cshtml">
+      <publishTime>01/08/2024 17:06:30</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>12/21/2023 19:27:19</publishTime>
@@ -1035,7 +1089,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>12/21/2023 19:27:19</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/05/2024 15:54:45</publishTime>
+      <publishTime>01/09/2024 10:02:34</publishTime>
     </File>
   </ItemGroup>
 </Project>

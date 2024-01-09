@@ -22,10 +22,10 @@ namespace ExamOn.DataLayer
             var dbSever = WebConfigurationManager.AppSettings["DBServer"];
             if (!string.IsNullOrEmpty(dbSever))
             {
-                return ($"Server={dbSever}; Database={db};user id=examon;password=Welcome@90510;asynchronous processing=True;trustservercertificate=True; Trusted_Connection = true");
+                return ($"Server={dbSever}; Database={db};user id=examon;password=Welcome@90510;asynchronous processing=True;trustservercertificate=True; Trusted_Connection = false");
             }
 
-            return ($"Server=AMIT-LAPTOP\\SQLEXPRESS; Database={db};user id=examon;password=Welcome@90510;asynchronous processing=True;trustservercertificate=True; Trusted_Connection = true");
+            return ($"Server=AMIT-LAPTOP\\SQLEXPRESS; Database={db};user id=examon;password=Welcome@90510;asynchronous processing=True;trustservercertificate=True; Trusted_Connection = false");
         }       
     }
 }
