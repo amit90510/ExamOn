@@ -1,7 +1,10 @@
 ﻿function ServerData(url, type, jsonData, successcallBack, errorCallback) {
     var token = $('[name=__RequestVerificationToken]').val();
-    var headers = {};
-    headers["__RequestVerificationToken"] = token;
+    var KeyId = $('#sRCookie').val();
+    var headers = {
+        "__RequestVerificationToken" : token,
+        "__RequestVerificationSRKey" : KeyId
+    }
     $.ajax({
         type: type,
         url: url,

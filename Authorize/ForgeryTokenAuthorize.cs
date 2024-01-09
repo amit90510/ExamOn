@@ -18,7 +18,10 @@ namespace ExamOn.Authorize
                 //  to validating the AntiForgeryToken
                 if (request.IsAjaxRequest())
                 {
-                    HubContext.Notify(false, "", "Please wait, while we verify your request.", true, false, false);
+                    var signalRConnectionCookie = request.Headers["__RequestVerificationSRKey"];
+                    var signalRConnectionCookieValue = signalRConnectionCookie != null ? signalRConnectionCookie.ToString() : null;
+                    HubContext.Notify(false, "", "Please wait, while we verify your request.", true, false, false, signalRConnectionCookieValue);
+
                     var antiForgeryCookie = request.Cookies[AntiForgeryConfig.CookieName];
 
                     var cookieValue = antiForgeryCookie != null
@@ -26,6 +29,7 @@ namespace ExamOn.Authorize
                         : null;
 
                     AntiForgery.Validate(cookieValue, request.Headers["__RequestVerificationToken"]);
+                    filterContext.Controller.ViewBag.srKey = signalRConnectionCookieValue;
                 }
                 else
                 {

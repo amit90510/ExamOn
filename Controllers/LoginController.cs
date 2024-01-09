@@ -62,43 +62,42 @@ namespace ExamOn.Controllers
                                     }
                                     jsonData.StatusCode = 1;
                                     FormsAuthentication.SetAuthCookie(AuthorizeService.SetIdentityCookieValue(tbllogin.FirstOrDefault().id, tbllogin.FirstOrDefault().TenantToken, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString()),false);
-                                    HubContext.Notify(false, "", $"We have verified you. <br/> हमने आपका सत्यापन कर लिया है।", true, false, false);
-
+                                    HubContext.Notify(false, "", $"We have verified you. <br/> हमने आपका सत्यापन कर लिया है।", true, false, false, ViewBag.srKey);
                                 }
                                 else
                                 {
-                                    HubContext.Notify(false, "", "Please wait, while we are checking your instituion  <br/> कृपया प्रतीक्षा करें।", true, false, false);
+                                    HubContext.Notify(false, "", "Please wait, while we are checking your instituion  <br/> कृपया प्रतीक्षा करें।", true, false, false, ViewBag.srKey);
                                     var _tenantdata = DapperService.GetDapperData<tbltenant>("select top 1 * from tbltenant where id = @tenantToken", new { tenantToken = tbllogin.FirstOrDefault().TenantToken }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
                                     if (_tenantdata != null && _tenantdata.Any())
                                     {
                                         jsonData.StatusCode = 500;
-                                        HubContext.Notify(true, "ExamOn Alert", $"Your Account is disabled, Please contact to {_tenantdata.FirstOrDefault().TenantName} <br/> आपको ब्लॉक कर दिया गया है, कृपया अपने संस्थान से संपर्क करें।", false, true, false);
+                                        HubContext.Notify(true, "ExamOn Alert", $"Your Account is disabled, Please contact to {_tenantdata.FirstOrDefault().TenantName} <br/> आपको ब्लॉक कर दिया गया है, कृपया अपने संस्थान से संपर्क करें।", false, true, false, ViewBag.srKey);
 
                                     }
                                     else
                                     {
                                         jsonData.StatusCode = 500;
-                                        HubContext.Notify(true, "ExamOn Alert", "We could not find your instituition, Please contact adminisitator. <br/> कृपया अपने संस्थान से संपर्क करें।", false, true, false);
+                                        HubContext.Notify(true, "ExamOn Alert", "We could not find your instituition, Please contact adminisitator. <br/> कृपया अपने संस्थान से संपर्क करें।", false, true, false, ViewBag.srKey);
                                     }
                                 }
                             }
                             else
                             {
-                                HubContext.Notify(true, "ExamOn Alert", "Invalid username and password. <br/> कृपया आपको दिया गया सही उपयोगकर्ता नाम और पासवर्ड दर्ज करें।", false, true, false);
+                                HubContext.Notify(true, "ExamOn Alert", "Invalid username and password. <br/> कृपया आपको दिया गया सही उपयोगकर्ता नाम और पासवर्ड दर्ज करें।", false, true, false, ViewBag.srKey);
                             }
                         }                        
                     }
                     else
                     {
                         jsonData.StatusCode = 500;
-                        HubContext.Notify(true, "ExamOn Alert", "Invalid User Name <br/>(अमान्य उपयोगकर्ता नाम)", false, true, false);
+                        HubContext.Notify(true, "ExamOn Alert", "Invalid User Name <br/>(अमान्य उपयोगकर्ता नाम)", false, true, false, ViewBag.srKey);
                     }
                 }
             }
             catch (Exception e) {
                 jsonData.StatusCode = 500;
                 jsonData.Error = e.Message;
-                HubContext.Notify(true, "ExamOn Alert", e.Message,false, true, false);
+                HubContext.Notify(true, "ExamOn Alert", e.Message,false, true, false, ViewBag.srKey);
             }     
             return Json(JsonResponse.JsonResponseData(jsonData), JsonRequestBehavior.AllowGet);
         }

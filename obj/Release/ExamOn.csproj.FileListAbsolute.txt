@@ -174,3 +174,15 @@ D:\ExamOn\bin\Microsoft.Owin.Host.SystemWeb.xml
 D:\ExamOn\bin\Microsoft.Owin.Security.xml
 D:\ExamOn\bin\Microsoft.Owin.Security.Cookies.xml
 D:\ExamOn\bin\Microsoft.Owin.Security.OAuth.xml
+D:\ExamOn\bin\System.Web.Helpers.xml
+D:\ExamOn\bin\System.Web.Mvc.xml
+D:\ExamOn\bin\System.Web.Optimization.xml
+D:\ExamOn\bin\System.Web.Razor.xml
+D:\ExamOn\bin\System.Web.WebPages.xml
+D:\ExamOn\bin\System.Web.WebPages.Deployment.xml
+D:\ExamOn\bin\System.Web.WebPages.Razor.xml
+D:\ExamOn\bin\Newtonsoft.Json.xml
+D:\ExamOn\bin\System.Net.Http.Formatting.xml
+D:\ExamOn\bin\System.Web.Http.xml
+D:\ExamOn\bin\System.Web.Http.WebHost.xml
+D:\ExamOn\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
