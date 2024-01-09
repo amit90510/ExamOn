@@ -12,7 +12,7 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color: rgb(37, 150, 190) !important; height:60px !important">
     </div>
-
+    @Html.Hidden("sRCookie","")
     <div class="container body-content">
         @Scripts.Render("~/bundles/jquery")
         @Html.AntiForgeryToken()
@@ -83,10 +83,12 @@
             };
             $.connection.hub.start()
                 .done(function () {
+                    $("#sRCookie").val(hub.connection.id);
                     console.log("Realtime hub is connected and started successfully!!");
                 })
-                .fail(function () {
+                .fail(function (e) {
                     console.log("Realtime hub can not be connected!");
+                    SwalFire("Browser-SignalR Error", "There is some issue with your browser, Please use latest chrome/Mozilla. <br/> (आपके ब्राउज़र में कुछ समस्या है, कृपया नवीनतम क्रोम/मोज़िला का उपयोग करें)", "error", "", () => { });
                 });
 
             function handleModal(isHeader, header, finalBody, showProgress, showFooter, closeModal) {
