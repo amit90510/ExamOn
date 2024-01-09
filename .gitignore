@@ -62,3 +62,13 @@ bin/
 obj/
 .vs/
 *.v16/
+*/**/bin/Debug
+*/**/bin/Release
+*/**/obj/Debug
+*/**/obj/Release
+**/bin/*
+**/obj/*
+*.exe
+*.pdb
+*.manifest
+*.cache

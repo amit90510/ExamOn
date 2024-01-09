@@ -49,7 +49,7 @@
                 $("#txtUserName").val(''); $("#txtPassword").val('');
                 if (data && data.StatusCode == "1") {
                     document.getElementById("btnGoDashboard").setAttribute("href", data.Error);
-                    setTimeout(() => { document.getElementById("btnGoDashboard").click(); }, 1250);
+                    setTimeout(() => { document.getElementById("btnGoDashboard").click(); }, 1000);
                 }
             }, () => { $("#txtUserName").val(''); $("#txtPassword").val(''); });
         }
