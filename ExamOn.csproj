@@ -387,10 +387,12 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\boxicons.min.css" />
     <Content Include="Content\Dashboard.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Animate.css" />
+    <Content Include="Content\images\UserProfile.jpg" />
     <Content Include="Content\logo\logo-Compress.png" />
     <Content Include="Content\logo\logo.png" />
     <Content Include="Content\sweetalert2.min.css" />
@@ -454,6 +456,7 @@
       <DependentUpon>ExamOn.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
+    <Content Include="Scripts\Dashboard.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.js" />
@@ -488,7 +491,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\images\" />
     <Folder Include="DBS\DBUpdates\" />
   </ItemGroup>
   <ItemGroup>

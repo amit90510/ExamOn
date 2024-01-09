@@ -4,7 +4,7 @@
 }
 <div class="p-5 mb-4 bg-light rounded-3">    
     <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">Sorry, We have found some issue.</h1>
+        <h1 class="display-5 fw-bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Sorry, We have found some issue.</h1>
         <p class="col-md-8 fs-4">क्षमा करें, हमें कुछ समस्या मिली है।</p>
         <br />
         <p>Details - @ViewBag.Error</p>
@@ -12,7 +12,7 @@
 </div>
 <br />
 <div class="container" style="text-align:center">
-    @Html.ActionLink("Login (लॉग इन करें)", "Go")
+    @Html.ActionLink("Login (लॉग इन करें)", "Go",null, new { @class = "btn btn-outline-primary" })
 </div>
 
 

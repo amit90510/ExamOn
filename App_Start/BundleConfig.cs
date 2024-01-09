@@ -26,7 +26,11 @@ namespace ExamOn
                       "~/Content/bootstrap.min.css", "~/Content/bootstrap-grid.min.css","~/Content/font-awesome.css", "~/Content/sweetalert2.min.css","~/Content/Animate.css"));
 
             bundles.Add(new StyleBundle("~/Content/Dashboardcss").Include(
-                     "~/Content/Dashboard.css"));
+                     "~/Content/Dashboard.css", "~/Content/boxicons.min.css"));
+
+            bundles.Add(new Bundle("~/bundles/Dashboard").Include(
+                     "~/Scripts/Dashboard.js"));
+
 
         }
     }

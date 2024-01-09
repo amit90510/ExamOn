@@ -42,6 +42,7 @@
 *.idb
 *.pdb
 *.suo
+.suo
 *.gitignore
 
 # Kernel Module Compile Results
