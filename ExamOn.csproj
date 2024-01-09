@@ -387,6 +387,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Dashboard.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Animate.css" />
@@ -483,6 +484,7 @@
     <Content Include="Views\SignOut\Index.cshtml" />
     <Content Include="Views\ForgotPassWord\Index.cshtml" />
     <Content Include="Views\StudDashboard\Index.cshtml" />
+    <Content Include="Views\Shared\_DashboardLayoutPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
