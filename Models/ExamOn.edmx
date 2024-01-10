@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ExamOn_DummyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ExamOn_DummyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblactivityHistory">
           <Key>
             <PropertyRef Name="id" />
@@ -101,6 +101,14 @@
           <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Exam" Type="bigint" Nullable="false" />
           <Property Name="UserName" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblForgotPasswordMailCounter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" />
         </EntityType>
         <EntityType Name="tbllogin">
           <Key>
@@ -397,6 +405,7 @@
           <EntitySet Name="tblexamQuestions" EntityType="Self.tblexamQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblexamSections" EntityType="Self.tblexamSections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblexamStudents" EntityType="Self.tblexamStudents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblForgotPasswordMailCounter" EntityType="Self.tblForgotPasswordMailCounter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbllogin" EntityType="Self.tbllogin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblloginType" EntityType="Self.tblloginType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuestions" EntityType="Self.tblQuestions" Schema="dbo" store:Type="Tables" />
@@ -465,8 +474,7 @@
             <End Role="tbluserProfile" EntitySet="tbluserProfile" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ExamOn_DummyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -959,7 +967,16 @@
             <End Role="tblshift" EntitySet="tblshifts" />
             <End Role="tbluserProfile" EntitySet="tbluserProfiles" />
           </AssociationSet>
+          <EntitySet Name="tblForgotPasswordMailCounters" EntityType="ExamOn_DummyModel.tblForgotPasswordMailCounter" />
         </EntityContainer>
+        <EntityType Name="tblForgotPasswordMailCounter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1153,6 +1170,15 @@
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Shift" ColumnName="Shift" />
                 <ScalarProperty Name="RealName" ColumnName="RealName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblForgotPasswordMailCounters">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblForgotPasswordMailCounter">
+              <MappingFragment StoreEntitySet="tblForgotPasswordMailCounter">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

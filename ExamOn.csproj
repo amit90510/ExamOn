@@ -340,6 +340,9 @@
     <Compile Include="Models\tblexamStudent.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tblForgotPasswordMailCounter.cs">
+      <DependentUpon>ExamOn.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbllogin.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
