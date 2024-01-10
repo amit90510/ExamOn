@@ -15,11 +15,14 @@ namespace ExamOn.Models
     
     public partial class ExamOn_DummyEntities : DbContext
     {
-        public ExamOn_DummyEntities()
-            : base("name=ExamOn_DummyEntities")
+        public ExamOn_DummyEntities(string connectionString)
+            : base()
         {
+            _connectionString = connectionString;
         }
-    
+
+        private string _connectionString;
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
