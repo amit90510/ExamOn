@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace ExamOn.ServiceLayer
@@ -25,6 +26,23 @@ namespace ExamOn.ServiceLayer
             {
                 return null; 
             }
+        }
+
+        public static async Task<string> ExecuteQuery(string query, object param = null, string DBName = "")
+        {
+            string executed = string.Empty;
+            try
+            {
+                using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString(DBName)))
+                {
+                    var GetModel = await mainDB.ExecuteAsync(query, param);
+                }
+            }
+            catch (Exception queryExc)
+            {
+                executed = queryExc.Message;
+            }
+            return executed;
         }
     }
 }

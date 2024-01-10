@@ -63,6 +63,7 @@
     <div class="height-100 bg-light animate__animated animate__slideInDown" style="--bs-bg-opacity: 0 !important">
         <h4>Main Components</h4>
         @Scripts.Render("~/bundles/jquery")
+        @Html.Hidden("sRCookie", "")
         @Html.AntiForgeryToken()
         @RenderBody()
         <div class="container">

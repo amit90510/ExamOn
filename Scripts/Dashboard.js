@@ -43,10 +43,12 @@ $(document).ready(function () {
     };
     $.connection.hub.start()
         .done(function () {
+            $("#sRCookie").val(hub.connection.id);
             console.log("Realtime hub is connected and started successfully!!");
         })
         .fail(function () {
             console.log("Realtime hub can not be connected!");
+            SwalFire("Browser-SignalR Error", "There is some issue with your browser, Please use latest chrome/Mozilla. <br/> (आपके ब्राउज़र में कुछ समस्या है, कृपया नवीनतम क्रोम/मोज़िला का उपयोग करें)", "error", "", () => { });
         });
 
     function handleModal(isHeader, header, finalBody, showProgress, showFooter, closeModal) {

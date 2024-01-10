@@ -401,6 +401,7 @@
     <Content Include="DBS\AddServerLogin.sql" />
     <Content Include="DBS\DBMaster.sql" />
     <Content Include="DBS\DBScripts.sql" />
+    <Content Include="DBS\DBUpdates\V1.0.0\DBUpdate.sql" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Models\ExamOn.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -491,7 +492,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DBS\DBUpdates\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
