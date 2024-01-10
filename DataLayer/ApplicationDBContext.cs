@@ -40,5 +40,7 @@ namespace ExamOn.DataLayer
         public virtual DbSet<tbltenant> tbltenants { get; set; }
         public virtual DbSet<tbluserProfile> tbluserProfiles { get; set; }
 
+        public virtual DbSet<tblForgotPasswordMailCounter> TblForgotPasswordMailCounters { get; set; }
+
     }
 }
