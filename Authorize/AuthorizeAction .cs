@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ExamOn.Models;
+using ExamOn.ServiceLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,6 +21,11 @@ namespace ExamOn.Authorize
                 {
                     controller = "Login"
                 }));
+            }
+            else
+            {
+                var userProfile = DapperService.GetDapperData<tbluserProfile>("select top 1 RealName from tbluserProfile where username = @username", new { @username = AuthorizeService.GetUserName(context.HttpContext.User.Identity.Name) });
+                context.Controller.ViewBag.RealName = userProfile.FirstOrDefault().RealName.ToUpperInvariant();
             }
         }
     }

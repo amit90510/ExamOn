@@ -7,11 +7,11 @@ namespace ExamOn.Authorize
 {
     public static class AuthorizeService
     {
-        //format UserId?DBTOKEN?DBNAME
+        //format UserId?DBTOKEN?DBNAME?UserName
 
-        public static string SetIdentityCookieValue(long userId, string DBToken, string dbName)
+        public static string SetIdentityCookieValue(long userId, string DBToken, string dbName, string userName)
         {
-            return $"{userId}?{DBToken}?{dbName}";
+            return $"{userId}?{DBToken}?{dbName}?{userName}";
         }
         public static string GetUserId(string userKey)
         {
@@ -56,6 +56,21 @@ namespace ExamOn.Authorize
                 { }
             }
             return userDBName;
+        }
+
+        public static string GetUserName(string userKey)
+        {
+            string getUserName = string.Empty;
+            if (!string.IsNullOrEmpty(userKey))
+            {
+                try
+                {
+                    getUserName = userKey.Split('?')[3].ToString();
+                }
+                catch
+                { }
+            }
+            return getUserName;
         }
     }
 }

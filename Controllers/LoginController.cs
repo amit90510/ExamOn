@@ -61,7 +61,7 @@ namespace ExamOn.Controllers
                                             break;
                                     }
                                     jsonData.StatusCode = 1;
-                                    FormsAuthentication.SetAuthCookie(AuthorizeService.SetIdentityCookieValue(tbllogin.FirstOrDefault().id, tbllogin.FirstOrDefault().TenantToken, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString()),false);
+                                    FormsAuthentication.SetAuthCookie(AuthorizeService.SetIdentityCookieValue(tbllogin.FirstOrDefault().id, tbllogin.FirstOrDefault().TenantToken, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString(), loginparams.UserName),false);
                                     HubContext.Notify(false, "", $"We have verified you. <br/> हमने आपका सत्यापन कर लिया है।", true, false, false, ViewBag.srKey);
                                 }
                                 else

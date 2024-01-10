@@ -9,10 +9,11 @@
 
 namespace ExamOn.Models
 {
+    using ExamOn.DataLayer;
     using System;
     using System.Collections.Generic;
     
-    public partial class tbluserProfile
+    public partial class tbluserProfile : GenericModel
     {
         public long id { get; set; }
         public string UserName { get; set; }

@@ -55,7 +55,7 @@
                 $("#txtUserName").val(''); $("#txtPassword").val('');
                 if (data && data.StatusCode == "1") {
                     document.getElementById("btnGoDashboard").setAttribute("href", data.Error);
-                    setTimeout(() => { document.getElementById("btnGoDashboard").click(); }, 500);
+                    setTimeout(() => { document.getElementById("btnGoDashboard").click(); }, 50);
                 }
             }, () => { $("#txtUserName").val(''); $("#txtPassword").val(''); });
         }
