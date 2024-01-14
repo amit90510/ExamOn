@@ -126,6 +126,16 @@
           <Property Name="BlockMessage" Type="varbinary" MaxLength="500" />
           <Property Name="LoginType" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblLoginHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ip" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Browser" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LoginDate" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblloginType">
           <Key>
             <PropertyRef Name="id" />
@@ -178,7 +188,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="address" Type="varchar" MaxLength="50" />
           <Property Name="City" Type="varchar" MaxLength="50" />
@@ -368,6 +378,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_tblLoginHistory_tbllogin" />-->
         <Association Name="FK_tblshift_tblBatch">
           <End Role="tblBatch" Type="Self.tblBatch" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -407,6 +420,7 @@
           <EntitySet Name="tblexamStudents" EntityType="Self.tblexamStudents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblForgotPasswordMailCounter" EntityType="Self.tblForgotPasswordMailCounter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbllogin" EntityType="Self.tbllogin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLoginHistory" EntityType="Self.tblLoginHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblloginType" EntityType="Self.tblloginType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuestions" EntityType="Self.tblQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSection" EntityType="Self.tblSection" Schema="dbo" store:Type="Tables" />
@@ -968,6 +982,7 @@
             <End Role="tbluserProfile" EntitySet="tbluserProfiles" />
           </AssociationSet>
           <EntitySet Name="tblForgotPasswordMailCounters" EntityType="ExamOn_DummyModel.tblForgotPasswordMailCounter" />
+          <EntitySet Name="tblLoginHistories" EntityType="ExamOn_DummyModel.tblLoginHistory" />
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -976,6 +991,16 @@
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="tblLoginHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ip" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Browser" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1177,6 +1202,17 @@
             <EntityTypeMapping TypeName="ExamOn_DummyModel.tblForgotPasswordMailCounter">
               <MappingFragment StoreEntitySet="tblForgotPasswordMailCounter">
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLoginHistories">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblLoginHistory">
+              <MappingFragment StoreEntitySet="tblLoginHistory">
+                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
+                <ScalarProperty Name="Browser" ColumnName="Browser" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
