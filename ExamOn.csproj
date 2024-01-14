@@ -346,6 +346,9 @@
     <Compile Include="Models\tbllogin.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tblLoginHistory.cs">
+      <DependentUpon>ExamOn.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblloginType.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
