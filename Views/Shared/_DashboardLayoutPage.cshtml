@@ -17,7 +17,7 @@
         </div>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#"> &nbsp; &nbsp; <i class="fa fa-hand-peace-o" aria-hidden="true"></i> Welcome, @ViewBag.RealName</a>
+                <a class="nav-link" aria-current="page" href=""> &nbsp; &nbsp; <i class="fa fa-hand-peace-o" aria-hidden="true"></i> Welcome, @ViewBag.RealName</a>
             </li>
         </ul>
         <div class="header_img animate__animated animate__backInRight" id="dropdownuserProfile" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
@@ -71,7 +71,6 @@
     </div>
     <!--Container Main start-->
     <div class="height-100 bg-light animate__animated animate__slideInDown" style="--bs-bg-opacity: 0 !important">
-        <h4>Main Components</h4>
         @Scripts.Render("~/bundles/jquery")
         @Html.Hidden("sRCookie", "")
         @Html.AntiForgeryToken()

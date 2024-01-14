@@ -372,6 +372,7 @@
     <Compile Include="SignalRPush\NotificationHub.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\EncryptionDecryption.cs" />
+    <Compile Include="Utility\LoginStatics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />

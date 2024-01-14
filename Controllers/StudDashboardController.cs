@@ -6,12 +6,12 @@ using System.Data.SqlClient;
 using System.Web.Mvc;
 using ExamOn.Models;
 using System.Linq;
+using ExamOn.Utility;
 
 namespace ExamOn.Controllers
 {
     public class StudDashboardController : Controller
     {
-
         [AuthorizeAction]
         public ActionResult Go()
         {
