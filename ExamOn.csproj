@@ -405,7 +405,8 @@
     <Content Include="DBS\AddServerLogin.sql" />
     <Content Include="DBS\DBMaster.sql" />
     <Content Include="DBS\DBScripts.sql" />
-    <Content Include="DBS\DBUpdates\V1.0.0\DBUpdate.sql" />
+    <Content Include="DBS\DBUpdates\V1.0.0\DBUpdate_13Jan2024.sql" />
+    <Content Include="DBS\DBUpdates\V1.0.0\DBUpdate_14Jan2024.sql" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Models\ExamOn.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
