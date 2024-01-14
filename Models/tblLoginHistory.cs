@@ -9,10 +9,11 @@
 
 namespace ExamOn.Models
 {
+    using ExamOn.DataLayer;
     using System;
     using System.Collections.Generic;
     
-    public partial class tblLoginHistory
+    public partial class tblLoginHistory : GenericModel
     {
         public long Id { get; set; }
         public string UserName { get; set; }
