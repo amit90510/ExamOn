@@ -20,9 +20,14 @@
                 <a class="nav-link" aria-current="page" href="#"> &nbsp; &nbsp; <i class="fa fa-hand-peace-o" aria-hidden="true"></i> Welcome, @ViewBag.RealName</a>
             </li>
         </ul>
-        <div class="header_img animate__animated animate__backInRight">
-            <img src="~/Content/images/UserProfile.jpg" alt="">
+        <div class="header_img animate__animated animate__backInRight" id="dropdownuserProfile" data-bs-toggle="dropdown">
+            <img src="~/Content/images/UserProfile.jpg" alt="user image">
         </div>
+        <ul class="dropdown-menu" aria-labelledby="dropdownuserProfile">
+            <li><a class="dropdown-item" href="#">Update Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">SignOut?</a></li>
+        </ul>
     </header>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
