@@ -16,7 +16,7 @@
                                 <br />
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-prefix"><i class="fa fa-user-o" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control form-control-sm" aria-describedby="basic-prefix" id="txtUserName" autocomplete="off" autofocus="0" placeholder="अपने उपयोगकर्ता नाम दर्ज करें" required maxlength="50">
+                                <input type="text" class="form-control form-control-sm login" aria-describedby="basic-prefix" id="txtUserName" autocomplete="off" autofocus="0" placeholder="अपने उपयोगकर्ता नाम दर्ज करें" required maxlength="50">
                                 </div>
                             </div>
                             <br />
@@ -25,7 +25,7 @@
                                 <br />
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-prefix-pass"><i class="fa fa-key" aria-hidden="true"></i></span>
-                                    <input type="password" class="form-control form-control-sm" aria-describedby="basic-prefix-pass" id="txtPassword" autocomplete="off" autofocus="1" placeholder="अपना पासवर्ड दर्ज करें" required maxlength="50">
+                                    <input type="password" class="form-control form-control-sm login" aria-describedby="basic-prefix-pass" id="txtPassword" autocomplete="off" autofocus="1" placeholder="अपना पासवर्ड दर्ज करें" required maxlength="50">
                                    </div>
                                 </div>
                                 <br />
@@ -45,6 +45,12 @@
 </div>
 <a class="" id="btnGoDashboard" hidden="hidden" style="display:none" href="">Go to Login (लॉग इन पर जाएं)</a>
 <script type="text/javascript">
+    $(".login").on('keypress', (e) => {
+        if (e.which === 13) {
+            e.preventDefault();
+            login();
+        }
+    });
     function login() {
         if ($("#txtUserName").val() && $("#txtPassword").val()) {
             var loginObj = {

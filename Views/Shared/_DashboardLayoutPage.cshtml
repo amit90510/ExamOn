@@ -20,13 +20,13 @@
                 <a class="nav-link" aria-current="page" href="#"> &nbsp; &nbsp; <i class="fa fa-hand-peace-o" aria-hidden="true"></i> Welcome, @ViewBag.RealName</a>
             </li>
         </ul>
-        <div class="header_img animate__animated animate__backInRight" id="dropdownuserProfile" data-bs-toggle="dropdown">
-            <img src="~/Content/images/UserProfile.jpg" alt="user image">
+        <div class="header_img animate__animated animate__backInRight" id="dropdownuserProfile" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+            <img src="~/Content/images/UserProfile.jpg" alt="user image" style="cursor:pointer">
         </div>
-        <ul class="dropdown-menu" aria-labelledby="dropdownuserProfile">
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownuserProfile">
             <li><a class="dropdown-item" href="#">Update Profile</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">SignOut?</a></li>
+            <li><a class="dropdown-item" href="~/signout">SignOut?</a></li>
         </ul>
     </header>
     <div class="l-navbar" id="nav-bar">
@@ -63,7 +63,7 @@
                     </a>
                 </div>
             </div>
-            <a href="#" class="nav_link animate__animated animate__heartBeat">
+            <a href="~/signout" class="nav_link animate__animated animate__heartBeat">
                 <i class='fa fa-sign-out nav_icon'></i>
                 <span class="nav_name">SignOut</span>
             </a>
