@@ -44,5 +44,21 @@ namespace ExamOn.ServiceLayer
             }
             return executed;
         }
+        public static async Task<string> ExecuteQueryMultiple(string multipleQueryWithSemicolon, object param = null, string DBName = "")
+        {
+            string executed = string.Empty;
+            try
+            {
+                using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString(DBName)))
+                {
+                    var GetModel = await mainDB.QueryMultipleAsync(multipleQueryWithSemicolon, param);
+                }
+            }
+            catch (Exception queryExc)
+            {
+                executed = queryExc.Message;
+            }
+            return executed;
+        }
     }
 }

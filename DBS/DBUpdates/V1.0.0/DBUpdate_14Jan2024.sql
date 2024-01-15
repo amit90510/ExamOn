@@ -1,15 +1,14 @@
 ﻿USE [ExamOn_Dummy]
 GO
 
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblLoginHistory]') AND type in (N'U'))
+DROP TABLE [dbo].[tblLoginHistory]
 ALTER TABLE [dbo].[tblLoginHistory] DROP CONSTRAINT [FK_tblLoginHistory_tbllogin]
 GO
 
-/****** Object:  Table [dbo].[tblLoginHistory]    Script Date: 14-01-2024 04:33:27 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblLoginHistory]') AND type in (N'U'))
-DROP TABLE [dbo].[tblLoginHistory]
-GO
-
-/****** Object:  Table [dbo].[tblLoginHistory]    Script Date: 14-01-2024 04:33:27 PM ******/
+/****** Object:  Table [dbo].[tblLoginHistory]    Script Date: 15-01-2024 02:59:52 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -21,7 +20,7 @@ CREATE TABLE [dbo].[tblLoginHistory](
 	[UserName] [varchar](50) NOT NULL,
 	[Ip] [varchar](50) NOT NULL,
 	[Browser] [varchar](100) NOT NULL,
-	[LoginDate] [date] NOT NULL,
+	[LoginDate] [datetime] NOT NULL,
  CONSTRAINT [PK_tblLoginHistory_1] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

@@ -7,6 +7,9 @@ using System.Web.Mvc;
 using ExamOn.Models;
 using System.Linq;
 using ExamOn.Utility;
+using ExamOn.ServiceLayer;
+using ExamOn.SignalRPush;
+using System.Threading.Tasks;
 
 namespace ExamOn.Controllers
 {
@@ -24,6 +27,20 @@ namespace ExamOn.Controllers
                 }
             }
             return View("Index");
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetLoginHistory ()
+        {
+            JsonData jsonData = new JsonData();
+            var loginHisory = DapperService.GetDapperData<tblLoginHistory>("select top 5 ip, browser, loginDate from TblloginHistory where userName = @userName order by LoginDate desc", new { username = ViewBag.UserName });
+            if (loginHisory != null && loginHisory.Any())
+            {
+                jsonData.StatusCode = 1;
+                jsonData.Data = loginHisory.ToList(); 
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }
 }

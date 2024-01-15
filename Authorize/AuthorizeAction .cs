@@ -24,8 +24,9 @@ namespace ExamOn.Authorize
             }
             else
             {
-                var userProfile = DapperService.GetDapperData<tbluserProfile>("select top 1 RealName from tbluserProfile where username = @username", new { @username = AuthorizeService.GetUserName(context.HttpContext.User.Identity.Name) });
+                var userProfile = DapperService.GetDapperData<tbluserProfile>("select top 1 RealName,UserName from tbluserProfile where username = @username", new { @username = AuthorizeService.GetUserName(context.HttpContext.User.Identity.Name) });
                 context.Controller.ViewBag.RealName = userProfile.FirstOrDefault().RealName.ToUpperInvariant();
+                context.Controller.ViewBag.UserName = userProfile.FirstOrDefault().UserName;
             }
         }
     }

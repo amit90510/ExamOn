@@ -15,24 +15,13 @@
                             <th scope="col">Time</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="loginHistoryRow">
                         <tr>
                             <th scope="row">1</th>
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>54151</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>,kmnlk</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>jkhiuhui</td>
-                        </tr>
+                        </tr>                       
                     </tbody>
                 </table>
 
@@ -50,3 +39,20 @@
         </ul>
     </div>
 </div>
+<script>
+    function getLoginHistory() {
+        ServerData("/StudDashboard/GetLoginHistory", "Post", null, (data) => {
+            if (data.StatusCode == 1) {
+                $("#loginHistoryRow").html('');
+                let counter = 1;
+                data.Data.forEach((item, index) => {
+                    $("#loginHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.Ip + "</td><td>" + item.Browser +"</td><td>"+item.LoginDate+"</td></tr>")
+                });
+            }
+        }, () => { });
+    }
+
+    $(document).ready(() => {
+        getLoginHistory();
+    });
+</script>

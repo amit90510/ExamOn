@@ -19,7 +19,7 @@ namespace ExamOn.DataLayer
 
     public class JsonData
     {
-        public int StatusCode { get; set; }
+        public int StatusCode { get; set; } = 500;
 
         public string Error { get; set; }
 

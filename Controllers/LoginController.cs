@@ -62,6 +62,7 @@ namespace ExamOn.Controllers
                                     }
                                     jsonData.StatusCode = 1;
                                     FormsAuthentication.SetAuthCookie(AuthorizeService.SetIdentityCookieValue(tbllogin.FirstOrDefault().id, tbllogin.FirstOrDefault().TenantToken, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString(), loginparams.UserName),false);
+                                    DapperService.ExecuteQueryMultiple("Delete from TblloginHistory where userName = @userName and LoginDate <= DATEADD(DAY, -5, GETDATE());Insert into TblloginHistory values(@username, @Ip, @browser, GetDate())", new { username = loginparams.UserName, Ip = LoginStatics.GetIp(), browser = LoginStatics.GetBrowser() });
                                     HubContext.Notify(false, "", $"We have verified you. <br/> हमने आपका सत्यापन कर लिया है।", true, false, false, ViewBag.srKey);
                                 }
                                 else
