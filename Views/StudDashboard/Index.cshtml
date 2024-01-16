@@ -6,7 +6,7 @@
         <ul class="list-group">
             <li class="list-group-item">Last Login History</li>
             <li class="list-group-item">
-                <table class="table">
+                <table class="table table-responsive">
                     <thead>
                         <tr>
                             <th scope="col">SNo</th>
@@ -15,17 +15,9 @@
                             <th scope="col">Time</th>
                         </tr>
                     </thead>
-                    <tbody id="loginHistoryRow">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>54151</td>
-                        </tr>                       
+                    <tbody id="loginHistoryRow">  
                     </tbody>
                 </table>
-
-
             </li>
         </ul>
     </div>
@@ -47,10 +39,19 @@
                 let counter = 1;
                 console.log(data.Data);
                 data.Data.forEach((item) => {
-                    $("#loginHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.Ip + "</td><td>" + item.Browser +"</td><td>"+item.LoginDate+"</td></tr>")
+                    item.Ip = (item.Ip == "::1") ? "127.0.0.1" : item.Ip;
+                    $("#loginHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.Ip + "</td><td>" + item.Browser + "</td><td>" + item.LoginDate +"</td></tr>")
                 });
+                counter = 5 - counter;
+                for (let icount = 0; icount < counter; icount++) {
+                    $("#loginHistoryRow").append("<tr><th scope='row'></th><td></td><td></td><td></td></tr>");
+                }
             }
-        }, () => { });
+        }, () => {
+            for (let icount = 0; icount < 5; icount++) {
+                $("#loginHistoryRow").append("<tr><th scope='row'></th><td></td><td></td><td></td></tr>");
+            }
+        });
     }
 
     $(document).ready(() => {
