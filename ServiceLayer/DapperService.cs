@@ -51,7 +51,7 @@ namespace ExamOn.ServiceLayer
             {
                 using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString(DBName)))
                 {
-                    var GetModel = await mainDB.QueryMultipleAsync(multipleQueryWithSemicolon, param);
+                   await mainDB.QueryMultipleAsync(multipleQueryWithSemicolon, param).ConfigureAwait(false);
                 }
             }
             catch (Exception queryExc)

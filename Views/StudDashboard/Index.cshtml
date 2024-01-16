@@ -45,7 +45,8 @@
             if (data.StatusCode == 1) {
                 $("#loginHistoryRow").html('');
                 let counter = 1;
-                data.Data.forEach((item, index) => {
+                console.log(data.Data);
+                data.Data.forEach((item) => {
                     $("#loginHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.Ip + "</td><td>" + item.Browser +"</td><td>"+item.LoginDate+"</td></tr>")
                 });
             }

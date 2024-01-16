@@ -17,7 +17,7 @@ namespace ExamOn.DataLayer
         public static string GetConnectionString(string db = null)
         {
             if (string.IsNullOrEmpty(db))
-                db = AuthorizeService.GetUserDBName(HttpContext.Current.User.Identity.Name);
+                db = AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name);
 
             var dbSever = WebConfigurationManager.AppSettings["DBServer"];
             if (!string.IsNullOrEmpty(dbSever))

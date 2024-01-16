@@ -34,13 +34,13 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetLoginHistory ()
         {
             JsonData jsonData = new JsonData();
-            var loginHisory = DapperService.GetDapperData<tblLoginHistory>("select top 5 ip, browser, loginDate from TblloginHistory where userName = @userName order by LoginDate desc", new { username = ViewBag.UserName });
+            var loginHisory = DapperService.GetDapperData<tblLoginHistory>("select top 5 ip, browser, CONVERT(varchar,LoginDate,100) as loginDate from TblloginHistory where userName = @userName order by LoginDate desc", new { username = ViewBag.UserName });
             if (loginHisory != null && loginHisory.Any())
             {
                 jsonData.StatusCode = 1;
                 jsonData.Data = loginHisory.ToList(); 
             }
-            return Json(jsonData, JsonRequestBehavior.AllowGet);
+            return Json( jsonData, JsonRequestBehavior.AllowGet);
         }
     }
 }
