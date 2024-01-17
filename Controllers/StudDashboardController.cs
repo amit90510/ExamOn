@@ -33,7 +33,6 @@ namespace ExamOn.Controllers
         [ForgeryTokenAuthorize]
         public async Task<JsonResult> GetLoginHistory ()
         {
-            HubContext.Notify(false, "", $"Please wait, Preparing your dashboard<br/> कृपया प्रतीक्षा करें, आपका डैशबोर्ड तैयार किया जा रहा है।", true, false, false, ViewBag.srKey);
             JsonData jsonData = new JsonData();
             var loginHisory = DapperService.GetDapperData<tblLoginHistory>("select top 5 ip, browser, CONVERT(varchar,LoginDate,100) as loginDate from TblloginHistory where userName = @userName order by LoginDate desc", new { username = ViewBag.UserName });
             if (loginHisory != null && loginHisory.Any())
@@ -41,7 +40,6 @@ namespace ExamOn.Controllers
                 jsonData.StatusCode = 1;
                 jsonData.Data = loginHisory.ToList(); 
             }
-            HubContext.Notify(false, "", $"Please wait, Preparing your dashboard<br/> कृपया प्रतीक्षा करें, आपका डैशबोर्ड तैयार किया जा रहा है।", true, false, true, ViewBag.srKey);
             return Json( jsonData, JsonRequestBehavior.AllowGet);
         }
 
@@ -49,7 +47,6 @@ namespace ExamOn.Controllers
         [ForgeryTokenAuthorize]
         public async Task<JsonResult> GetAssocaitionHistory()
         {
-            HubContext.Notify(false, "", $"Please wait, Preparing your dashboard<br/> कृपया प्रतीक्षा करें, आपका डैशबोर्ड तैयार किया जा रहा है।", true, false, false, ViewBag.srKey);
             JsonData jsonData = new JsonData();
             var tenantData = DapperService.GetDapperData<tbltenant>("select * from tblTenant where Id = @id", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) });
             if(tenantData != null && tenantData.Any())
@@ -57,7 +54,6 @@ namespace ExamOn.Controllers
                 jsonData.StatusCode = 1;
                 jsonData.Data = tenantData.ToList();
             }
-            HubContext.Notify(false, "", $"Please wait, Preparing your dashboard<br/> कृपया प्रतीक्षा करें, आपका डैशबोर्ड तैयार किया जा रहा है।", true, false, true, ViewBag.srKey);
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }
