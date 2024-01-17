@@ -21,10 +21,11 @@
     });
 }
 
-function SwalFire(title, text, icon, footer, thenCallback) {
+function SwalFire(title, text, icon, footer, thenCallback, html='') {
     Swal.fire({
         title: title,
         text: text,
+        html: html,
         icon: icon,
         footer: '<p>©ExamOn, Inc. All rights reserved.</p>'
     }).then(() => {

@@ -58,19 +58,29 @@ namespace ExamOn.Controllers
                                 }
                                 else
                                 {
-                                    HubContext.Notify(false, "", $"Please wait, while we are sending your Pasword on {_logindata.FirstOrDefault().EmailId} <br/> कृपया प्रतीक्षा करें। हम आपका पासवर्ड भेज रहे हैं", true, false, false, ViewBag.srKey);
-                                    var response = EmailService.SendEmailResponse(new string[] { _logindata.FirstOrDefault().EmailId }, "Examon - Forgot/Retrieve Password", "पासवर्ड भूल गए/पुनः प्राप्त करें", $"Hello, <br/> your password is (आपका पासवर्ड है) - <b>{ EncryptionDecryption.DecryptString(_logindata.FirstOrDefault().Password)} </b>", tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
-                                    if (!string.IsNullOrEmpty(response))
+                                    //check for tenant subscription also
+                                    HubContext.Notify(false, "", $"Please wait, while we are checking your instituition validity <br/> कृपया प्रतीक्षा करें। जबकि हम आपके संस्थान की वैधता की जांच कर रहे हैं", true, false, false, ViewBag.srKey);
+                                    var tenantSubscription = DapperService.GetDapperData<tbltenant>("select SubscriptionEndMessage,TenantName from tblTenant where Id = @id and SubscriptionEndDate < GetDate()", new { id = token[0] }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
+                                    if (tenantSubscription != null && tenantSubscription.Any())
                                     {
-                                        HubContext.Notify(true, "ExamOn- Alert", $"Email can not be sent due to {response}<br/> हम पासवर्ड नहीं भेज सकते", false, true, false, ViewBag.srKey);
+                                        HubContext.Notify(true, "ExamOn- Alert", $"{tenantSubscription.FirstOrDefault().SubscriptionEndMessage} <br/> (आपका लाइसेंस समाप्त हो गया है, कृपया अपने संस्थान/प्रतिष्ठान {tenantSubscription.FirstOrDefault().TenantName} से संपर्क करें।)", false, true, false, ViewBag.srKey);
                                     }
                                     else
                                     {
-                                        jsonData.StatusCode = 1;
-                                        //adding record for mailcounter here
-                                        var deletePreviousrecords = DapperService.ExecuteQuery($"Delete from tblForgotPasswordMailCounter where CreatedDate = CONVERT(date, GETDATE() - {WebConfigurationManager.AppSettings["DeletePreviousDayPasswordMailCounter"]})", null , tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
-                                        var execute =  DapperService.ExecuteQuery("Insert into tblForgotPasswordMailCounter(UserName) values(@username)", new { @username = loginparams.UserName }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());                                       
-                                        HubContext.Notify(true, "ExamOn- Alert", $"We have send your password on your mail.<br/> हमने आपका पासवर्ड आपके मेल पर भेज दिया है।", false, true, false, ViewBag.srKey);
+                                        HubContext.Notify(false, "", $"Please wait, while we are sending your Pasword on {_logindata.FirstOrDefault().EmailId} <br/> कृपया प्रतीक्षा करें। हम आपका पासवर्ड भेज रहे हैं", true, false, false, ViewBag.srKey);
+                                        var response = EmailService.SendEmailResponse(new string[] { _logindata.FirstOrDefault().EmailId }, "Examon - Forgot/Retrieve Password", "पासवर्ड भूल गए/पुनः प्राप्त करें", $"Hello, <br/> your password is (आपका पासवर्ड है) - <b>{ EncryptionDecryption.DecryptString(_logindata.FirstOrDefault().Password)} </b>", tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
+                                        if (!string.IsNullOrEmpty(response))
+                                        {
+                                            HubContext.Notify(true, "ExamOn- Alert", $"Email can not be sent due to {response}<br/> हम पासवर्ड नहीं भेज सकते", false, true, false, ViewBag.srKey);
+                                        }
+                                        else
+                                        {
+                                            jsonData.StatusCode = 1;
+                                            //adding record for mailcounter here
+                                            var deletePreviousrecords = DapperService.ExecuteQuery($"Delete from tblForgotPasswordMailCounter where CreatedDate = CONVERT(date, GETDATE() - {WebConfigurationManager.AppSettings["DeletePreviousDayPasswordMailCounter"]})", null, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
+                                            var execute = DapperService.ExecuteQuery("Insert into tblForgotPasswordMailCounter(UserName) values(@username)", new { @username = loginparams.UserName }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault());
+                                            HubContext.Notify(true, "ExamOn- Alert", $"We have send your password on your mail.<br/> हमने आपका पासवर्ड आपके मेल पर भेज दिया है।", false, true, false, ViewBag.srKey);
+                                        }
                                     }
                                 }
                             }

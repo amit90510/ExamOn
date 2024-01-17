@@ -48,11 +48,24 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetAssocaitionHistory()
         {
             JsonData jsonData = new JsonData();
-            var tenantData = DapperService.GetDapperData<tbltenant>("select * from tblTenant where Id = @id", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) });
+            var tenantData = DapperService.GetDapperData<tbltenant>("select TenantName, TenantMobile, TenantEmail, SubscriptionEndDate from tblTenant where Id = @id", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) });
             if(tenantData != null && tenantData.Any())
             {
                 jsonData.StatusCode = 1;
                 jsonData.Data = tenantData.ToList();
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetLicenceExpire()
+        {
+            JsonData jsonData = new JsonData();
+            var tenantData = DapperService.GetDapperData<tbltenant>("select SubscriptionEndMessage,TenantName from tblTenant where Id = @id and SubscriptionEndDate < GetDate()", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) });
+            if (tenantData != null && tenantData.Any())
+            {
+                jsonData.Error = $"{tenantData.FirstOrDefault().SubscriptionEndMessage} <br/> (आपका लाइसेंस समाप्त हो गया है, कृपया अपने संस्थान/प्रतिष्ठान {tenantData.FirstOrDefault().TenantName} से संपर्क करें।)";
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }

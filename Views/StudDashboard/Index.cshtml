@@ -92,8 +92,19 @@
         }, () => {});
     }
 
+    function getGetLicenceExpireHistory() {
+        ServerData("/StudDashboard/GetLicenceExpire", "Post", null, (data) => {
+            if (data.Error) {
+                SwalFire("ExamOn- Alert", '', 'error', '', () => {
+                    window.location.replace("signOut");
+                }, data.Error);
+            }
+        }, () => { });
+    }
+
     $(document).ready(() => {
         getLoginHistory();
         getAssociationHistory();
+        getGetLicenceExpireHistory();
     });
 </script>
