@@ -63,3 +63,12 @@ $(document).ready(function () {
         $('#sidebar').toggleClass('active');
     });
 });
+
+function examOn_dateParse(val) {
+    if (val) {
+        var mydate = val;
+        var dateVal = parseInt(mydate.substr(6));
+        return new Date(dateVal);
+    }
+    return new Date();
+}

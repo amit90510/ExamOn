@@ -45,10 +45,11 @@ namespace ExamOn.Controllers
                         jsonData.StatusCode = 200;
                         using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString(tenantMasters.Select(e => e.TenantDBName).FirstOrDefault())))
                         {
-                            var tbllogin = mainDB.Query<tbllogin>("select id, EmailId, Active, TenantToken, LoginType from tbllogin where username = @username and Password = @password", new { username = loginparams.UserName,password = EncryptionDecryption.EncryptString(loginparams.Password) });
+                            var tbllogin = mainDB.Query<tbllogin>("select id, EmailId, Active, TenantToken, LoginType, blockLogin from tbllogin where username = @username and Password = @password", new { username = loginparams.UserName,password = EncryptionDecryption.EncryptString(loginparams.Password) });
                             if(tbllogin != null && tbllogin.Any())
                             {
-                                if(tbllogin.FirstOrDefault().Active)
+                                HubContext.Notify(false, "", $"Checking your active profile <br/> कृपया प्रतीक्षा करें, आपकी सक्रिय प्रोफ़ाइल की जाँच की जा रही है।", true, false, false, ViewBag.srKey);
+                                if (tbllogin.FirstOrDefault().Active)
                                 {
                                     var tblloginType = mainDB.Query<tblloginType>("select Type from tblloginType where id = @typeId", new { typeId = tbllogin.FirstOrDefault().LoginType });
                                     switch (tblloginType.FirstOrDefault().Type.ToUpper())
@@ -60,10 +61,19 @@ namespace ExamOn.Controllers
                                             jsonData.Error = "";
                                             break;
                                     }
-                                    jsonData.StatusCode = 1;
-                                    FormsAuthentication.SetAuthCookie(AuthorizeService.SetIdentityCookieValue(tbllogin.FirstOrDefault().id, tbllogin.FirstOrDefault().TenantToken, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString(), loginparams.UserName),false);
-                                    HubContext.Notify(false, "", $"We have verified you. <br/> हमने आपका सत्यापन कर लिया है।", true, false, false, ViewBag.srKey);
-                                    DapperService.ExecuteQueryMultiple("Delete from TblloginHistory where userName = @userName and LoginDate <= DATEADD(DAY, -5, GETDATE());Insert into TblloginHistory values(@username, @Ip, @browser, GetDate())", new { username = loginparams.UserName, Ip = LoginStatics.GetIp(), browser = LoginStatics.GetBrowser() }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString()).ConfigureAwait(false);
+                                    //check for block login
+                                    if (tbllogin.FirstOrDefault().BlockLogin.Value)
+                                    {
+                                        jsonData.StatusCode = 500;
+                                        HubContext.Notify(true, "ExamOn Alert", "Temporary blocked login, Please contact adminisitator. <br/>अस्थायी रूप से अवरुद्ध लॉगिन, कृपया अपने संस्थान से संपर्क करें।", false, true, false, ViewBag.srKey);
+                                    }
+                                    else
+                                    {
+                                        jsonData.StatusCode = 1;
+                                        FormsAuthentication.SetAuthCookie(AuthorizeService.SetIdentityCookieValue(tbllogin.FirstOrDefault().id, tbllogin.FirstOrDefault().TenantToken, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString(), loginparams.UserName), false);
+                                        HubContext.Notify(false, "", $"We have verified you. <br/> हमने आपका सत्यापन कर लिया है।", true, false, false, ViewBag.srKey);
+                                        DapperService.ExecuteQueryMultiple("Delete from TblloginHistory where userName = @userName and LoginDate <= DATEADD(DAY, -5, GETDATE());Insert into TblloginHistory values(@username, @Ip, @browser, GetDate())", new { username = loginparams.UserName, Ip = LoginStatics.GetIp(), browser = LoginStatics.GetBrowser() }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString()).ConfigureAwait(false);
+                                    }
                                 }
                                 else
                                 {

@@ -18,14 +18,14 @@ namespace ExamOn.Controllers
         [AuthorizeAction]
         public ActionResult Go()
         {
-            using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString()))
-            {
-                var tbllogin = mainDB.Query<tbllogin, tblloginType, tbllogin>("select a.Id, EmailId, Active, TenantToken, a.LoginType, b.Type, b.TypeName from tbllogin a inner join tblloginType b on a.logintype = b.id", (login, logintype)=> { login.tblloginType = logintype; return login; }, splitOn: "LoginType");
-                if(tbllogin != null && tbllogin.Any())
-                {
-                    var px = tbllogin.ToList();
-                }
-            }
+            //using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString()))
+            //{
+            //    var tbllogin = mainDB.Query<tbllogin, tblloginType, tbllogin>("select a.Id, EmailId, Active, TenantToken, a.LoginType, b.Type, b.TypeName from tbllogin a inner join tblloginType b on a.logintype = b.id", (login, logintype) => { login.tblloginType = logintype; return login; }, splitOn: "LoginType");
+            //    if (tbllogin != null && tbllogin.Any())
+            //    {
+            //        var px = tbllogin.ToList();
+            //    }
+            //}
             return View("Index");
         }
 
@@ -41,6 +41,20 @@ namespace ExamOn.Controllers
                 jsonData.Data = loginHisory.ToList(); 
             }
             return Json( jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetAssocaitionHistory()
+        {
+            JsonData jsonData = new JsonData();
+            var tenantData = DapperService.GetDapperData<tbltenant>("select * from tblTenant where Id = @id", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) });
+            if(tenantData != null && tenantData.Any())
+            {
+                jsonData.StatusCode = 1;
+                jsonData.Data = tenantData.ToList();
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }
 }

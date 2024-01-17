@@ -28,6 +28,25 @@ namespace ExamOn.ServiceLayer
             }
         }
 
+        public static List<T2> GetDapperDataMultipleRelation<T, T1, T2>(string query, System.Func<T, T1, T2> func, string spiltOn, object param = null, string DBName = "") 
+            where T : GenericModel
+            where T1 : GenericModel
+            where T2 : GenericModel
+        {
+            try
+            {
+                using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString(DBName)))
+                {
+                    var GetModel = mainDB.Query<T, T1, T2>(query,func, param, splitOn: spiltOn);
+                    return GetModel.ToList();
+                }
+            }
+            catch (Exception _)
+            {
+                return null;
+            }
+        }
+
         public static async Task<string> ExecuteQuery(string query, object param = null, string DBName = "")
         {
             string executed = string.Empty;

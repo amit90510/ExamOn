@@ -3,32 +3,48 @@
 }
 <div class="d-flex flex-row">
     <div class="p-1" style="width:50%">
-        <ul class="list-group">
-            <li class="list-group-item">Last Login History</li>
-            <li class="list-group-item">
-                <table class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <th scope="col">SNo</th>
-                            <th scope="col">IP Address</th>
-                            <th scope="col">Browser</th>
-                            <th scope="col">Time</th>
-                        </tr>
-                    </thead>
-                    <tbody id="loginHistoryRow">  
-                    </tbody>
-                </table>
-            </li>
-        </ul>
+        <table class="table table-responsive table-bordered caption-top table-striped">
+            <caption>Last Login History</caption>
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">SNo</th>
+                    <th scope="col">IP Address</th>
+                    <th scope="col">Browser</th>
+                    <th scope="col">Time</th>
+                </tr>
+            </thead>
+            <tbody id="loginHistoryRow">
+            </tbody>
+        </table>
     </div>
     <div class="p-1" style="width:50%">
-        <ul class="list-group">
-            <li class="list-group-item">Your Association</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
-        </ul>
+        <table class="table table-responsive table-bordered caption-top table-striped">
+            <caption>Your association- (एसोसिएशन/प्रतिष्ठान)</caption>
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">SNo</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Mobile</th>
+                </tr>
+            </thead>
+            <tbody id="associationHistoryRow">
+                <tr>
+                    <td colspan="3">
+                        <table class="table mb-0 caption-top table-striped table-responsive table-bordered">
+                            <caption>Life time (valid Till / (तक वैध)) - </caption>
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Valid Upto</th>
+                                </tr>
+                            </thead>
+                            <tbody id="associationValidUpto">
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <script>
@@ -37,10 +53,10 @@
             if (data.StatusCode == 1) {
                 $("#loginHistoryRow").html('');
                 let counter = 1;
-                console.log(data.Data);
                 data.Data.forEach((item) => {
                     item.Ip = (item.Ip == "::1") ? "127.0.0.1" : item.Ip;
-                    $("#loginHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.Ip + "</td><td>" + item.Browser + "</td><td>" + item.LoginDate +"</td></tr>")
+                    let dt = examOn_dateParse(item.LoginDate);
+                    $("#loginHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.Ip + "</td><td>" + item.Browser + "</td><td>" + dt.toDateString() + " " + dt.toLocaleTimeString('en-US') +"</td></tr>")
                 });
                 counter = 5 - counter;
                 for (let icount = 0; icount < counter; icount++) {
@@ -54,7 +70,24 @@
         });
     }
 
+    function getAssociationHistory() {
+        ServerData("/StudDashboard/GetAssocaitionHistory", "Post", null, (data) => {
+            if (data.StatusCode == 1) {
+                $("#associationHistoryRow").html('');
+                let counter = 1;
+                data.Data.forEach((item) => {
+                    let dt = examOn_dateParse(item.SubscriptionEndDate);
+                    $("#associationHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.TenantName + "</td><td>" + item.TenantEmail + "</td><td>" + item.TenantMobile + "</td></tr>")
+                    $("#associationHistoryRow").append("<tr><td colspan='4'><table class='table mb-0 caption-top table-striped table-responsive table-bordered'><caption>Life time (valid Till / (तक वैध)) - </caption><thead class='table-light'><tr><th scope='col'>Valid Upto</th></tr></thead><tbody id='associationValidUpto" + counter + "'></tbody></table></td></tr>");
+                    $("#associationValidUpto" + counter).html('');
+                    $("#associationValidUpto" + counter).append("<tr class='animate__animated animate__flash'><td> <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='currentColor' class='bi bi-exclamation-triangle-fill flex-shrink-0 me-2' viewBox='0 0 16 16' role='img' aria-label='Warning:'><path d = 'M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z' /></svg > " + dt.toDateString() + " <small> के बाद, आप इस वेबसाइट का उपयोग नहीं कर पाएंगे</small></td></tr>");
+                });              
+            }
+        }, () => {});
+    }
+
     $(document).ready(() => {
         getLoginHistory();
+        getAssociationHistory();
     });
 </script>
