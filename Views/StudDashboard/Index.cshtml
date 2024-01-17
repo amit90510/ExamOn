@@ -1,51 +1,57 @@
 ﻿@{
     Layout = "~/Views/Shared/_DashboardLayoutPage.cshtml";
 }
-<div class="d-flex flex-row">
-    <div class="p-1" style="width:50%">
-        <table class="table table-responsive table-bordered caption-top table-striped">
-            <caption>Last Login History</caption>
-            <thead class="table-light">
-                <tr>
-                    <th scope="col">SNo</th>
-                    <th scope="col">IP Address</th>
-                    <th scope="col">Browser</th>
-                    <th scope="col">Time</th>
-                </tr>
-            </thead>
-            <tbody id="loginHistoryRow">
-            </tbody>
-        </table>
-    </div>
-    <div class="p-1" style="width:50%">
-        <table class="table table-responsive table-bordered caption-top table-striped">
-            <caption>Your association- (एसोसिएशन/प्रतिष्ठान)</caption>
-            <thead class="table-light">
-                <tr>
-                    <th scope="col">SNo</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Mobile</th>
-                </tr>
-            </thead>
-            <tbody id="associationHistoryRow">
-                <tr>
-                    <td colspan="3">
-                        <table class="table mb-0 caption-top table-striped table-responsive table-bordered">
-                            <caption>Life time (valid Till / (तक वैध)) - </caption>
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col">Valid Upto</th>
-                                </tr>
-                            </thead>
-                            <tbody id="associationValidUpto">
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="table-responsive">
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table table-responsive table-bordered caption-top table-striped">
+                        <caption>Last Login History</caption>
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">SNo</th>
+                                <th scope="col">IP Address</th>
+                                <th scope="col">Browser</th>
+                                <th scope="col">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loginHistoryRow">
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="table table-responsive table-bordered caption-top table-striped">
+                        <caption>Your association- (एसोसिएशन/प्रतिष्ठान)</caption>
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">SNo</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Mobile</th>
+                            </tr>
+                        </thead>
+                        <tbody id="associationHistoryRow">
+                            <tr>
+                                <td colspan="3">
+                                    <table class="table mb-0 caption-top table-striped table-responsive table-bordered">
+                                        <caption>Life time (valid Till / (तक वैध)) - </caption>
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col">Valid Upto</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="associationValidUpto">
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <script>
     function getLoginHistory() {
