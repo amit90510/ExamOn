@@ -1,9 +1,4 @@
-﻿USE [ExamOn_Dummy]
-GO
-
-
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblLoginHistory]') AND type in (N'U'))
+﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblLoginHistory]') AND type in (N'U'))
 DROP TABLE [dbo].[tblLoginHistory]
 ALTER TABLE [dbo].[tblLoginHistory] DROP CONSTRAINT [FK_tblLoginHistory_tbllogin]
 GO
@@ -38,4 +33,51 @@ ALTER TABLE [dbo].[tblLoginHistory] CHECK CONSTRAINT [FK_tblLoginHistory_tbllogi
 GO
 
 create nonclustered index idx_Noncluserted on tblloginhistory(UserName)
+GO
+
+
+ALTER TABLE [dbo].[tblUserTypeAccess] DROP CONSTRAINT [FK_tblUserTypeAccess_tblloginType]
+GO
+
+ALTER TABLE [dbo].[tblUserTypeAccess] DROP CONSTRAINT [DF_tblUserTypeAccess_UpdatedOn]
+GO
+
+/****** Object:  Table [dbo].[tblUserTypeAccess]    Script Date: 17-01-2024 03:54:44 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblUserTypeAccess]') AND type in (N'U'))
+DROP TABLE [dbo].[tblUserTypeAccess]
+GO
+
+/****** Object:  Table [dbo].[tblUserTypeAccess]    Script Date: 17-01-2024 03:54:44 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblUserTypeAccess](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[TypeId] [int] NOT NULL,
+	[UserPath] [varchar](1000) NOT NULL,
+	[UpdatedOn] [date] NOT NULL,
+ CONSTRAINT [PK_tblUserTypeAccess] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblUserTypeAccess] ADD  CONSTRAINT [DF_tblUserTypeAccess_UpdatedOn]  DEFAULT (getdate()) FOR [UpdatedOn]
+GO
+
+ALTER TABLE [dbo].[tblUserTypeAccess]  WITH CHECK ADD  CONSTRAINT [FK_tblUserTypeAccess_tblloginType] FOREIGN KEY([TypeId])
+REFERENCES [dbo].[tblloginType] ([id])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[tblUserTypeAccess] CHECK CONSTRAINT [FK_tblUserTypeAccess_tblloginType]
+GO
+
+Create Nonclustered index idx_typeIDUserAccess On [tblUserTypeAccess](TypeId)
+
 GO
