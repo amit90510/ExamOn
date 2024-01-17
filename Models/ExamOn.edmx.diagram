@@ -39,6 +39,8 @@
         <AssociationConnector Association="ExamOn_DummyModel.FK_tbluserProfile_tbllogin" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ExamOn_DummyModel.tblForgotPasswordMailCounter" Width="1.5" PointX="10.375" PointY="8.75" />
         <EntityTypeShape EntityType="ExamOn_DummyModel.tblLoginHistory" Width="1.5" PointX="10.375" PointY="11.75" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblUserTypeAccess" Width="1.5" PointX="3" PointY="0.75" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblUserTypeAccess_tblloginType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

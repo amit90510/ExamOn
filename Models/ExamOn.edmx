@@ -134,7 +134,7 @@
           <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Ip" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Browser" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="LoginDate" Type="date" Nullable="false" />
+          <Property Name="LoginDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="tblloginType">
           <Key>
@@ -195,6 +195,15 @@
           <Property Name="State" Type="varchar" MaxLength="50" />
           <Property Name="Shift" Type="bigint" />
           <Property Name="RealName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserTypeAccess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="UserPath" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="UpdatedOn" Type="date" Nullable="false" />
         </EntityType>
         <Association Name="FK_tblactivityHistory_tbllogin">
           <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="1">
@@ -407,6 +416,20 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblUserTypeAccess_tblloginType">
+          <End Role="tblloginType" Type="Self.tblloginType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblUserTypeAccess" Type="Self.tblUserTypeAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblloginType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblUserTypeAccess">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ExamOn_DummyModelStoreContainer">
           <EntitySet Name="tblactivityHistory" EntityType="Self.tblactivityHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAnswers" EntityType="Self.tblAnswers" Schema="dbo" store:Type="Tables" />
@@ -427,6 +450,7 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
           <EntitySet Name="tblshift" EntityType="Self.tblshift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbltenant" EntityType="Self.tbltenant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbluserProfile" EntityType="Self.tbluserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserTypeAccess" EntityType="Self.tblUserTypeAccess" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tblactivityHistory_tbllogin" Association="Self.FK_tblactivityHistory_tbllogin">
             <End Role="tbllogin" EntitySet="tbllogin" />
             <End Role="tblactivityHistory" EntitySet="tblactivityHistory" />
@@ -486,6 +510,10 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
           <AssociationSet Name="FK_tbluserProfile_tbllogin" Association="Self.FK_tbluserProfile_tbllogin">
             <End Role="tblshift" EntitySet="tblshift" />
             <End Role="tbluserProfile" EntitySet="tbluserProfile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserTypeAccess_tblloginType" Association="Self.FK_tblUserTypeAccess_tblloginType">
+            <End Role="tblloginType" EntitySet="tblloginType" />
+            <End Role="tblUserTypeAccess" EntitySet="tblUserTypeAccess" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -634,6 +662,7 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="tbllogins" Relationship="Self.FK_tbllogin_tblloginType" FromRole="tblloginType" ToRole="tbllogin" />
+          <NavigationProperty Name="tblUserTypeAccesses" Relationship="ExamOn_DummyModel.FK_tblUserTypeAccess_tblloginType" FromRole="tblloginType" ToRole="tblUserTypeAccess" />
         </EntityType>
         <EntityType Name="tblQuestion">
           <Key>
@@ -983,6 +1012,11 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
           </AssociationSet>
           <EntitySet Name="tblForgotPasswordMailCounters" EntityType="ExamOn_DummyModel.tblForgotPasswordMailCounter" />
           <EntitySet Name="tblLoginHistories" EntityType="ExamOn_DummyModel.tblLoginHistory" />
+          <EntitySet Name="tblUserTypeAccesses" EntityType="ExamOn_DummyModel.tblUserTypeAccess" />
+          <AssociationSet Name="FK_tblUserTypeAccess_tblloginType" Association="ExamOn_DummyModel.FK_tblUserTypeAccess_tblloginType">
+            <End Role="tblloginType" EntitySet="tblloginTypes" />
+            <End Role="tblUserTypeAccess" EntitySet="tblUserTypeAccesses" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -1000,8 +1034,32 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Ip" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Browser" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="tblUserTypeAccess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="UserPath" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="tblloginType" Relationship="ExamOn_DummyModel.FK_tblUserTypeAccess_tblloginType" FromRole="tblUserTypeAccess" ToRole="tblloginType" />
+        </EntityType>
+        <Association Name="FK_tblUserTypeAccess_tblloginType">
+          <End Type="ExamOn_DummyModel.tblloginType" Role="tblloginType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ExamOn_DummyModel.tblUserTypeAccess" Role="tblUserTypeAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblloginType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblUserTypeAccess">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1214,6 +1272,16 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
                 <ScalarProperty Name="Browser" ColumnName="Browser" />
                 <ScalarProperty Name="Ip" ColumnName="Ip" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserTypeAccesses">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblUserTypeAccess">
+              <MappingFragment StoreEntitySet="tblUserTypeAccess">
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UserPath" ColumnName="UserPath" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

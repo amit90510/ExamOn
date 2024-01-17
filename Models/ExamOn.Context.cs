@@ -47,5 +47,6 @@ namespace ExamOn.Models
         public virtual DbSet<tbluserProfile> tbluserProfiles { get; set; }
         public virtual DbSet<tblForgotPasswordMailCounter> tblForgotPasswordMailCounters { get; set; }
         public virtual DbSet<tblLoginHistory> tblLoginHistories { get; set; }
+        public virtual DbSet<tblUserTypeAccess> tblUserTypeAccesses { get; set; }
     }
 }
