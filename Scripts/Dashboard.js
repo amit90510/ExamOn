@@ -1,5 +1,4 @@
-﻿
-document.addEventListener("DOMContentLoaded", function (event) {
+﻿document.addEventListener("DOMContentLoaded", function (event) {
 
     const showNavbar = (toggleId, navId, bodyId, headerId) => {
         const toggle = document.getElementById(toggleId),
@@ -71,4 +70,34 @@ function examOn_dateParse(val) {
         return new Date(dateVal);
     }
     return new Date();
+}
+
+function loadViews(url, jsonData, menuoptionActive,closeMenu = true, targetdiv = 'pageViewId') {
+    const animate = ["animate__bounce", "animate__flash", "animate__pulse", "animate__headShake", "animate__backInDown", "animate__backInUp", "animate__backInLeft", "animate__bounceInRight", "animate__bounceInRight","animate__fadeInDownBig"];
+    ServerData(url, "POST", jsonData, (data) => {
+        $('#' + targetdiv).html('');
+        $('#' + targetdiv).hide('fast');
+        $('#' + targetdiv).removeClass();
+        if ($('#menuOptions').find('a')) {
+            $('#menuOptions a').removeClass('active');
+        }
+        $("#" + menuoptionActive).addClass('active');
+        document.getElementById(targetdiv).innerHTML = data;
+        try {
+            const random = Math.floor(Math.random() * animate.length);
+            $('#' + targetdiv).addClass('animate__animated  ' + animate[random])
+            if (closeMenu && $("#nav-bar").hasClass('show')) {
+                closeMenuBar();
+            }
+        }
+        catch { }
+        $('#' + targetdiv).show('');
+    }, () => { });
+}
+
+function closeMenuBar() {
+    $("#body-pd").removeClass();
+    $("#header").removeClass('body-pd');
+    $("#nav-bar").removeClass('show');
+    $("#header-toggle").removeClass('fa-arrow-circle-o-left');
 }

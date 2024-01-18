@@ -69,5 +69,10 @@ namespace ExamOn.Controllers
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
+
+        public async Task<PartialViewResult> GetUpdateProfilePage()
+        {
+            return PartialView("UpdateProfile");
+        }
     }
 }

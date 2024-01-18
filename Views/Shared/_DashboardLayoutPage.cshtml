@@ -24,7 +24,7 @@
             <img src="~/Content/images/UserProfile.jpg" alt="user image" style="cursor:pointer">
         </div>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownuserProfile">
-            <li><a class="dropdown-item" href="#">Update Profile</a></li>
+            <li><a class="dropdown-item" onclick="return loadViews('/studDashboard/GetUpdateProfilePage', null, 'updateProfileLink', false);">Update Profile</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="~/signout">SignOut?</a></li>
         </ul>
@@ -36,12 +36,12 @@
                     <i class='fa fa-etsy nav_logo-icon'></i>
                     <span class="nav_logo-name">ExamOn</span>
                 </a>
-                <div class="nav_list">
-                    <a href="#" class="nav_link active animate__animated animate__heartBeat">
+                <div class="nav_list" id="menuOptions">
+                    <a href="studDashboard" id="studDashboardLink" class="nav_link active animate__animated animate__heartBeat">
                         <i class='fa fa-th nav_icon'></i>
                         <span class="nav_name">Dashboard</span>
                     </a>
-                    <a href="#" class="nav_link animate__animated animate__heartBeat">
+                    <a style="cursor:pointer" class="nav_link animate__animated animate__heartBeat">
                         <i class='fa fa-user-circle-o nav_icon'></i>
                         <span class="nav_name">Users</span>
                     </a>
@@ -57,9 +57,9 @@
                         <i class='fa fa-files-o nav_icon'></i>
                         <span class="nav_name">Files</span>
                     </a>
-                    <a href="#" class="nav_link animate__animated animate__heartBeat">
+                    <a style="cursor:pointer" onclick="return loadViews('/studDashboard/GetUpdateProfilePage', null, 'updateProfileLink');" id="updateProfileLink" class="nav_link animate__animated animate__heartBeat">
                         <i class='fa fa-stack-exchange nav_icon'></i>
-                        <span class="nav_name">Stats</span>
+                        <span class="nav_name">Update Profile</span>
                     </a>
                 </div>
             </div>
@@ -74,7 +74,9 @@
         @Scripts.Render("~/bundles/jquery")
         @Html.Hidden("sRCookie", "")
         @Html.AntiForgeryToken()
-        @RenderBody()
+        <div id="pageViewId" class="">
+            @RenderBody()
+        </div>
         <div class="container">
             <footer class="py-0">
                 <div class="row">

@@ -500,6 +500,7 @@
     <Content Include="Views\ForgotPassWord\Index.cshtml" />
     <Content Include="Views\StudDashboard\Index.cshtml" />
     <Content Include="Views\Shared\_DashboardLayoutPage.cshtml" />
+    <Content Include="Views\StudDashboard\UpdateProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
