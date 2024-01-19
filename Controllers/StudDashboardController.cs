@@ -70,8 +70,11 @@ namespace ExamOn.Controllers
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
         public async Task<PartialViewResult> GetUpdateProfilePage()
         {
+            HubContext.Notify(false, "", "Loaded", false, false,true, ViewBag.srKey);
             return PartialView("UpdateProfile");
         }
     }

@@ -56,7 +56,7 @@ $(document).ready(function () {
         isHeader ? $("#signalRModalTitleVisible").show() : $("#signalRModalTitleVisible").hide();
         showProgress ? $("#signalRModalSpinner").show() : $("#signalRModalSpinner").hide();
         showFooter ? $("#signalRModalBodyFooterVisible").show() : $("#signalRModalBodyFooterVisible").hide();
-        if (closeModal) { document.getElementById('signalRModal').hide(); }
+        if (closeModal) { $("#signalRModal").hide(); }
     }
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');
