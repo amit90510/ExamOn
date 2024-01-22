@@ -10,6 +10,8 @@ using ExamOn.Utility;
 using ExamOn.ServiceLayer;
 using ExamOn.SignalRPush;
 using System.Threading.Tasks;
+using System.IO;
+using System.Web.Script.Serialization;
 
 namespace ExamOn.Controllers
 {
@@ -76,6 +78,34 @@ namespace ExamOn.Controllers
         {
             HubContext.Notify(false, "", "Loaded", false, false,true, ViewBag.srKey);
             return PartialView("UpdateProfile");
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetStatesInfo()
+        {
+            JsonData jsonData = new JsonData();
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/DataLayer/States.json")))
+            {
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                jsonData.Data = serializer.Deserialize<dynamic>(reader.ReadToEnd());
+                jsonData.StatusCode = 1;
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetUserProfileDate()
+        {
+            JsonData jsonData = new JsonData();
+            var userProfile = DapperService.GetDapperDataDynamic<dynamic>("select a.Id,a.username, a.EmailId,a.Mobile, a.Active, tp.RealName,tp.address,tp.City,tp.State, b.TypeName from tbllogin a inner join tblloginType b on a.logintype = b.id inner join tbluserProfile tp on a.UserName = tp.UserName and a.userName = @username",  new { userName = AuthorizeService.GetUserName(HttpContext.User.Identity.Name) });
+            if(userProfile !=null && userProfile.Any())
+            {
+                jsonData.StatusCode = 1;
+                jsonData.Data = userProfile;
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }
 }

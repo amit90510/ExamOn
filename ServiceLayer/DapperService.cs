@@ -28,6 +28,22 @@ namespace ExamOn.ServiceLayer
             }
         }
 
+        public static List<dynamic> GetDapperDataDynamic<dynamic>(string query, object param = null, string DBName = "")
+        {
+            try
+            {
+                using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString(DBName)))
+                {
+                    var GetModel = mainDB.Query<dynamic>(query, param);
+                    return GetModel.ToList();
+                }
+            }
+            catch (Exception _)
+            {
+                return null;
+            }
+        }
+
         public static List<T2> GetDapperDataMultipleRelation<T, T1, T2>(string query, System.Func<T, T1, T2> func, string spiltOn, object param = null, string DBName = "") 
             where T : GenericModel
             where T1 : GenericModel

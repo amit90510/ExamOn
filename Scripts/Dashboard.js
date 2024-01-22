@@ -72,7 +72,7 @@ function examOn_dateParse(val) {
     return new Date();
 }
 
-function loadViews(url, jsonData, menuoptionActive,closeMenu = true, targetdiv = 'pageViewId') {
+function loadViews(url, jsonData, menuoptionActive,scriptPath,closeMenu = true, targetdiv = 'pageViewId') {
     const animate = ["animate__bounce", "animate__flash", "animate__pulse", "animate__headShake", "animate__backInDown", "animate__backInUp", "animate__backInLeft", "animate__bounceInRight", "animate__bounceInRight","animate__fadeInDownBig"];
     ServerData(url, "POST", jsonData, (data) => {
         $('#' + targetdiv).html('');
@@ -83,6 +83,16 @@ function loadViews(url, jsonData, menuoptionActive,closeMenu = true, targetdiv =
         }
         $("#" + menuoptionActive).addClass('active');
         document.getElementById(targetdiv).innerHTML = data;
+        if (scriptPath) {
+            try {
+                var newScript = document.createElement("script");
+                newScript.src = window.location.origin + "/Scripts/" + scriptPath;
+                document.getElementById(targetdiv).appendChild(newScript);
+            }
+            catch {
+                SwalFire('ExamOn - Alert', 'There is some issue with getting information of this page', 'error', '', () => { location.href = "signOut"; }, 'इस पृष्ठ की जानकारी प्राप्त करने में कुछ समस्या है');
+            }
+        }
         try {
             const random = Math.floor(Math.random() * animate.length);
             $('#' + targetdiv).addClass('animate__animated  ' + animate[random])

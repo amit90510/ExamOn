@@ -24,7 +24,7 @@
             <img src="~/Content/images/UserProfile.jpg" alt="user image" style="cursor:pointer">
         </div>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownuserProfile">
-            <li><a class="dropdown-item" onclick="return loadViews('/studDashboard/GetUpdateProfilePage', null, 'updateProfileLink', false);">Update Profile</a></li>
+            <li><a class="dropdown-item" onclick="return loadViews('/studDashboard/GetUpdateProfilePage', null, 'updateProfileLink','StudDashboard/updateProfile.js', false);">Update Profile</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="~/signout">SignOut?</a></li>
         </ul>
@@ -57,7 +57,7 @@
                         <i class='fa fa-files-o nav_icon'></i>
                         <span class="nav_name">Files</span>
                     </a>
-                    <a style="cursor:pointer" onclick="return loadViews('/studDashboard/GetUpdateProfilePage', null, 'updateProfileLink');" id="updateProfileLink" class="nav_link animate__animated animate__heartBeat">
+                    <a style="cursor:pointer" onclick="return loadViews('/studDashboard/GetUpdateProfilePage', null, 'updateProfileLink','StudDashboard/updateProfile.js');" id="updateProfileLink" class="nav_link animate__animated animate__heartBeat">
                         <i class='fa fa-stack-exchange nav_icon'></i>
                         <span class="nav_name">Update Profile</span>
                     </a>
