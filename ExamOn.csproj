@@ -292,6 +292,7 @@
     <Compile Include="DataLayer\DBConnection.cs" />
     <Compile Include="DataLayer\GenericModel.cs" />
     <Compile Include="DataLayer\JsonResponse.cs" />
+    <Compile Include="DataLayer\ViewPostData\UpdateProfile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

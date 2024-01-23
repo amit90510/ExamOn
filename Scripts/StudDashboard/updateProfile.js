@@ -5,39 +5,7 @@
         $.each(data.Data, function (key, value) {
             $('#txtState').append($("<option></option>").attr("value", key).text(value));
         });
-
-        ServerData("/StudDashboard/GetUserProfileDate", "Post", null, (data) => {
-            if (data && data.StatusCode == "1") {
-                data.Data[0].forEach((item) => {
-                    if (item.Key == "username") {
-                        $("#txtUserName").val(item.Value);
-                        $("#txtUserNamePost").val(item.Value);
-                    }
-                    if (item.Key == "RealName") {
-                        $("#txtProfileName").val(item.Value);
-                    }
-                    if (item.Key == "Mobile") {
-                        $("#txtMobile").val(item.Value);
-                    }
-                    if (item.Key == "TypeName") {
-                        $("#txtType").val(item.Value);
-                    }
-                    if (item.Key == "EmailId") {
-                        $("#txtEMail").val(item.Value);
-                    }
-                    if (item.Key == "address") {
-                        $("#txtAddress").val(item.Value);
-                    }
-                    if (item.Key == "City") {
-                        $("#txtCity").val(item.Value);
-                    }
-                    if (item.Key == "State") {
-                        $("#txtState option[value='" + item.Value+"']").attr('selected','selected');
-                    }
-                });               
-            }
-        }, () => { });
-
+        GetProfileData();
     }
 }, () => { });
 
@@ -69,5 +37,44 @@ function UpdateProfile() {
             City: $("#txtCity").val(),
             State: $("#txtState").val()
         };
+        ServerData("/StudDashboard/UserProfileDataUpdate", "Post", objectPass, (data) => {
+            if (data && data.StatusCode == "1") {
+                GetProfileData();
+            }
+        }, () => { });
     }
+}
+
+function GetProfileData() {
+    ServerData("/StudDashboard/GetUserProfileDate", "Post", null, (data) => {
+        if (data && data.StatusCode == "1") {
+            data.Data[0].forEach((item) => {
+                if (item.Key == "username") {
+                    $("#txtUserName").val(item.Value);
+                    $("#txtUserNamePost").val(item.Value);
+                }
+                if (item.Key == "RealName") {
+                    $("#txtProfileName").val(item.Value);
+                }
+                if (item.Key == "Mobile") {
+                    $("#txtMobile").val(item.Value);
+                }
+                if (item.Key == "TypeName") {
+                    $("#txtType").val(item.Value);
+                }
+                if (item.Key == "EmailId") {
+                    $("#txtEMail").val(item.Value);
+                }
+                if (item.Key == "address") {
+                    $("#txtAddress").val(item.Value);
+                }
+                if (item.Key == "City") {
+                    $("#txtCity").val(item.Value);
+                }
+                if (item.Key == "State") {
+                    $("#txtState option[value='" + item.Value + "']").attr('selected', 'selected');
+                }
+            });
+        }
+    }, () => { });
 }

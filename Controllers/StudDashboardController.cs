@@ -12,6 +12,10 @@ using ExamOn.SignalRPush;
 using System.Threading.Tasks;
 using System.IO;
 using System.Web.Script.Serialization;
+using System.Collections.Generic;
+using System;
+using System.Web.Http;
+using ExamOn.DataLayer.ViewPostData;
 
 namespace ExamOn.Controllers
 {
@@ -105,6 +109,27 @@ namespace ExamOn.Controllers
                 jsonData.StatusCode = 1;
                 jsonData.Data = userProfile;
             }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> UserProfileDataUpdate([FromBody] UpdateProfile updateProfile)
+        {
+            JsonData jsonData = new JsonData();
+            HubContext.Notify(false, "", "updating", true, false, false, ViewBag.srKey);
+            var response = DapperService.ExecuteQueryMultiple("Update tbluserProfile set RealName = @realName, address = @address, city=@city, state = @state where username=@username; Update tbllogin set EMailID = @email, Mobile=@mobile where username = @username;",new { 
+                realName = updateProfile.ProfileName,
+                address = updateProfile.Address,
+                city = updateProfile.City,
+                state = updateProfile.State,
+                username = updateProfile.UserName,
+                email = updateProfile.Email,
+                mobile = updateProfile.Mobile
+            }).Result;
+            if(!string.IsNullOrEmpty(response))
+                jsonData.StatusCode = 1;
+
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }
