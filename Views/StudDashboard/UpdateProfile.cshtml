@@ -1,33 +1,34 @@
 ﻿<br />
-<div class="container border">
+<div class="container border rounded-5">
     <br />
     <form class="row g-3">
         <div class="col-md-6">
             <label for="txtUserName" class="form-label">User Name (उपयोगकर्ता नाम): <span class="badge rounded-pill bg-info text-dark">(This can not be changed)</span></label>
-            <div class="input-group">
+            <div class="input-group" error-For="User Name">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-user-o" aria-hidden="true"></i></span>
+                <input type="text" class="form-control visually-hidden" id="txtUserNamePost" readonly="readonly">
                 <input type="text" class="form-control" id="txtUserName" readonly="readonly">
             </div>
         </div>
         <div class="col-md-6">
             <label for="txtProfileName" class="form-label">Profile Name (प्रोफ़ाइल नाम):</label>
-            <div class="input-group">
+            <div class="input-group" error-For="Profile Name">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-user" aria-hidden="true"></i></span>
                 <input type="text" class="form-control" id="txtProfileName" maxlength="50">
             </div>
         </div>
         <div class="col-md-4">
             <label for="txtEMail" class="form-label">Email</label>
-            <div class="input-group">
+            <div class="input-group" error-For="Email Id">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-                <input type="email" class="form-control" id="txtEMail" placeholder="" maxlength="50">
+                <input type="email" class="form-control" id="txtEMail" placeholder="" maxlength="50" onfocusout="this.value = CheckEmailValid(this.value) ? this.value: ''">
             </div>
         </div>
         <div class="col-md-4">
             <label for="txtMobile" class="form-label">Mobile <span class="badge rounded-pill bg-danger">(do not use +91)</span></label>
-            <div class="input-group">
+            <div class="input-group" error-For="Mobile Number">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-mobile" aria-hidden="true"></i></span>
-                <input type="number" class="form-control" id="txtMobile" placeholder="" maxlength="10">
+                <input type="number" class="form-control" id="txtMobile" placeholder="" maxlength="10" data-maxlength="10" oninput="this.value=this.value.slice(0,this.dataset.maxlength)">
             </div>
         </div>
         <div class="col-md-4">
@@ -39,32 +40,32 @@
         </div>
         <div class="col-12">
             <label for="txtAddress" class="form-label">Address (पता)</label>
-            <div class="input-group">
+            <div class="input-group" error-For="Address (पता)">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-address-card-o" aria-hidden="true"></i></span>
                 <input type="text" class="form-control" id="txtAddress" placeholder="" maxlength="150">
             </div>
         </div>
         <div class="col-md-6">
             <label for="txtCity" class="form-label">City (शहर)</label>
-            <div class="input-group">
+            <div class="input-group" error-For="City (शहर)">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-crosshairs" aria-hidden="true"></i></span>
                 <input type="text" class="form-control" id="txtCity" maxlength="100">
             </div>
         </div>
         <div class="col-md-6">
             <label for="txtState" class="form-label">State (राज्य)</label>
-            <div class="input-group">
+            <div class="input-group" error-For="State (राज्य)">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-certificate" aria-hidden="true"></i></span>
                 <select style="cursor:pointer" id="txtState" class="form-select">
                     <option>Choose...</option>
                 </select>
             </div>
         </div>
-        <div class="col-12">
-            <div class="card-footer text-muted " style="text-align:center; margin:auto 0">
-                <button type="submit" class="btn btn-primary" style="text-align:Center"><i class="fa fa-users" aria-hidden="true"></i> Update Profile (प्रोफ़ाइल अपडेट करें)</button>
-            </div>
-        </div>
     </form>
     <br />
+    <div class="col-12">
+        <div class="card-footer text-muted " style="text-align:center; margin:auto 0">
+            <button onclick="UpdateProfile();" type="submit" class="btn btn-primary" style="text-align:Center"><i class="fa fa-users" aria-hidden="true"></i> Update Profile (प्रोफ़ाइल अपडेट करें)</button>
+        </div>
+    </div>
 </div>
