@@ -10,7 +10,7 @@
         if (toggle && nav && bodypd && headerpd) {
             toggle.addEventListener('click', () => {
                 // show navbar
-                nav.classList.toggle('show')
+                nav.classList.toggle('show1')
                 // change icon
                 toggle.classList.toggle('fa-arrow-circle-o-left')
                 // add padding to body
@@ -27,7 +27,7 @@
 $(document).ready(function () {
     var hub = $.connection.notificationHub;
     hub.client.addNewMessageToPage = function (isHeader, header, finalBody, showProgress, showFooter, closeModal) {
-        if ($('#signalRModal') && $('#signalRModal').hasClass('show')) {
+        if ($('#signalRModal') && $('#signalRModal').is(':visible')) {
             handleModal(isHeader, header, finalBody, showProgress, showFooter, closeModal);
         }
         else {
@@ -37,16 +37,16 @@ $(document).ready(function () {
                 focus: false
             });
             handleModal(isHeader, header, finalBody, showProgress, showFooter, closeModal);
-            myModal.show('fast');
+            myModal.toggle();            
         }
     };
     $.connection.hub.start()
         .done(function () {
             $("#sRCookie").val(hub.connection.id);
-            console.log("Realtime hub is connected and started successfully!!");
+            //console.log("Realtime hub is connected and started successfully!!");
         })
         .fail(function () {
-            console.log("Realtime hub can not be connected!");
+            //console.log("Realtime hub can not be connected!");
             SwalFire("Browser-SignalR Error", "There is some issue with your browser, Please use latest chrome/Mozilla. <br/> (आपके ब्राउज़र में कुछ समस्या है, कृपया नवीनतम क्रोम/मोज़िला का उपयोग करें)", "error", "", () => { });
         });
 
@@ -96,7 +96,7 @@ function loadViews(url, jsonData, menuoptionActive,scriptPath,closeMenu = true, 
         try {
             const random = Math.floor(Math.random() * animate.length);
             $('#' + targetdiv).addClass('animate__animated  ' + animate[random])
-            if (closeMenu && $("#nav-bar").hasClass('show')) {
+            if (closeMenu && $("#nav-bar").hasClass('show1')) {
                 closeMenuBar();
             }
         }
@@ -108,6 +108,6 @@ function loadViews(url, jsonData, menuoptionActive,scriptPath,closeMenu = true, 
 function closeMenuBar() {
     $("#body-pd").removeClass();
     $("#header").removeClass('body-pd');
-    $("#nav-bar").removeClass('show');
+    $("#nav-bar").removeClass('show1');
     $("#header-toggle").removeClass('fa-arrow-circle-o-left');
 }

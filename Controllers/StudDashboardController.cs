@@ -80,7 +80,6 @@ namespace ExamOn.Controllers
         [ForgeryTokenAuthorize]
         public async Task<PartialViewResult> GetUpdateProfilePage()
         {
-            HubContext.Notify(false, "", "Loaded", false, false,true, ViewBag.srKey);
             return PartialView("UpdateProfile");
         }
 
@@ -109,6 +108,7 @@ namespace ExamOn.Controllers
                 jsonData.StatusCode = 1;
                 jsonData.Data = userProfile;
             }
+           // HubContext.Notify(false, "", "Profile Load Complete.", false, false, true, ViewBag.srKey);
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
@@ -117,7 +117,7 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> UserProfileDataUpdate([FromBody] UpdateProfile updateProfile)
         {
             JsonData jsonData = new JsonData();
-            HubContext.Notify(false, "", "updating", true, false, false, ViewBag.srKey);
+            HubContext.Notify(false, "", "Please wait, while we are updating profile <b/> कृपया प्रतीक्षा करें, जब तक हम प्रोफ़ाइल अपडेट कर रहे हैं", true, false, false, ViewBag.srKey);
             var response = DapperService.ExecuteQueryMultiple("Update tbluserProfile set RealName = @realName, address = @address, city=@city, state = @state where username=@username; Update tbllogin set EMailID = @email, Mobile=@mobile where username = @username;",new { 
                 realName = updateProfile.ProfileName,
                 address = updateProfile.Address,
@@ -127,8 +127,15 @@ namespace ExamOn.Controllers
                 email = updateProfile.Email,
                 mobile = updateProfile.Mobile
             }).Result;
-            if(!string.IsNullOrEmpty(response))
+            if (!string.IsNullOrEmpty(response))
+            {              
+                HubContext.Notify(true, "ExamOn - Alert", $"Profile Can not be updated.<br/> प्रोफ़ाइल अपडेट नहीं किया जा सकता. <br/> {response}", false, true, false, ViewBag.srKey);
+            }
+            else
+            {
                 jsonData.StatusCode = 1;
+                HubContext.Notify(true, "ExamOn - Alert", "Profile has been updated.<br/> प्रोफ़ाइल अपडेट कर दी गई है.", false, true, false, ViewBag.srKey);
+            }
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }

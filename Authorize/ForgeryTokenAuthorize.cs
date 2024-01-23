@@ -20,7 +20,7 @@ namespace ExamOn.Authorize
                 {
                     var signalRConnectionCookie = request.Headers["__RequestVerificationSRKey"];
                     var signalRConnectionCookieValue = signalRConnectionCookie != null ? signalRConnectionCookie.ToString() : null;
-                    HubContext.Notify(false, "", "Please wait, while we verify your request.", true, false, false, signalRConnectionCookieValue);
+                   // HubContext.Notify(false, "", "Please wait, while we verify your request.", true, false, false, signalRConnectionCookieValue);
 
                     var antiForgeryCookie = request.Cookies[AntiForgeryConfig.CookieName];
 
