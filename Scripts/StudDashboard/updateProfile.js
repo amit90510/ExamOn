@@ -28,20 +28,22 @@ function UpdateProfile() {
         SwalFire('ExamOn - Alert', "", 'error', '', () => { }, errorMessage + " " + requiredFieldError);
     } else {
         //update now
-        var objectPass = {
-            UserName: $("#txtUserNamePost").val(),
-            ProfileName: $("#txtProfileName").val(),
-            Email: $("#txtEMail").val(),
-            Mobile: $("#txtMobile").val(),
-            Address: $("#txtAddress").val(),
-            City: $("#txtCity").val(),
-            State: $("#txtState").val()
-        };
+        let fileInput = $('#imageInput')[0];
+        let file = fileInput ? fileInput.files[0] : null;
+        let objectPass = new FormData();
+        formData.append('ProfileImage', file);
+        formData.append('UserName', $("#txtUserNamePost").val());
+        formData.append('ProfileName', $("#txtProfileName").val());
+        formData.append('Email', $("#txtEMail").val());
+        formData.append('Mobile', $("#txtMobile").val());
+        formData.append('Address', $("#txtAddress").val());
+        formData.append('City', $("#txtCity").val());
+        formData.append('State', $("#txtState").val());
         ServerData("/StudDashboard/UserProfileDataUpdate", "Post", objectPass, (data) => {
             if (data && data.StatusCode == "1") {
                 GetProfileData();
             }
-        }, () => { });
+        }, () => { }, false, false);
     }
 }
 
@@ -78,3 +80,26 @@ function GetProfileData() {
         }
     }, () => { });
 }
+
+function previewImage(input) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        $('#imageDisplay').attr('src', e.target.result).show();
+    };
+    reader.readAsDataURL(input.files[0]);
+}
+
+$('#imageInput').change(function (event) {
+    const fileSizeLimit = 500 * 1024; // 500Kb in bytes
+    if (this.files && this.files[0]) {
+        if (this.files[0].size > fileSizeLimit) {
+            event.target.value = '';
+            SwalFire('ExamOn- Alert', '', 'error', '', () => { },'Please choose image below 500Kb in size. <br/> कृपया 500kb से कम आकार की छवि चुनें।');
+        } else {
+            previewImage(this);
+        }
+    }
+    else {
+        event.target.value = '';
+    }
+});

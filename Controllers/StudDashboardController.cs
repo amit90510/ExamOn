@@ -133,6 +133,17 @@ namespace ExamOn.Controllers
             }
             else
             {
+                //update image if any
+                if(updateProfile.ProfileImage != null && updateProfile.ProfileImage.ContentLength > 0)
+                {
+                    HubContext.Notify(false, "", "Please wait, while we are updating profile image <b/> कृपया प्रतीक्षा करें, जब तक हम प्रोफ़ाइल छवि अपडेट कर रहे हैं", true, false, false, ViewBag.srKey);
+                    // Convert HttpPostedFileBase to byte array
+                    byte[] fileData = null;
+                    using (var binaryReader = new BinaryReader(updateProfile.ProfileImage.InputStream))
+                    {
+                        fileData = binaryReader.ReadBytes(updateProfile.ProfileImage.ContentLength);
+                    }
+                }
                 jsonData.StatusCode = 1;
                 HubContext.Notify(true, "ExamOn - Alert", "Profile has been updated.<br/> प्रोफ़ाइल अपडेट कर दी गई है.", false, true, false, ViewBag.srKey);
             }

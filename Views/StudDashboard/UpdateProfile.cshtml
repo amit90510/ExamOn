@@ -2,7 +2,13 @@
 <div class="container border rounded-5">
     <br />
     <form class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <img id="imageDisplay" class="border border-4 rounded-4 img-thumbnail" src="~/Content/images/UserProfile.jpg" style="width:100px !important; height:100px !important" alt="Selected Image" />
+            <label for="imageInput" class="btn btn-outline-success">Choose new image - (नई छवि चुनें)</label>
+            <input type="file" id="imageInput" accept="image/*" style="display:none" />
+        </div>
+
+        <div class="col-md-4">
             <label for="txtUserName" class="form-label">User Name (उपयोगकर्ता नाम): <span class="badge rounded-pill bg-info text-dark">(This can not be changed)</span></label>
             <div class="input-group" error-For="User Name">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-user-o" aria-hidden="true"></i></span>
@@ -10,32 +16,33 @@
                 <input type="text" class="form-control" id="txtUserName" readonly="readonly">
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <label for="txtAddress" class="form-label">Type <span class="badge rounded-pill bg-info text-dark">(This can not be changed)</span></label>
+            <div class="input-group">
+                <span class="input-group-text" id="basic-prefix"><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" id="txtType" placeholder="" readonly="readonly">
+            </div>
+        </div>
+        <hr />
+        <div class="col-md-12">
             <label for="txtProfileName" class="form-label">Profile Name (प्रोफ़ाइल नाम):</label>
             <div class="input-group" error-For="Profile Name">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-user" aria-hidden="true"></i></span>
                 <input type="text" class="form-control" id="txtProfileName" maxlength="50">
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <label for="txtEMail" class="form-label">Email</label>
             <div class="input-group" error-For="Email Id">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
                 <input type="email" class="form-control" id="txtEMail" placeholder="" maxlength="50" onfocusout="this.value = CheckEmailValid(this.value) ? this.value: ''">
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <label for="txtMobile" class="form-label">Mobile <span class="badge rounded-pill bg-danger">(do not use +91)</span></label>
             <div class="input-group" error-For="Mobile Number">
                 <span class="input-group-text" id="basic-prefix"><i class="fa fa-mobile" aria-hidden="true"></i></span>
                 <input type="number" class="form-control" id="txtMobile" placeholder="" maxlength="10" data-maxlength="10" oninput="this.value=this.value.slice(0,this.dataset.maxlength)">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <label for="txtAddress" class="form-label">Type <span class="badge rounded-pill bg-info text-dark">(This can not be changed)</span></label>
-            <div class="input-group">
-                <span class="input-group-text" id="basic-prefix"><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
-                <input type="text" class="form-control" id="txtType" placeholder="" readonly="readonly">
             </div>
         </div>
         <div class="col-12">

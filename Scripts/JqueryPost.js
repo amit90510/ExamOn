@@ -12,7 +12,7 @@
         headers: headers,
         contentType: contentType,
         processData: processData,
-        data: jsonData ? JSON.stringify(jsonData) : jsonData,
+        data: (jsonData && processData) ? JSON.stringify(jsonData) : jsonData,
         success: function (data) {
             successcallBack(data);
         },
