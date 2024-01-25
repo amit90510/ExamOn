@@ -82,11 +82,15 @@ Create Nonclustered index idx_typeIDUserAccess On [tblUserTypeAccess](TypeId)
 
 GO
 
+ALTER TABLE [dbo].[tblUserProfileImage] DROP CONSTRAINT [FK_tblUserProfileImage_tbllogin]
+GO
+
+/****** Object:  Table [dbo].[tblUserProfileImage]    Script Date: 25-01-2024 02:38:53 PM ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblUserProfileImage]') AND type in (N'U'))
 DROP TABLE [dbo].[tblUserProfileImage]
 GO
 
-/****** Object:  Table [dbo].[tblUserProfileImage]    Script Date: 25-01-2024 11:01:09 AM ******/
+/****** Object:  Table [dbo].[tblUserProfileImage]    Script Date: 25-01-2024 02:38:53 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -97,6 +101,7 @@ CREATE TABLE [dbo].[tblUserProfileImage](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[UserName] [varchar](50) NOT NULL,
 	[ProfileImage] [varbinary](max) NULL,
+	[ProfileImageName] [varchar](500) NULL,
  CONSTRAINT [PK_tblUserProfileImage_1] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -111,4 +116,3 @@ GO
 
 ALTER TABLE [dbo].[tblUserProfileImage] CHECK CONSTRAINT [FK_tblUserProfileImage_tbllogin]
 GO
-
