@@ -369,6 +369,9 @@
     <Compile Include="Models\tbluserProfile.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tblUserProfileImage.cs">
+      <DependentUpon>ExamOn.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblUserTypeAccess.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>

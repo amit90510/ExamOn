@@ -196,6 +196,14 @@
           <Property Name="Shift" Type="bigint" />
           <Property Name="RealName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblUserProfileImage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProfileImage" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="tblUserTypeAccess">
           <Key>
             <PropertyRef Name="Id" />
@@ -416,6 +424,9 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_tblUserProfileImage_tbllogin" />-->
         <Association Name="FK_tblUserTypeAccess_tblloginType">
           <End Role="tblloginType" Type="Self.tblloginType" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -450,6 +461,7 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
           <EntitySet Name="tblshift" EntityType="Self.tblshift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbltenant" EntityType="Self.tbltenant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbluserProfile" EntityType="Self.tbluserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserProfileImage" EntityType="Self.tblUserProfileImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserTypeAccess" EntityType="Self.tblUserTypeAccess" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tblactivityHistory_tbllogin" Association="Self.FK_tblactivityHistory_tbllogin">
             <End Role="tbllogin" EntitySet="tbllogin" />
@@ -1017,6 +1029,7 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
             <End Role="tblloginType" EntitySet="tblloginTypes" />
             <End Role="tblUserTypeAccess" EntitySet="tblUserTypeAccesses" />
           </AssociationSet>
+          <EntitySet Name="tblUserProfileImages" EntityType="ExamOn_DummyModel.tblUserProfileImage" />
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -1060,6 +1073,14 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblUserProfileImage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProfileImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1283,6 +1304,15 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
                 <ScalarProperty Name="UserPath" ColumnName="UserPath" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserProfileImages">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblUserProfileImage">
+              <MappingFragment StoreEntitySet="tblUserProfileImage">
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

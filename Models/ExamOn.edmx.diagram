@@ -41,6 +41,7 @@
         <EntityTypeShape EntityType="ExamOn_DummyModel.tblLoginHistory" Width="1.5" PointX="10.375" PointY="11.75" />
         <EntityTypeShape EntityType="ExamOn_DummyModel.tblUserTypeAccess" Width="1.5" PointX="3" PointY="0.75" />
         <AssociationConnector Association="ExamOn_DummyModel.FK_tblUserTypeAccess_tblloginType" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblUserProfileImage" Width="1.5" PointX="12.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
