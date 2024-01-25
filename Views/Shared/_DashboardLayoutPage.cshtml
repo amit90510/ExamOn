@@ -24,7 +24,7 @@
             <img id="dashboardProfileImage" src="~/Content/images/UserProfile.jpg" alt="user image" style="cursor:pointer">
         </div>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownuserProfile">
-            <li><a class="dropdown-item" onclick="return loadViews('/studDashboard/GetUpdateProfilePage', null, 'updateProfileLink','StudDashboard/updateProfile.js', false);">Change Password</a></li>
+            <li><a class="dropdown-item" onclick="return loadViews('/studDashboard/GetUpdateProfilePasswordPage', null, 'updatePasswordLink','StudDashboard/updatePassword.js', false);">Change Password</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" onclick="return loadViews('/studDashboard/GetUpdateProfilePage', null, 'updateProfileLink','StudDashboard/updateProfile.js', false);">Update Profile</a></li>
             <li><hr class="dropdown-divider"></li>
@@ -55,7 +55,7 @@
                         <i class='fa fa-bookmark nav_icon'></i>
                         <span class="nav_name">Bookmark</span>
                     </a>
-                    <a href="#" class="nav_link animate__animated animate__heartBeat">
+                    <a style="cursor:pointer" onclick="return loadViews('/studDashboard/GetUpdateProfilePasswordPage', null, 'updatePasswordLink','StudDashboard/updatePassword.js');" id="updatePasswordLink" class="nav_link animate__animated animate__heartBeat">
                         <i class='fa fa-key nav_icon'></i>
                         <span class="nav_name">Change Password</span>
                     </a>

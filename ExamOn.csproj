@@ -489,6 +489,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\JqueryPost.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\StudDashboard\updatePassword.js" />
     <Content Include="Scripts\StudDashboard\updateProfile.js" />
     <Content Include="Scripts\sweetalert2.all.min.js" />
     <Content Include="Web.config" />
@@ -507,6 +508,7 @@
     <Content Include="Views\StudDashboard\Index.cshtml" />
     <Content Include="Views\Shared\_DashboardLayoutPage.cshtml" />
     <Content Include="Views\StudDashboard\UpdateProfile.cshtml" />
+    <Content Include="Views\StudDashboard\UpdatePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
