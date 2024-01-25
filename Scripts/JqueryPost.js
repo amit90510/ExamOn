@@ -1,4 +1,4 @@
-﻿function ServerData(url, type, jsonData, successcallBack, errorCallback) {
+﻿function ServerData(url, type, jsonData, successcallBack, errorCallback, contentType = 'application/json; charset=utf-8', processData = true) {
     var token = $('[name=__RequestVerificationToken]').val();
     var KeyId = $('#sRCookie').val();
     var headers = {
@@ -10,7 +10,8 @@
         url: url,
         cache: false,
         headers: headers,
-        contentType: 'application/json; charset=utf-8',
+        contentType: contentType,
+        processData: processData,
         data: jsonData ? JSON.stringify(jsonData) : jsonData,
         success: function (data) {
             successcallBack(data);
