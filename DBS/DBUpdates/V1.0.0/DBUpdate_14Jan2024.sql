@@ -81,3 +81,34 @@ GO
 Create Nonclustered index idx_typeIDUserAccess On [tblUserTypeAccess](TypeId)
 
 GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblUserProfileImage]') AND type in (N'U'))
+DROP TABLE [dbo].[tblUserProfileImage]
+GO
+
+/****** Object:  Table [dbo].[tblUserProfileImage]    Script Date: 25-01-2024 11:01:09 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblUserProfileImage](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[UserName] [varchar](50) NOT NULL,
+	[ProfileImage] [varbinary](max) NULL,
+ CONSTRAINT [PK_tblUserProfileImage_1] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblUserProfileImage]  WITH CHECK ADD  CONSTRAINT [FK_tblUserProfileImage_tbllogin] FOREIGN KEY([UserName])
+REFERENCES [dbo].[tbllogin] ([UserName])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[tblUserProfileImage] CHECK CONSTRAINT [FK_tblUserProfileImage_tbllogin]
+GO
+
