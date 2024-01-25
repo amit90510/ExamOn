@@ -30,7 +30,7 @@ function UpdateProfile() {
         //update now
         let fileInput = $('#imageInput')[0];
         let file = fileInput ? fileInput.files[0] : null;
-        let objectPass = new FormData();
+        let formData = new FormData();
         formData.append('ProfileImage', file);
         formData.append('UserName', $("#txtUserNamePost").val());
         formData.append('ProfileName', $("#txtProfileName").val());
@@ -39,9 +39,11 @@ function UpdateProfile() {
         formData.append('Address', $("#txtAddress").val());
         formData.append('City', $("#txtCity").val());
         formData.append('State', $("#txtState").val());
-        ServerData("/StudDashboard/UserProfileDataUpdate", "Post", objectPass, (data) => {
+        ServerData("/StudDashboard/UserProfileDataUpdate", "Post", formData, (data) => {
             if (data && data.StatusCode == "1") {
                 GetProfileData();
+                GetProfileImage('imageDisplay', '/Content/images/UserProfile.jpg');
+                GetProfileImage('dashboardProfileImage', '/Content/images/UserProfile.jpg');
             }
         }, () => { }, false, false);
     }
@@ -103,3 +105,5 @@ $('#imageInput').change(function (event) {
         event.target.value = '';
     }
 });
+
+GetProfileImage('imageDisplay', '/Content/images/UserProfile.jpg');

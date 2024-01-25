@@ -61,6 +61,7 @@ $(document).ready(function () {
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');
     });
+    GetProfileImage('dashboardProfileImage', '/Content/images/UserProfile.jpg');
 });
 
 function examOn_dateParse(val) {
@@ -110,4 +111,18 @@ function closeMenuBar() {
     $("#header").removeClass('body-pd');
     $("#nav-bar").removeClass('show1');
     $("#header-toggle").removeClass('fa-arrow-circle-o-left');
+}
+
+function GetProfileImage(elementToSet, altPath) {
+    if (elementToSet) {
+        ServerData("/StudDashboard/GetUserProfileImage", "Post", null, (data) => {
+            if (data && data.size > 0) {
+                let imageUrl = URL.createObjectURL(data);
+                $('#' + elementToSet).attr('src', imageUrl);
+            }
+            else if (altPath) {
+                $('#' + elementToSet).attr('src', altPath);
+            }
+        }, () => { }, true, true,'blob');
+    }
 }

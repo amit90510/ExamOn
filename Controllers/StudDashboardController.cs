@@ -134,21 +134,50 @@ namespace ExamOn.Controllers
             else
             {
                 //update image if any
-                if(updateProfile.ProfileImage != null && updateProfile.ProfileImage.ContentLength > 0)
+                byte[] fileData = null;
+                if (updateProfile.ProfileImage != null && updateProfile.ProfileImage.ContentLength > 0)
                 {
                     HubContext.Notify(false, "", "Please wait, while we are updating profile image <b/> कृपया प्रतीक्षा करें, जब तक हम प्रोफ़ाइल छवि अपडेट कर रहे हैं", true, false, false, ViewBag.srKey);
-                    // Convert HttpPostedFileBase to byte array
-                    byte[] fileData = null;
+                                    
                     using (var binaryReader = new BinaryReader(updateProfile.ProfileImage.InputStream))
                     {
                         fileData = binaryReader.ReadBytes(updateProfile.ProfileImage.ContentLength);
                     }
                 }
+                response = DapperService.ExecuteQueryMultiple("delete from tblUserProfileImage where username = @username; insert into tblUserProfileImage values(@username, @fileImage, @fileName)", new
+                {
+                    username = updateProfile.UserName,
+                    fileImage = fileData,
+                    fileName = (fileData != null) ? Path.GetExtension(updateProfile.ProfileImage.FileName) : null
+                }).Result;
                 jsonData.StatusCode = 1;
-                HubContext.Notify(true, "ExamOn - Alert", "Profile has been updated.<br/> प्रोफ़ाइल अपडेट कर दी गई है.", false, true, false, ViewBag.srKey);
+                if (!string.IsNullOrEmpty(response))
+                {
+                    HubContext.Notify(true, "ExamOn - Alert", $"Profile is updated, but Image can not be updated.<br/> प्रोफ़ाइल अपडेट हो गई है, लेकिन छवि अपडेट नहीं की जा सकती. <br/> {response}", false, true, false, ViewBag.srKey);
+                }
+                else
+                {
+                    HubContext.Notify(true, "ExamOn - Alert", "Profile has been updated.<br/> प्रोफ़ाइल अपडेट कर दी गई है.", false, true, false, ViewBag.srKey);
+                }
             }
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<FileResult> GetUserProfileImage()
+        {
+            var updateProfile = DapperService.GetDapperData<UpdateProfile>("select top 1 ProfileImage as 'ProfileImageByte', ProfileImageName from tblUserProfileImage where username = @username", new { 
+             username = AuthorizeService.GetUserName(HttpContext.User.Identity.Name)
+            });
+            
+            if(updateProfile!=null && updateProfile.Any())
+            {
+                return File(updateProfile.FirstOrDefault().ProfileImageByte, "Image/" + updateProfile.FirstOrDefault().ProfileImageName.Replace(".", ""));
+            }
+            
+            return null;
         }
     }
 }

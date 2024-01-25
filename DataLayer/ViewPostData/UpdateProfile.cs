@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ExamOn.DataLayer.ViewPostData
 {
-    public class UpdateProfile
+    public class UpdateProfile : GenericModel
     {
         public string UserName { get; set; }
         public string ProfileName { get; set; }
@@ -15,5 +15,9 @@ namespace ExamOn.DataLayer.ViewPostData
         public string City { get; set; }
         public string State { get; set; }
         public HttpPostedFileBase ProfileImage { get; set; }
+
+        public byte[] ProfileImageByte { get; set; }
+
+        public string ProfileImageName { get; set; }
     }
 }
