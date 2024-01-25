@@ -12,11 +12,13 @@ namespace ExamOn.Models
     using ExamOn.DataLayer;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class tblUserProfileImage : GenericModel
     {
         public long id { get; set; }
         public string UserName { get; set; }
         public byte[] ProfileImage { get; set; }
+
+        public string ProfileImageName {get; set;}
     }
 }
