@@ -179,7 +179,7 @@ namespace ExamOn.Controllers
              username = AuthorizeService.GetUserName(HttpContext.User.Identity.Name)
             });
             
-            if(updateProfile!=null && updateProfile.Any())
+            if(updateProfile!=null && updateProfile.Any() && updateProfile.FirstOrDefault().ProfileImageByte != null)
             {
                 return File(updateProfile.FirstOrDefault().ProfileImageByte, "Image/" + updateProfile.FirstOrDefault().ProfileImageName.Replace(".", ""));
             }
