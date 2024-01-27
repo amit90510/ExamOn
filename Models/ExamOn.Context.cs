@@ -50,5 +50,6 @@ namespace ExamOn.Models
         public virtual DbSet<tblUserTypeAccess> tblUserTypeAccesses { get; set; }
 
         public virtual DbSet<tblUserProfileImage> tblUserProfileImages { get; set; }
+        public virtual DbSet<tblUserShift> tblUserShifts { get; set; }
     }
 }
