@@ -116,3 +116,61 @@ GO
 
 ALTER TABLE [dbo].[tblUserProfileImage] CHECK CONSTRAINT [FK_tblUserProfileImage_tbllogin]
 GO
+
+GO
+
+ALTER TABLE [dbo].[tblUserShift] DROP CONSTRAINT [FK_tblUserShift_tbluserProfile]
+GO
+
+ALTER TABLE [dbo].[tblUserShift] DROP CONSTRAINT [FK_tblUserShift_tblshift]
+GO
+
+ALTER TABLE [dbo].[tblUserShift] DROP CONSTRAINT [DF_tblUserShift_Active]
+GO
+
+/****** Object:  Table [dbo].[tblUserShift]    Script Date: 27-01-2024 02:58:17 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblUserShift]') AND type in (N'U'))
+DROP TABLE [dbo].[tblUserShift]
+GO
+
+/****** Object:  Table [dbo].[tblUserShift]    Script Date: 27-01-2024 02:58:17 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblUserShift](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[UserId] [bigint] NOT NULL,
+	[ShiftId] [bigint] NOT NULL,
+	[Active] [bit] NOT NULL,
+ CONSTRAINT [PK_tblUserShift] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblUserShift] ADD  CONSTRAINT [DF_tblUserShift_Active]  DEFAULT ((1)) FOR [Active]
+GO
+
+ALTER TABLE [dbo].[tblUserShift]  WITH CHECK ADD  CONSTRAINT [FK_tblUserShift_tblshift] FOREIGN KEY([ShiftId])
+REFERENCES [dbo].[tblshift] ([id])
+GO
+
+ALTER TABLE [dbo].[tblUserShift] CHECK CONSTRAINT [FK_tblUserShift_tblshift]
+GO
+
+ALTER TABLE [dbo].[tblUserShift]  WITH CHECK ADD  CONSTRAINT [FK_tblUserShift_tbluserProfile] FOREIGN KEY([UserId])
+REFERENCES [dbo].[tbluserProfile] ([id])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[tblUserShift] CHECK CONSTRAINT [FK_tblUserShift_tbluserProfile]
+GO
+
+create nonclustered index idx_tblusershift_index on tbluserShift(userId) include(shiftId)
+
+GO
