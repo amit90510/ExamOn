@@ -50,6 +50,43 @@
                     </table>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <table class="table table-responsive table-bordered caption-top table-striped mb-0">
+                        <caption>Active Shift Activity - (सक्रिय शिफ्ट गतिविधि)</caption>
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">SNo</th>
+                                <th scope="col">Class</th>
+                                <th scope="col">Batch</th>
+                                <th scope="col">Shift</th>
+                            </tr>
+                        </thead>
+                        <tbody id="AssociationActivity">
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="table table-responsive table-bordered caption-top table-striped">
+                        <caption>Your Upcoming Exams - (आपकी आगामी परीक्षाएं)</caption>
+                        <thead class="table-light">
+                        </thead>
+                        <tbody id="upcomingExams">
+                            <tr>
+                                <td>
+                                    <div class="card border-info mb-3" style="max-width: 18rem;">
+                                        <div class="card-header">Start Time</div>
+                                        <div class="card-body">
+                                            <span class="card-title">Exam Name - </span>
+                                            <p class="card-text">End Time - </p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
@@ -62,7 +99,7 @@
                 data.Data.forEach((item) => {
                     item.Ip = (item.Ip == "::1") ? "127.0.0.1" : item.Ip;
                     let dt = examOn_dateParse(item.LoginDate);
-                    $("#loginHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.Ip + "</td><td>" + item.Browser + "</td><td>" + dt.toDateString() + " " + dt.toLocaleTimeString('en-US') +"</td></tr>")
+                    $("#loginHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.Ip + "</td><td>" + item.Browser + "</td><td>" + dt.toDateString() + " " + dt.toLocaleTimeString('en-US') + "</td></tr>")
                 });
                 counter = 5 - counter;
                 for (let icount = 0; icount < counter; icount++) {
@@ -86,10 +123,22 @@
                     $("#associationHistoryRow").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.TenantName + "</td><td>" + item.TenantEmail + "</td><td>" + item.TenantMobile + "</td></tr>")
                     $("#associationHistoryRow").append("<tr><td colspan='4'><table class='table mb-0 caption-top table-striped table-responsive table-bordered'><caption>Life time (valid Till / (तक वैध)) - </caption><thead class='table-light'><tr><th scope='col'>Valid Upto</th></tr></thead><tbody id='associationValidUpto" + counter + "'></tbody></table></td></tr>");
                     $("#associationValidUpto" + counter).html('');
-                    $("#associationValidUpto" + counter).append("<tr class='animate__animated animate__flash'><td> <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='currentColor' class='bi bi-exclamation-triangle-fill flex-shrink-0 me-2' viewBox='0 0 16 16' role='img' aria-label='Warning:'><path d = 'M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z' /></svg > " + dt.toDateString() + " <small> के बाद, आप इस वेबसाइट का उपयोग नहीं कर पाएंगे</small></td></tr>");
-                });              
+                    $("#associationValidUpto" + counter).append("<tr class='animate__animated animate__flash'><td> <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='currentColor' class='bi bi-exclamation-triangle-fill flex-shrink-0 me-2' viewBox='0 0 16 16' role='img' aria-label='Warning:'><path d = 'M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z' /></svg > " + dt.toDateString() + " <small> के बाद, आप इस वेबसाइट का उपयोग नहीं कर पाएंगे | </small><br/> <small> कृपया इस सेवा का उपयोग करने के लिए इस तिथि के बाद अपने एसोसिएशन से संपर्क करें</small></td></tr>");
+                });
             }
-        }, () => {});
+        }, () => { });
+    }
+
+    function GetShiftAssociation() {
+        ServerData("/StudDashboard/GetShiftAssociation", "Post", null, (data) => {
+            if (data.StatusCode == 1) {
+                $("#AssociationActivity").html('');
+                let counter = 1;
+                data.Data.forEach((item) => {
+                    $("#AssociationActivity").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.ClassName + "</td><td>" + item.Batch + "</td><td>" + item.Shift + "</td></tr>")
+                });
+            }
+        }, () => { });
     }
 
     function getGetLicenceExpireHistory() {
@@ -102,9 +151,49 @@
         }, () => { });
     }
 
+    function getUpcomingExamsList() {
+        ServerData("/StudDashboard/GetUpcomingExams", "Post", null, (data) => {
+            if (data.StatusCode == 1) {
+                $("#upcomingExams").html('');
+                let counter = 1;
+                let cardLayout = "";
+                data.Data.forEach((item) => {
+                    let StartExam = examOn_dateParse(item.StartExam);
+                    let updatedOn = examOn_dateParse(item.updatedOn);
+                    let EntryAllowedTill = examOn_dateParse(item.EntryAllowedTill);
+                    item.ExamName = item.ExamName.length > 15 ? item.ExamName.substring(0, 15) + "..." : item.ExamName;
+                    cardLayout = "<td><div class='card border-success mb-3 animate__animated animate__flash' style='max-width: 16rem;'><div class='card-header bg-transparent border-success'>" + StartExam.toDateString() + ", " + StartExam.toLocaleTimeString() + "</div><div class='card-body'><span class='card-title'><b>Exam Name</b> - " + item.ExamName + "</span><p class='card-title'><b>Entry Allowed till</b> - " + EntryAllowedTill.toDateString() + ", " + StartExam.toLocaleTimeString() + "</p><p class='card-title'><b>Total Sanctions</b> - " + item.SectionCount + "</p><p class='card-title'><b>Last Updated</b> - " + updatedOn.toDateString() + ", " + StartExam.toLocaleTimeString() + "</p></div><div class='card-footer bg-transparent border-success'><button class='btn btn-success pull-left'>View</button><button class='btn btn-success pull-right'>View All</button></div></div></td>";
+                    if (counter % 2 == 0) {
+                        // Start a new row for even counters
+                        cardLayout += "<tr>" + cardLayout;
+                    } else {
+                        // For the first card, start the first row.
+                        // For odd counters, just add the card content.
+                        if (counter == 1) {
+                            cardLayout = "<tr>" + cardLayout;
+                        }
+                        else {
+                            cardLayout += cardLayout;
+                        }
+                    }
+                    // Every second card, close the previous row.
+                    if (counter % 2 == 1 && counter > 1) {
+                        cardLayout += "</tr>";
+                    }
+                    counter++;
+                });
+                console.log(cardLayout);
+                $("#upcomingExams").append(cardLayout);
+            }
+        }, () => { });
+    }
+ 
+
     $(document).ready(() => {
         getLoginHistory();
         getAssociationHistory();
         getGetLicenceExpireHistory();
+        GetShiftAssociation();
+        getUpcomingExamsList();
     });
 </script>
