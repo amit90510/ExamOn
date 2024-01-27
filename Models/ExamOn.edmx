@@ -203,6 +203,16 @@
           <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ProfileImage" Type="varbinary(max)" />
+          <Property Name="ProfileImageName" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="tblUserShift">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="ShiftId" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tblUserTypeAccess">
           <Key>
@@ -427,6 +437,32 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
         <!--Errors Found During Generation:
 warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
         <Association Name="FK_tblUserProfileImage_tbllogin" />-->
+        <Association Name="FK_tblUserShift_tblshift">
+          <End Role="tblshift" Type="Self.tblshift" Multiplicity="1" />
+          <End Role="tblUserShift" Type="Self.tblUserShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshift">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblUserShift">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserShift_tbluserProfile">
+          <End Role="tbluserProfile" Type="Self.tbluserProfile" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblUserShift" Type="Self.tblUserShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbluserProfile">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblUserShift">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblUserTypeAccess_tblloginType">
           <End Role="tblloginType" Type="Self.tblloginType" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -462,6 +498,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySet Name="tbltenant" EntityType="Self.tbltenant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbluserProfile" EntityType="Self.tbluserProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserProfileImage" EntityType="Self.tblUserProfileImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserShift" EntityType="Self.tblUserShift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserTypeAccess" EntityType="Self.tblUserTypeAccess" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tblactivityHistory_tbllogin" Association="Self.FK_tblactivityHistory_tbllogin">
             <End Role="tbllogin" EntitySet="tbllogin" />
@@ -522,6 +559,14 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <AssociationSet Name="FK_tbluserProfile_tbllogin" Association="Self.FK_tbluserProfile_tbllogin">
             <End Role="tblshift" EntitySet="tblshift" />
             <End Role="tbluserProfile" EntitySet="tbluserProfile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserShift_tblshift" Association="Self.FK_tblUserShift_tblshift">
+            <End Role="tblshift" EntitySet="tblshift" />
+            <End Role="tblUserShift" EntitySet="tblUserShift" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserShift_tbluserProfile" Association="Self.FK_tblUserShift_tbluserProfile">
+            <End Role="tbluserProfile" EntitySet="tbluserProfile" />
+            <End Role="tblUserShift" EntitySet="tblUserShift" />
           </AssociationSet>
           <AssociationSet Name="FK_tblUserTypeAccess_tblloginType" Association="Self.FK_tblUserTypeAccess_tblloginType">
             <End Role="tblloginType" EntitySet="tblloginType" />
@@ -706,6 +751,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tblBatch" Relationship="Self.FK_tblshift_tblBatch" FromRole="tblshift" ToRole="tblBatch" />
           <NavigationProperty Name="tbluserProfiles" Relationship="Self.FK_tbluserProfile_tbllogin" FromRole="tblshift" ToRole="tbluserProfile" />
+          <NavigationProperty Name="tblUserShifts" Relationship="ExamOn_DummyModel.FK_tblUserShift_tblshift" FromRole="tblshift" ToRole="tblUserShift" />
         </EntityType>
         <EntityType Name="tbltenant">
           <Key>
@@ -735,6 +781,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <Property Name="Shift" Type="Int64" />
           <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="tblshift" Relationship="Self.FK_tbluserProfile_tbllogin" FromRole="tbluserProfile" ToRole="tblshift" />
+          <NavigationProperty Name="tblUserShifts" Relationship="ExamOn_DummyModel.FK_tblUserShift_tbluserProfile" FromRole="tbluserProfile" ToRole="tblUserShift" />
         </EntityType>
         <Association Name="FK_tblactivityHistory_tbllogin">
           <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="1">
@@ -1030,6 +1077,15 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             <End Role="tblUserTypeAccess" EntitySet="tblUserTypeAccesses" />
           </AssociationSet>
           <EntitySet Name="tblUserProfileImages" EntityType="ExamOn_DummyModel.tblUserProfileImage" />
+          <EntitySet Name="tblUserShifts" EntityType="ExamOn_DummyModel.tblUserShift" />
+          <AssociationSet Name="FK_tblUserShift_tblshift" Association="ExamOn_DummyModel.FK_tblUserShift_tblshift">
+            <End Role="tblshift" EntitySet="tblshifts" />
+            <End Role="tblUserShift" EntitySet="tblUserShifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserShift_tbluserProfile" Association="ExamOn_DummyModel.FK_tblUserShift_tbluserProfile">
+            <End Role="tbluserProfile" EntitySet="tbluserProfiles" />
+            <End Role="tblUserShift" EntitySet="tblUserShifts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -1080,7 +1136,45 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ProfileImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProfileImageName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="tblUserShift">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="ShiftId" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblshift" Relationship="ExamOn_DummyModel.FK_tblUserShift_tblshift" FromRole="tblUserShift" ToRole="tblshift" />
+          <NavigationProperty Name="tbluserProfile" Relationship="ExamOn_DummyModel.FK_tblUserShift_tbluserProfile" FromRole="tblUserShift" ToRole="tbluserProfile" />
+        </EntityType>
+        <Association Name="FK_tblUserShift_tblshift">
+          <End Type="ExamOn_DummyModel.tblshift" Role="tblshift" Multiplicity="1" />
+          <End Type="ExamOn_DummyModel.tblUserShift" Role="tblUserShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshift">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblUserShift">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserShift_tbluserProfile">
+          <End Type="ExamOn_DummyModel.tbluserProfile" Role="tbluserProfile" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ExamOn_DummyModel.tblUserShift" Role="tblUserShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbluserProfile">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblUserShift">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1310,8 +1404,19 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySetMapping Name="tblUserProfileImages">
             <EntityTypeMapping TypeName="ExamOn_DummyModel.tblUserProfileImage">
               <MappingFragment StoreEntitySet="tblUserProfileImage">
+                <ScalarProperty Name="ProfileImageName" ColumnName="ProfileImageName" />
                 <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserShifts">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblUserShift">
+              <MappingFragment StoreEntitySet="tblUserShift">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
