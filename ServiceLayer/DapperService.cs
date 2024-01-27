@@ -79,6 +79,23 @@ namespace ExamOn.ServiceLayer
             }
             return executed;
         }
+
+        public static string ExecuteQueryResponse(string query, object param = null, string DBName = "")
+        {
+            string executed = string.Empty;
+            try
+            {
+                using (IDbConnection mainDB = new SqlConnection(DBConnection.GetConnectionString(DBName)))
+                {
+                    var GetModel = mainDB.Execute(query, param);
+                }
+            }
+            catch (Exception queryExc)
+            {
+                executed = queryExc.Message;
+            }
+            return executed;
+        }
         public static async Task<string> ExecuteQueryMultiple(string multipleQueryWithSemicolon, object param = null, string DBName = "")
         {
             string executed = string.Empty;

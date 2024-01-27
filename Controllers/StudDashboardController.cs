@@ -186,5 +186,50 @@ namespace ExamOn.Controllers
             
             return null;
         }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> UpdateUserProfilePassword(UpdateProfile profile)
+        {
+            JsonData jsonData = new JsonData();
+            var updateProfile = DapperService.GetDapperData<UpdateProfile>("select top 1 UserName from tbllogin where username = @username and password = @oldPass", new
+            {
+                username = AuthorizeService.GetUserName(HttpContext.User.Identity.Name),
+                oldPass = EncryptionDecryption.EncryptString(profile.UserName)
+            });
+
+            if (updateProfile != null && updateProfile.Any() && updateProfile.FirstOrDefault().UserName != null)
+            {
+                var response = DapperService.ExecuteQueryResponse("update tbllogin set password = @password where username = @username", new { 
+                     username = AuthorizeService.GetUserName(HttpContext.User.Identity.Name),
+                     password = EncryptionDecryption.EncryptString(profile.ProfileName)
+                }, AuthorizeService.GetUserDBName(HttpContext.User.Identity.Name));
+               
+                if (!string.IsNullOrEmpty(response))
+                {
+                    HubContext.Notify(true, "ExamOn - Alert", $"Password can not be updated.<br/> पासवर्ड बदला नहीं जा सकता. <br/> {response}", false, true, false, ViewBag.srKey);
+                }
+                else
+                {
+                    jsonData.StatusCode = 1;
+                    HubContext.Notify(true, "ExamOn - Alert", "Password has been updated.<br/> <hr/>पासवर्ड अपडेट कर दिया गया है, अब आप दोबारा लॉगइन पेज पर जाएंगे", false,false, false, ViewBag.srKey);
+                }
+            }
+            else
+            {
+                HubContext.Notify(true, "ExamOn - Alert", $"Password Can not be updated. There can be two reason - <br/> 1) You are not providing correct Old password </br> 2) We can not validate your user credientials. <br/> <hr/>पासवर्ड बदला नहीं जा सकता.", false, true, false, ViewBag.srKey);
+            }
+
+            return Json(jsonData, JsonRequestBehavior.AllowGet); 
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetShiftAssociation()
+        {
+            JsonData jsonData = new JsonData();
+           
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
     }
 }
