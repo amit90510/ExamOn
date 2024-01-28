@@ -229,7 +229,7 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetShiftAssociation()
         {
             JsonData jsonData = new JsonData();
-            var userShiftProfile = DapperService.GetDapperDataDynamic<UserShiftAssociation>("select tc.ClassName, bt.Batch, sf.Shift  from tblusershift usf inner join tblshift sf on usf.shiftId = sf.id and usf.active = 1 and sf.Active = 1 and usf.Userid = (select top 1 id from tbluserProfile where UserName =@username) inner join tblbatch bt on sf.batch = bt.id and bt.Active =1 inner join tblclass tc on bt.class = tc.id and tc.Active = 1", new { username = AuthorizeService.GetUserName(HttpContext.User.Identity.Name) });
+            var userShiftProfile = DapperService.GetDapperDataDynamic<UserShiftAssociation>("select top 5 tc.ClassName, bt.Batch, sf.Shift  from tblusershift usf inner join tblshift sf on usf.shiftId = sf.id and usf.active = 1 and sf.Active = 1 and usf.Userid = (select top 1 id from tbluserProfile where UserName =@username) inner join tblbatch bt on sf.batch = bt.id and bt.Active =1 inner join tblclass tc on bt.class = tc.id and tc.Active = 1", new { username = AuthorizeService.GetUserName(HttpContext.User.Identity.Name) });
             if (userShiftProfile != null && userShiftProfile.Any())
             {
                 jsonData.StatusCode = 1;
@@ -243,7 +243,7 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetUpcomingExams()
         {
             JsonData jsonData = new JsonData();
-            var upcomingExamGetModel = DapperService.GetDapperDataDynamic<UpcomingExamGetModel>("select e.ExamName, e.StartExam, e.updatedOn, e.EntryAllowedTill, count(sec.id) as 'SectionCount' from tblexamStudents es inner join tblexam e on es.exam = e.id and e.Active = 1 and es.userName = (select top 1 id from tbllogin where UserName =@username) left join tblexamSections sec on e.id = sec.exam group by e.ExamName, e.StartExam, e.updatedOn, e.EntryAllowedTill", new { username = AuthorizeService.GetUserName(HttpContext.User.Identity.Name) });
+            var upcomingExamGetModel = DapperService.GetDapperDataDynamic<UpcomingExamGetModel>("select  top 5 e.ExamName, e.StartExam, e.updatedOn, e.EntryAllowedTill, count(sec.id) as 'SectionCount' from tblexamStudents es inner join tblexam e on es.exam = e.id and e.Active = 1 and es.userName = (select top 1 id from tbllogin where UserName =@username) left join tblexamSections sec on e.id = sec.exam group by e.ExamName, e.StartExam, e.updatedOn, e.EntryAllowedTill", new { username = AuthorizeService.GetUserName(HttpContext.User.Identity.Name) });
             if (upcomingExamGetModel != null && upcomingExamGetModel.Any())
             {
                 jsonData.StatusCode = 1;

@@ -66,23 +66,17 @@
                         </tbody>
                     </table>
                 </td>
-                <td>
+                <td class="table-responsive-upcomingExam">
                     <table class="table table-responsive table-bordered caption-top table-striped">
                         <caption>Your Upcoming Exams - (आपकी आगामी परीक्षाएं)</caption>
                         <thead class="table-light">
-                        </thead>
-                        <tbody id="upcomingExams">
                             <tr>
-                                <td>
-                                    <div class="card border-info mb-3" style="max-width: 18rem;">
-                                        <div class="card-header">Start Time</div>
-                                        <div class="card-body">
-                                            <span class="card-title">Exam Name - </span>
-                                            <p class="card-text">End Time - </p>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>                            
+                                <th scope="col">SNo</th>
+                                <th scope="col">Exam</th>
+                                <th scope="col">Start At</th>
+                            </tr>
+                        </thead>
+                        <tbody id="upcomingExams">            
                         </tbody>
                     </table>
                 </td>
@@ -162,28 +156,8 @@
                     let updatedOn = examOn_dateParse(item.updatedOn);
                     let EntryAllowedTill = examOn_dateParse(item.EntryAllowedTill);
                     item.ExamName = item.ExamName.length > 15 ? item.ExamName.substring(0, 15) + "..." : item.ExamName;
-                    cardLayout = "<td><div class='card border-success mb-3 animate__animated animate__flash' style='max-width: 16rem;'><div class='card-header bg-transparent border-success'>" + StartExam.toDateString() + ", " + StartExam.toLocaleTimeString() + "</div><div class='card-body'><span class='card-title'><b>Exam Name</b> - " + item.ExamName + "</span><p class='card-title'><b>Entry Allowed till</b> - " + EntryAllowedTill.toDateString() + ", " + StartExam.toLocaleTimeString() + "</p><p class='card-title'><b>Total Sanctions</b> - " + item.SectionCount + "</p><p class='card-title'><b>Last Updated</b> - " + updatedOn.toDateString() + ", " + StartExam.toLocaleTimeString() + "</p></div><div class='card-footer bg-transparent border-success'><button class='btn btn-success pull-left'>View</button><button class='btn btn-success pull-right'>View All</button></div></div></td>";
-                    if (counter % 2 == 0) {
-                        // Start a new row for even counters
-                        cardLayout += "<tr>" + cardLayout;
-                    } else {
-                        // For the first card, start the first row.
-                        // For odd counters, just add the card content.
-                        if (counter == 1) {
-                            cardLayout = "<tr>" + cardLayout;
-                        }
-                        else {
-                            cardLayout += cardLayout;
-                        }
-                    }
-                    // Every second card, close the previous row.
-                    if (counter % 2 == 1 && counter > 1) {
-                        cardLayout += "</tr>";
-                    }
-                    counter++;
+                    $("#upcomingExams").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.ExamName + "</td><td>" + StartExam.toDateString() + ", " + StartExam.toLocaleTimeString() + "</td></tr>");
                 });
-                console.log(cardLayout);
-                $("#upcomingExams").append(cardLayout);
             }
         }, () => { });
     }
