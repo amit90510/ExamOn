@@ -288,6 +288,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SignOutController.cs" />
     <Compile Include="Controllers\StudDashboardController.cs" />
+    <Compile Include="Controllers\WebAdminDashboardController.cs" />
     <Compile Include="DataLayer\ApplicationDBContext.cs" />
     <Compile Include="DataLayer\DBConnection.cs" />
     <Compile Include="DataLayer\GenericModel.cs" />
@@ -416,6 +417,7 @@
     <Content Include="Content\logo\logo.png" />
     <Content Include="Content\sweetalert2.min.css" />
     <Content Include="Content\Template\EmailTemplate.html" />
+    <Content Include="DBS\AddAdminCredientialsToTenant.sql" />
     <Content Include="DBS\AddDBUser.sql" />
     <Content Include="DBS\AddServerLogin.sql" />
     <Content Include="DBS\DBMaster.sql" />
@@ -514,6 +516,7 @@
     <Content Include="Views\Shared\_DashboardLayoutPage.cshtml" />
     <Content Include="Views\StudDashboard\UpdateProfile.cshtml" />
     <Content Include="Views\StudDashboard\UpdatePassword.cshtml" />
+    <Content Include="Views\WebAdminDashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -57,6 +57,9 @@ namespace ExamOn.Controllers
                                         case "S":
                                             jsonData.Error = "StudDashboard";
                                             break;
+                                        case "A":
+                                            jsonData.Error = "WebAdminDashboard";
+                                            break;
                                         default:
                                             jsonData.Error = "";
                                             break;
@@ -71,7 +74,7 @@ namespace ExamOn.Controllers
                                     {
                                         jsonData.StatusCode = 1;
                                         FormsAuthentication.SetAuthCookie(AuthorizeService.SetIdentityCookieValue(tbllogin.FirstOrDefault().id, tbllogin.FirstOrDefault().TenantToken, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString(), loginparams.UserName), false);
-                                        HubContext.Notify(false, "", $"We have verified you. <br/> हमने आपका सत्यापन कर लिया है।", true, false, false, ViewBag.srKey);
+                                        HubContext.Notify(false, "", $"We have verified you, preparing your dashboard.<br/> हमने आपका सत्यापन कर लिया है, आपका डैशबोर्ड तैयार किया जा रहा है, कृपया प्रतीक्षा करें", true, false, false, ViewBag.srKey);
                                         DapperService.ExecuteQueryMultiple("Delete from TblloginHistory where userName = @userName and LoginDate <= DATEADD(DAY, -5, GETDATE());Insert into TblloginHistory values(@username, @Ip, @browser, GetDate())", new { username = loginparams.UserName, Ip = LoginStatics.GetIp(), browser = LoginStatics.GetBrowser() }, tenantMasters.Select(e => e.TenantDBName).FirstOrDefault().ToString()).ConfigureAwait(false);
                                     }
                                 }

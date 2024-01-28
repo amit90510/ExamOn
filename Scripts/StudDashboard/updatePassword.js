@@ -22,7 +22,7 @@
 
             ServerData("/StudDashboard/UpdateUserProfilePassword", "Post", loginObj, (data) => {
                 if (data && data.StatusCode == "1") {
-                    setTimeout(() => { location.href = "signout" }, 6000);
+                    setTimeout(() => { location.href = "signout" }, 4000);
                 }
             }, () => { });
         }
