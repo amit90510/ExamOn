@@ -4,6 +4,7 @@
 }
 <a class="btn btn-danger" href="~/signout"> Logout from web admin?</a>
 <hr />
+<script src="~/Scripts/moment.min.js"></script>
 <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
 <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -35,10 +36,10 @@
                 Email
                 <input type="text" class="form-control" id="txtTenantEMail" placeholder="tenant Email">
                 Subscription  End date
-                <input type="text" class="form-control" id="txtSubscriptionENdDate" placeholder="Subcription end Date">
+                <input type="text" class="form-control" id="txtSubscriptionENdDate" placeholder="Subcription end Date" width="312">
 
                 <script>
-                    $('#txtSubscriptionENdDate').datetimepicker({ footer: true, modal: false, header: true, format: "dd/mm/yyyy hh:MM tt" });
+                    $('#txtSubscriptionENdDate').datetimepicker({ footer: true, modal: false, header: true, format: "dd-mm-yyyy hh:MM tt" });
                 </script>
                 Last Recharge Amount
                 <input type="text" class="form-control" id="txtTenantEMail" placeholder="Last Recharge Amount">
