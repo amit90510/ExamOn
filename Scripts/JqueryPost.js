@@ -38,7 +38,7 @@ function SwalFire(title, text, icon, footer, thenCallback, html='') {
 }
 
 //below 2 function is for saving date and datetime to sql DB
-function toSaveSqlDBDateFormat(dt, sourceformat = 'dd-mm-yyyy', targetformat = 'YYYY-MM-DD') {
+function toSaveSqlDBDateFormat(dt, sourceformat = 'DD-MM-YYYY', targetformat = 'YYYY-MM-DD') {
     if (dt) {
         return moment(dt, sourceformat).format(targetformat)
     }
@@ -56,14 +56,22 @@ function toSaveSqlDBDateTimeFormat(dtime, sourceformat = 'dd/mm/yyyy hh:mm a', t
 
 
 //below 2 function is for showing date and datetime from sql DB to UI
-function toShowSqlDateinUI(dt, sourceformat = 'YYYY-MM-DD', targetformat = 'dd-mm-yyyy') {
+function toShowSqlDateinUI(dt, sourceformat = 'YYYY-MM-DD', targetformat = 'DD-MM-YYYY') {
     if (dt) {
-        return toSaveSqlDBDateFormat(dt, sourceformat, targetformat);
+        return toSaveSqlDBDateFormat(moment(examOn_dateParse_util(dt)).format(sourceformat), sourceformat, targetformat);
     }
 }
 
 function toShowSqlDatetimeinUI(dtime, sourceFormat = 'YYYY-MM-DDTHH:mm:ss', targetdateFormat = 'DD-MM-YYYY hh:mm a') {
     if (dtime) {
-        return toSaveSqlDBDateFormat(dtime, sourceFormat, targetdateFormat);
+        return toSaveSqlDBDateFormat(moment(examOn_dateParse_util(dtime)).format(sourceFormat), sourceFormat, targetdateFormat);
+    }
+}
+
+function examOn_dateParse_util(val) {
+    if (val) {
+        var mydate = val;
+        var dateVal = parseInt(mydate.substr(6));
+        return new Date(dateVal);
     }
 }

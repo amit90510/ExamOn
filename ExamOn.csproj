@@ -314,6 +314,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExamOn.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\genericModel.cs" />
     <Compile Include="Models\tblactivityHistory.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
@@ -412,9 +413,11 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Animate.css" />
+    <Content Include="Content\gijgo.min.css" />
     <Content Include="Content\images\UserProfile.jpg" />
     <Content Include="Content\logo\logo-Compress.png" />
     <Content Include="Content\logo\logo.png" />
+    <Content Include="Content\select2.min.css" />
     <Content Include="Content\sweetalert2.min.css" />
     <Content Include="Content\Template\EmailTemplate.html" />
     <Content Include="DBS\AddAdminCredientialsToTenant.sql" />
@@ -479,8 +482,12 @@
       <DependentUpon>ExamOn.edmx</DependentUpon>
     </Content>
     <Content Include="DataLayer\States.json" />
+    <Content Include="fonts\gijgo-material.eot" />
+    <Content Include="fonts\gijgo-material.ttf" />
+    <Content Include="fonts\gijgo-material.woff" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\Dashboard.js" />
+    <Content Include="Scripts\gijgo.min.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.js" />
@@ -497,6 +504,7 @@
     <Content Include="Scripts\JqueryPost.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\StudDashboard\updatePassword.js" />
     <Content Include="Scripts\StudDashboard\updateProfile.js" />
     <Content Include="Scripts\sweetalert2.all.min.js" />

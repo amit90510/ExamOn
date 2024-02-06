@@ -36,7 +36,7 @@ namespace ExamOn.Controllers
             JsonData jsonData = new JsonData();
             try
             {
-                using (IDbConnection db = new SqlConnection(DBConnection.GetConnectionString("ExamOn_Master")))
+                using (IDbConnection db = new SqlConnection(DBConnection.GetConnectionString(WebConfigurationManager.AppSettings["ExamOnMasterDB"])))
                 {
                     string[] token = loginparams.UserName.Split('-');
                     var tenantMasters = db.Query<tblTenantMaster>("select * from tbltenantmaster where TenantUniqueKey = @keyvalue", new { keyvalue = token[0] });
