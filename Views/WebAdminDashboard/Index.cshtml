@@ -15,15 +15,13 @@
 </div>
 <br />
 <hr />
-<div class="accordion accordion-flush" id="accordionFlushExample">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+<div class="row" id="accordionFlushExample">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header text-dark bg-warning">
                 Update Tenant (you can perform this operation once you have create tenant DB and a recordin tenant Master table)
-            </button>
-        </h2>
-        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">
+            </div>
+            <div class="card-body">
                 Tenant ID
                 <input type="text" class="form-control" id="txtTenantId" placeholder="tenant ID (can not be changed)" readonly="readonly" style="background-color:grey !important">
                 Tenant Name
@@ -46,102 +44,245 @@
                 Last Recharge Amount
                 <input type="number" class="form-control" id="txtTenantLastRecharge" placeholder="Last Recharge Amount">
                 <br />
-
-                <button class="btn btn-danger" onclick="UpdateTenant()">Update</button>
+            </div>
+            <div class="card-footer text-muted">
+                <button class="btn btn-success" onclick="UpdateTenant()">Update</button>
+                <button class="btn btn-success" onclick="UpdateTenant(this)">Update and Email</button>
             </div>
         </div>
     </div>
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                Create Instructor/Teacher/Tenant Admin Login
-            </button>
-        </h2>
-        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header text-white bg-danger">
+                Create Logins
+            </div>
+            <div class="card-body">
                 <select style="cursor:pointer" id="txtloginType" class="form-select" onchange="">
                     <option>Choose login type...</option>
                 </select>
+                <br />
+                UserName (this will be auto picked by system as per tenent ID)
+                <input type="text" class="form-control" id="txtNewUserName" placeholder="Username (this is readonly)" readonly="readonly" style="background-color:grey !important">
+                <br />
+                Profile Name (mendatory)
+                <input type="text" class="form-control" id="txtProfileName" placeholder="Profile Name" maxlength="50">
+                <br />
+                Password (mendatory)
+                <input type="text" class="form-control" id="txtUserPasssword" placeholder="User Password" maxlength="50">
+                <br />
+                Email (mendatory)
+                <input type="email" class="form-control" id="txtUserEMail" placeholder="User Email" maxlength="100">
+                <br />
+            </div>
+            <div class="card-footer text-muted">
+                <button class="btn btn-success" onclick="CreateLogin()">Create</button>
+                <button class="btn btn-success" onclick="CreateLogin(this)">Create and Email</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header text-white bg-danger">
+                Update Email Credientials
+            </div>
+            <div class="card-body">
+                Email From Address
+                <input type="email" class="form-control" id="txtNewEMailFromAddress" placeholder="Email From Address" maxlength="50">
+                <br />
+                Password (mendatory)
+                <input type="text" class="form-control" id="txtUserEmailPasssword" placeholder="User Password" maxlength="50">
+                <br />
+            </div>
+            <div class="card-footer text-muted">
+                <button class="btn btn-success" onclick="UpdateEMailCredientials()">Update</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header text-white bg-danger">
+               Set Login status
+            </div>
+            <div class="card-body">
+                <select style="cursor:pointer; width:100%" id="txtAvailablelogins" class="form-select js-example-basic-single" onchange="">
+                    <option>Choose logins...</option>
+                </select>
+                <br />
+                <hr />
+                <label for="chkActive">Active :</label> <input style="cursor:pointer" type="checkbox" class="chkbox" id="chkActive" />
+                <br />
+                <label for="chkBlock">Block :</label> <input type="checkbox" style="cursor:pointer" class="chkbox" id="chkBlock" />
+                <br />
+                Block Message
+                <input type="text" class="form-control" id="txtuserBlockmessage" placeholder="User block message" maxlength="100">
+                <br />
+            </div>
+            <div class="card-footer text-muted">
+                <button class="btn btn-success" onclick="">Update</button>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(() => {
-        $('.js-example-basic-single').select2({ width: 'resolve' });
-        ServerData("/WebAdminDashboard/GetAllTenants", "Post", null, (data) => {
-            if (data && data.StatusCode == "1") {
-                $('#txtTenant').html('');
-                $('#txtTenant').append($("<option selected></option>").attr("value", "").text('Choose Tenant first'));
-                $.each(data.Data, function (key, value) {
-                    $('#txtTenant').append($("<option></option>").attr("value", value.TenantUniqueKey).text(value.TenantDBName));
-                });
-            }
-        }, () => { });
 
-        ServerData("/WebAdminDashboard/GetAllLoginType", "Post", null, (data) => {
-            if (data && data.StatusCode == "1") {
-                $('#txtloginType').html('');
-                $('#txtloginType').append($("<option selected></option>").attr("value", "").text('Choose login type first'));
-                $.each(data.Data, function (key, value) {
-                    $('#txtloginType').append($("<option></option>").attr("value", value.Type).text(value.TypeName));
-                });
-            }
-        }, () => { });
-    });
 
-    function OnTenantCHange(select) {
-        if (select && select.value) {
-            var loginObj = {
-                "TenantUniqueKey": select.value.trim()
-            }
-            ServerData("/WebAdminDashboard/GetTenantDetails", "Post", loginObj, (data) => {
+    <script type="text/javascript">
+        $(document).ready(() => {
+            $("#accordionFlushExample").hide();
+            $('.js-example-basic-single').select2({ width: 'resolve' });
+            $('#chkbox').checkbox();
+            ServerData("/WebAdminDashboard/GetAllTenants", "Post", null, (data) => {
                 if (data && data.StatusCode == "1") {
-                    $("#txtTenantId").val(data.Data.id);
-                    $("#txtTenantName").val(data.Data.TenantName);
-                    $("#txtAddress").val(data.Data.TenantAddress);
-                    $("#txtTenantMobile").val(data.Data.TenantMobile);
-                    $("#txtTenantEMail").val(data.Data.TenantEmail);
-                    $("#txtTenantLastRecharge").val(data.Data.RechargeAmount);
-                    $("#txtTenantsubscriptionEndMessage").val(data.Data.SubscriptionEndMessage);
-                    $("#txtSubscriptionENdDate").val(toShowSqlDateinUI(data.Data.SubscriptionEndDate));
+                    $('#txtTenant').html('');
+                    $('#txtTenant').append($("<option selected></option>").attr("value", "").text('Choose Tenant first'));
+                    $.each(data.Data, function (key, value) {
+                        $('#txtTenant').append($("<option></option>").attr("value", value.TenantUniqueKey).text(value.TenantDBName));
+                    });
                 }
             }, () => { });
-        } else {
-            $("#txtTenantId").val('');
-            $("#txtTenantName").val('');
-            $("#txtAddress").val('');
-            $("#txtTenantMobile").val('');
-            $("#txtTenantEMail").val('');
-            $("#txtTenantLastRecharge").val('');
-            $("#txtTenantsubscriptionEndMessage").val('');
-            $("#txtSubscriptionENdDate").val(toShowSqlDateinUI(''));
-        }
-    }
 
-    function UpdateTenant() {
-        if ($("#txtTenantId").val() && $("#txtTenant").val()) {
-            var PassObj = {
-                "id": $("#txtTenantId").val().trim(),
-                "TenantName": $("#txtTenantName").val().trim(),
-                "TenantAddress": $("#txtAddress").val().trim(),
-                "TenantAddress": $("#txtAddress").val().trim(),
-                "TenantEmail": $("#txtTenantEMail").val().trim(),
-                "TenantMobile": $("#txtTenantMobile").val().trim(),
-                "SubscriptionEndMessage": $("#txtTenantsubscriptionEndMessage").val().trim(),
-                "RechargeAmount": $("#txtTenantLastRecharge").val().trim(),
-                "SubscriptionEndDate": toSaveSqlDBDateFormat($("#txtSubscriptionENdDate").val().trim())
-            }
-            ServerData("/WebAdminDashboard/SaveTenantDetails", "Post", PassObj, (data) => {
+            ServerData("/WebAdminDashboard/GetAllLoginType", "Post", null, (data) => {
                 if (data && data.StatusCode == "1") {
-                    OnTenantCHange(document.getElementById('txtTenant'));
-                    SwalFire('Tenant details Updated', 'Updated', 'success', null, () => { }, "");
-                } else {
-                    SwalFire('Tenant details not found', data.Error, 'error', null, () => { }, "");
+                    $('#txtloginType').html('');
+                    $('#txtloginType').append($("<option selected></option>").attr("value", "").text('Choose login type first'));
+                    $.each(data.Data, function (key, value) {
+                        $('#txtloginType').append($("<option></option>").attr("value", value.Type).text(value.TypeName));
+                    });
                 }
             }, () => { });
-        } else {
-            SwalFire('Tenant details not found', 'details not found, either you did not select any tenant or data not found for selected tenant', 'error', null, () => { }, "");
+            try {
+                document.getElementsByTagName('footer')[0].hidden = true
+            }
+            catch { }
+        });
+
+        function OnTenantCHange(select) {
+            if (select && select.value) {
+                $("#accordionFlushExample").show();
+                var loginObj = {
+                    "TenantUniqueKey": select.value.trim()
+                }
+                ServerData("/WebAdminDashboard/GetTenantDetails", "Post", loginObj, (data) => {
+                    if (data && data.StatusCode == "1") {
+                        $("#txtTenantId").val(data.Data.id);
+                        $("#txtTenantName").val(data.Data.TenantName);
+                        $("#txtAddress").val(data.Data.TenantAddress);
+                        $("#txtTenantMobile").val(data.Data.TenantMobile);
+                        $("#txtTenantEMail").val(data.Data.TenantEmail);
+                        $("#txtTenantLastRecharge").val(data.Data.RechargeAmount);
+                        $("#txtTenantsubscriptionEndMessage").val(data.Data.SubscriptionEndMessage);
+                        $("#txtSubscriptionENdDate").val(toShowSqlDateinUI(data.Data.SubscriptionEndDate));
+                    }
+                }, () => { });
+
+                GetUserUserName();
+                GetEmailCredientials();
+                getAvailablelogins();
+            } else {
+                $("#txtTenantId").val('');
+                $("#txtTenantName").val('');
+                $("#txtAddress").val('');
+                $("#txtTenantMobile").val('');
+                $("#txtTenantEMail").val('');
+                $("#txtTenantLastRecharge").val('');
+                $("#txtTenantsubscriptionEndMessage").val('');
+                $("#txtSubscriptionENdDate").val(toShowSqlDateinUI(''));
+                $("#accordionFlushExample").hide();
+                $("#txtNewUserName").val('');
+                $("#txtProfileName").val('');
+                $("#txtUserPasssword").val('');
+                $("#txtUserEMail").val('');
+                $("#txtNewEMailFromAddress").val('');
+                $("#txtUserEmailPasssword").val('');
+                $("#txtuserBlockmessage").val('');
+                $("#txtuserBlockmessage").val('');
+                $('#chkbox').checkbox().state('unchecked');
+                $('#txtAvailablelogins').empty();
+            }
         }
-    }
-</script>
+
+        function UpdateTenant(email) {
+            if ($("#txtTenantId").val() && $("#txtTenant").val()) {
+                var PassObj = {
+                    "id": $("#txtTenantId").val().trim(),
+                    "TenantName": $("#txtTenantName").val().trim(),
+                    "TenantAddress": $("#txtAddress").val().trim(),
+                    "TenantAddress": $("#txtAddress").val().trim(),
+                    "TenantEmail": $("#txtTenantEMail").val().trim(),
+                    "TenantMobile": $("#txtTenantMobile").val().trim(),
+                    "SubscriptionEndMessage": $("#txtTenantsubscriptionEndMessage").val().trim(),
+                    "RechargeAmount": $("#txtTenantLastRecharge").val().trim(),
+                    "SubscriptionEndDate": toSaveSqlDBDateFormat($("#txtSubscriptionENdDate").val().trim())
+                }
+                let urlhit = email ? "/WebAdminDashboard/SaveTenantDetailsMail" : "/WebAdminDashboard/SaveTenantDetails";
+                ServerData(urlhit, "Post", PassObj, (data) => {
+                    if (data && data.StatusCode == "1") {
+                        OnTenantCHange(document.getElementById('txtTenant'));
+                        SwalFire('Tenant details Updated', 'Updated', 'success', null, () => { }, "");
+                    } else {
+                        SwalFire('Tenant details not found', data.Error, 'error', null, () => { }, "");
+                    }
+                }, () => { });
+            } else {
+                SwalFire('Tenant details not found', 'details not found, either you did not select any tenant or data not found for selected tenant', 'error', null, () => { }, "");
+            }
+        }
+
+        function GetUserUserName() {
+            ServerData("/WebAdminDashboard/GetNextRecordForUserName", "Post", null, (data) => {
+                if (data && data.StatusCode == "1") {
+                    $("#txtNewUserName").val(document.getElementById('txtTenant').value.trim() + '-' + data.Data);
+                }
+            }, () => { });
+        }
+
+        function CreateLogin(email) {
+            if ($("#txtloginType").val() && $("#txtProfileName").val() && $("#txtUserPasssword").val() && $("#txtUserEMail").val()) {
+
+            }
+            else {
+                SwalFire('Mandatory fields', 'all fields are mandatory for login create', 'error', null, () => { });
+            }
+        }
+
+        function GetEmailCredientials() {
+            ServerData("/WebAdminDashboard/GetTenantEmailCredientials", "Post", null, (data) => {
+                if (data && data.StatusCode == "1") {
+                    $("#txtNewEMailFromAddress").val(data.Data.UserName);
+                    $("#txtUserEmailPasssword").val(data.Data.Password);
+                }
+            }, () => { });
+        }
+
+        function UpdateEMailCredientials() {
+            if ($("#txtNewEMailFromAddress").val() && $("#txtUserEmailPasssword").val()) {
+                var loginObj = {
+                    "UserName": $("#txtNewEMailFromAddress").val().trim(),
+                    "Password": $("#txtUserEmailPasssword").val().trim()
+                }
+                ServerData("/WebAdminDashboard/UpdateTenantEMailCredientials", "Post", loginObj, (data) => {
+                    if (data && data.StatusCode == "1") {
+                        GetEmailCredientials();
+                        SwalFire('Tenant email credientials Updated', 'Updated', 'success', null, () => { }, "");
+                    } else {
+                        SwalFire('Tenant email credientials not updated', data.Error, 'error', null, () => { }, "");
+                    }
+                }, () => { });
+            }
+            else {
+                SwalFire('Mandatory fields', 'all fields are mandatory for Emailcredientials Update', 'error', null, () => { });
+            }
+        }
+
+        function getAvailablelogins() {
+            $('#txtAvailablelogins').html('');
+            ServerData("/WebAdminDashboard/GetTenantAvailablelogins", "Post", null, (data) => {
+                if (data && data.StatusCode == "1") {
+                    $('#txtAvailablelogins').append($("<option selected></option>").attr("value", "").text('Choose Login first'));
+                    $.each(data.Data, function (key, value) {
+                        $('#txtAvailablelogins').append($("<option></option>").attr("value", value.Username).text(value.EmailId));
+                    });
+                }
+            }, () => { });
+        }
+
+    </script>
