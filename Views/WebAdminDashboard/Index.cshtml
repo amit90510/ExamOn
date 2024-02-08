@@ -228,7 +228,7 @@
                 if (data && data.StatusCode == "1") {
                     $("#txtNewUserName").val(document.getElementById('txtTenant').value.trim() + '-' + data.Data);
                     if (ovverride) {
-                        creatLoginOverride();
+                        creatLoginOverride(email);
                     }
                 }
             }, () => { });
@@ -241,7 +241,7 @@
                 SwalFire('Mandatory fields', 'all fields are mandatory for login create', 'error', null, () => { });
             }
         }
-        function creatLoginOverride() {
+        function creatLoginOverride(email) {
             let UserObj = {
                 "UserName": $('#txtNewUserName').val().trim(),
                 "ProfileName": $('#txtProfileName').val().trim(),
@@ -250,7 +250,8 @@
                 "LoginType": $("#txtloginType").val(),
                 "TenantToken": $("#txtTenant").val()
             }
-            ServerData("/WebAdminDashboard/CreateUserLogin", "Post", UserObj, (data) => {
+            let hiturl = email ? "/WebAdminDashboard/CreateUserLogin?Isemail=1" : "/WebAdminDashboard/CreateUserLogin";
+            ServerData(hiturl, "Post", UserObj, (data) => {
                 GetUserUserName();
                 if (data && data.StatusCode == "1") {                    
                     SwalFire('Created', 'User login is created', 'success', null, () => { }, "");

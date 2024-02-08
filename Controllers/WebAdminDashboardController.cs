@@ -227,7 +227,7 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> CreateUserLogin([FromBody] CreateUserLogins createUserLogins)
+        public async Task<JsonResult> CreateUserLogin([FromBody] CreateUserLogins createUserLogins, string Isemail = "0")
         {
             JsonData jsonData = new JsonData();
             string response = DapperService.ExecuteQueryResponse("Insert into tbllogin(username, password, EmailId, TenantToken, LoginType) values(@username, @password, @EmailId, @TenantToken, @LoginType); insert into tbluserProfile(username,RealName) values(@username,@RealName);",
@@ -243,6 +243,10 @@ namespace ExamOn.Controllers
             if (string.IsNullOrEmpty(response))
             {
                 jsonData.StatusCode = 1;
+                if(Isemail == "1")
+                {
+                    EmailService.SendEmail(new string[] { createUserLogins.Email }, "ExamOn : Congratulation !!", $"Hi {createUserLogins.ProfileName},<br/>Your profile has been created by web admininstrator, Please find below details", $"<br> Username - {createUserLogins.UserName} <br/> Password - {createUserLogins.Password}");
+                }
             }
             else
             {
