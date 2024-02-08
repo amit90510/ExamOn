@@ -104,21 +104,22 @@
                Set Login status
             </div>
             <div class="card-body">
-                <select style="cursor:pointer; width:100%" id="txtAvailablelogins" class="form-select js-example-basic-single" onchange="">
+                <select style="cursor:pointer; width:100%" id="txtAvailablelogins" class="form-select js-example-basic-single" onchange="getLoginStatusByUserName(this)">
                     <option>Choose logins...</option>
                 </select>
                 <br />
                 <hr />
                 <label for="chkActive">Active :</label> <input style="cursor:pointer" type="checkbox" class="chkbox" id="chkActive" />
                 <br />
+                <br />
                 <label for="chkBlock">Block :</label> <input type="checkbox" style="cursor:pointer" class="chkbox" id="chkBlock" />
                 <br />
-                Block Message
-                <input type="text" class="form-control" id="txtuserBlockmessage" placeholder="User block message" maxlength="100">
+                <br />
+                <input type="text" class="form-control" id="txtuserBlockmessage" placeholder="User block message" maxlength="100" style="display:none">
                 <br />
             </div>
             <div class="card-footer text-muted">
-                <button class="btn btn-success" onclick="">Update</button>
+                <button class="btn btn-success" onclick="UpdateLoginStatus()">Update</button>
             </div>
         </div>
     </div>
@@ -129,7 +130,6 @@
         $(document).ready(() => {
             $("#accordionFlushExample").hide();
             $('.js-example-basic-single').select2({ width: 'resolve' });
-            $('#chkbox').checkbox();
             ServerData("/WebAdminDashboard/GetAllTenants", "Post", null, (data) => {
                 if (data && data.StatusCode == "1") {
                     $('#txtTenant').html('');
@@ -154,7 +154,6 @@
             }
             catch { }
         });
-
         function OnTenantCHange(select) {
             if (select && select.value) {
                 $("#accordionFlushExample").show();
@@ -194,12 +193,10 @@
                 $("#txtNewEMailFromAddress").val('');
                 $("#txtUserEmailPasssword").val('');
                 $("#txtuserBlockmessage").val('');
-                $("#txtuserBlockmessage").val('');
-                $('#chkbox').checkbox().state('unchecked');
                 $('#txtAvailablelogins').empty();
+                $('.chkbox').prop('checked', false);
             }
         }
-
         function UpdateTenant(email) {
             if ($("#txtTenantId").val() && $("#txtTenant").val()) {
                 var PassObj = {
@@ -226,22 +223,42 @@
                 SwalFire('Tenant details not found', 'details not found, either you did not select any tenant or data not found for selected tenant', 'error', null, () => { }, "");
             }
         }
-
-        function GetUserUserName() {
+        function GetUserUserName(ovverride, email) {
             ServerData("/WebAdminDashboard/GetNextRecordForUserName", "Post", null, (data) => {
                 if (data && data.StatusCode == "1") {
                     $("#txtNewUserName").val(document.getElementById('txtTenant').value.trim() + '-' + data.Data);
+                    if (ovverride) {
+                        creatLoginOverride();
+                    }
                 }
             }, () => { });
         }
-
         function CreateLogin(email) {
             if ($("#txtloginType").val() && $("#txtProfileName").val() && $("#txtUserPasssword").val() && $("#txtUserEMail").val()) {
-
+                GetUserUserName(true, email);
             }
             else {
                 SwalFire('Mandatory fields', 'all fields are mandatory for login create', 'error', null, () => { });
             }
+        }
+        function creatLoginOverride() {
+            let UserObj = {
+                "UserName": $('#txtNewUserName').val().trim(),
+                "ProfileName": $('#txtProfileName').val().trim(),
+                "Password": $('#txtUserPasssword').val().trim(),
+                "Email": $('#txtUserEMail').val().trim(),
+                "LoginType": $("#txtloginType").val(),
+                "TenantToken": $("#txtTenant").val()
+            }
+            ServerData("/WebAdminDashboard/CreateUserLogin", "Post", UserObj, (data) => {
+                GetUserUserName();
+                if (data && data.StatusCode == "1") {                    
+                    SwalFire('Created', 'User login is created', 'success', null, () => { }, "");
+                } else {
+                    SwalFire('User login can not be created', data.Error, 'error', null, () => { }, "");
+                }
+               
+            }, () => { });
         }
 
         function GetEmailCredientials() {
@@ -252,7 +269,6 @@
                 }
             }, () => { });
         }
-
         function UpdateEMailCredientials() {
             if ($("#txtNewEMailFromAddress").val() && $("#txtUserEmailPasssword").val()) {
                 var loginObj = {
@@ -272,17 +288,53 @@
                 SwalFire('Mandatory fields', 'all fields are mandatory for Emailcredientials Update', 'error', null, () => { });
             }
         }
-
         function getAvailablelogins() {
             $('#txtAvailablelogins').html('');
             ServerData("/WebAdminDashboard/GetTenantAvailablelogins", "Post", null, (data) => {
                 if (data && data.StatusCode == "1") {
                     $('#txtAvailablelogins').append($("<option selected></option>").attr("value", "").text('Choose Login first'));
                     $.each(data.Data, function (key, value) {
-                        $('#txtAvailablelogins').append($("<option></option>").attr("value", value.Username).text(value.EmailId));
+                        $('#txtAvailablelogins').append($("<option></option>").attr("value", value.UserName).text(value.EmailId));
                     });
                 }
             }, () => { });
         }
-
+        function getLoginStatusByUserName(userName) {
+            $("#txtuserBlockmessage").val('');
+            $('.chkbox').prop('checked', false);
+            if (userName && userName.value.trim()) {
+                let UserObj = {
+                    "UserName": userName.value.trim()
+                }
+                ServerData("/WebAdminDashboard/GetUserLoginStatus", "Post", UserObj, (data) => {
+                    if (data && data.StatusCode == "1") {
+                        if (data.Data.Active) {
+                            $("#chkActive").prop('checked', true);
+                        }
+                        if (data.Data.BlockLogin) {
+                            $("#chkBlock").prop('checked', true);
+                        }
+                        $("#txtuserBlockmessage").val(data.Data.BlockMessage);
+                    }
+                }, () => { });
+            }
+        }
+        function UpdateLoginStatus() {
+            if ($('#txtAvailablelogins').val()) {
+                let UserObj = {
+                    "UserName": $('#txtAvailablelogins').val().trim(),
+                    "Active": $("#chkActive").prop('checked') ? 1 : 0,
+                    "BlockLogin": $("#chkBlock").prop('checked') ? 1 : 0
+                }
+                ServerData("/WebAdminDashboard/UpdateUserLoginStatus", "Post", UserObj, (data) => {
+                    if (data && data.StatusCode == "1") {
+                        SwalFire('Updated','User status is updated',  'success', null, () => { }, "");
+                    } else {
+                        SwalFire('User login status is updated', data.Error, 'error', null, () => { }, "");
+                    }
+                }, () => { });
+            } else {
+                SwalFire('Mandatory fields', 'Please choose login first to set status', 'error', null, () => { });
+            }
+        }
     </script>

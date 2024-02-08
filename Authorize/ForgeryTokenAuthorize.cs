@@ -27,9 +27,16 @@ namespace ExamOn.Authorize
                     var cookieValue = antiForgeryCookie != null
                         ? antiForgeryCookie.Value
                         : null;
-
-                    AntiForgery.Validate(cookieValue, request.Headers["__RequestVerificationToken"]);
-                    filterContext.Controller.ViewBag.srKey = signalRConnectionCookieValue;
+                    try
+                    {
+                        AntiForgery.Validate(cookieValue, request.Headers["__RequestVerificationToken"]);
+                        filterContext.Controller.ViewBag.srKey = signalRConnectionCookieValue;
+                    }
+                    catch
+                    {
+                        throw new HttpAntiForgeryException();
+                       //filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary(new { controller = "SignOut", action = "Go" }));
+                    }
                 }
                 else
                 {

@@ -295,6 +295,7 @@
     <Compile Include="DataLayer\GetDataModel\UpcomingExamGetModel.cs" />
     <Compile Include="DataLayer\GetDataModel\UserShiftAssociation.cs" />
     <Compile Include="DataLayer\JsonResponse.cs" />
+    <Compile Include="DataLayer\ViewPostData\CreateUserLogins.cs" />
     <Compile Include="DataLayer\ViewPostData\UpdateProfile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -1,5 +1,6 @@
 ﻿using ExamOn.Authorize;
 using ExamOn.DataLayer;
+using ExamOn.DataLayer.ViewPostData;
 using ExamOn.Models;
 using ExamOn.ServiceLayer;
 using ExamOn.Utility;
@@ -57,7 +58,7 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetAllLoginType()
         {
             JsonData jsonData = new JsonData();
-            var logintype = DapperService.GetDapperData<tblloginType>("select type, TypeName  from tblloginType", null, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            var logintype = DapperService.GetDapperData<tblloginType>("select id as 'type', TypeName  from tblloginType", null, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
             if (logintype != null && logintype.Any())
             {
                 jsonData.StatusCode = 1;
@@ -182,6 +183,70 @@ namespace ExamOn.Controllers
             {
                 jsonData.StatusCode = 1;
                 jsonData.Data = response.ToList();
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetUserLoginStatus([FromBody] tbllogin tbllogin)
+        {
+            JsonData jsonData = new JsonData();
+            var response = DapperService.GetDapperData<tbllogin>("select top 1 Active, BlockLogin, BlockMessage from tbllogin where username = @username", new { username = tbllogin.UserName}, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            if (response != null && response.Any())
+            {
+                jsonData.StatusCode = 1;
+                jsonData.Data = response.FirstOrDefault();
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> UpdateUserLoginStatus([FromBody] tbllogin tbllogin)
+        {
+            JsonData jsonData = new JsonData();
+            string response = DapperService.ExecuteQueryResponse("update tbllogin set Active = @act, blockLogin = @bl where username = @username",
+                new
+                {
+                    username = tbllogin.UserName,
+                    act = tbllogin.Active,
+                    bl = tbllogin.BlockLogin,
+                    bm = tbllogin.BlockMessage
+                }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            if (string.IsNullOrEmpty(response))
+            {
+                jsonData.StatusCode = 1;
+            }
+            else
+            {
+                jsonData.Error = response;
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> CreateUserLogin([FromBody] CreateUserLogins createUserLogins)
+        {
+            JsonData jsonData = new JsonData();
+            string response = DapperService.ExecuteQueryResponse("Insert into tbllogin(username, password, EmailId, TenantToken, LoginType) values(@username, @password, @EmailId, @TenantToken, @LoginType); insert into tbluserProfile(username,RealName) values(@username,@RealName);",
+                new
+                {
+                    username = createUserLogins.UserName,
+                    password = createUserLogins.EncryptPassword,
+                    EmailId = createUserLogins.Email,
+                    TenantToken = createUserLogins.TenantToken,
+                    LoginType = createUserLogins.LoginType,
+                    RealName = createUserLogins.ProfileName
+                }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            if (string.IsNullOrEmpty(response))
+            {
+                jsonData.StatusCode = 1;
+            }
+            else
+            {
+                jsonData.Error = response;
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
