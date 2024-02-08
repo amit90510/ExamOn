@@ -34,7 +34,7 @@ namespace ExamOn.Authorize
                     }
                     catch
                     {
-                        throw new HttpAntiForgeryException("You need to login again, we are not able to verify you. Looks like someone is doing forgery. (आपको दोबारा लॉग इन करना होगा, हम आपको सत्यापित नहीं कर पा रहे हैं। ऐसा लग रहा है जैसे कोई फर्जीवाड़ा कर रहा है.)");
+                        throw new HttpAntiForgeryException("You need to login again, we are not able to verify you. Looks like someone is doing forgery. <br/> (आपको दोबारा लॉग इन करना होगा, हम आपको सत्यापित नहीं कर पा रहे हैं। ऐसा लग रहा है जैसे कोई फर्जीवाड़ा कर रहा है.)");
                        //filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary(new { controller = "SignOut", action = "Go" }));
                     }
                 }
