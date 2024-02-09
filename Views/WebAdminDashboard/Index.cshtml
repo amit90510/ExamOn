@@ -18,7 +18,7 @@
 <div class="row" id="accordionFlushExample">
     <div class="col-sm-6">
         <div class="card">
-            <div class="card-header text-dark bg-warning">
+            <div class="card-header text-dark bg-warning text-center">
                 Update Tenant (you can perform this operation once you have create tenant DB and a recordin tenant Master table)
             </div>
             <div class="card-body">
@@ -45,7 +45,7 @@
                 <input type="number" class="form-control" id="txtTenantLastRecharge" placeholder="Last Recharge Amount">
                 <br />
             </div>
-            <div class="card-footer text-muted">
+            <div class="card-footer text-muted ">
                 <button class="btn btn-success" onclick="UpdateTenant()">Update</button>
                 <button class="btn btn-success" onclick="UpdateTenant(this)">Update and Email</button>
             </div>
@@ -53,7 +53,7 @@
     </div>
     <div class="col-sm-6">
         <div class="card">
-            <div class="card-header text-white bg-danger">
+            <div class="card-header text-white bg-danger text-center">
                 Create Logins
             </div>
             <div class="card-body">
@@ -82,7 +82,7 @@
     </div>
     <div class="col-sm-6">
         <div class="card">
-            <div class="card-header text-white bg-danger">
+            <div class="card-header text-white bg-danger text-center">
                 Update Email Credientials
             </div>
             <div class="card-body">
@@ -100,8 +100,8 @@
     </div>
     <div class="col-sm-6">
         <div class="card">
-            <div class="card-header text-white bg-danger">
-               Set Login status
+            <div class="card-header text-white bg-danger text-center">
+                Set Login status
             </div>
             <div class="card-body">
                 <select style="cursor:pointer; width:100%" id="txtAvailablelogins" class="form-select js-example-basic-single" onchange="getLoginStatusByUserName(this)">
@@ -120,6 +120,41 @@
             </div>
             <div class="card-footer text-muted">
                 <button class="btn btn-success" onclick="UpdateLoginStatus()">Update</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header text-white bg-danger text-center">
+                Encryption/Decryption Phrases
+            </div>
+            <div class="card-body">
+                <br />
+                <input type="text" class="form-control" id="txtPassPhrase" placeholder="Enter Any Phrase input" maxlength="1000">
+                <br />
+                <textarea class="form-control" id="txtPassPhraseOutput" readonly="readonly" style="max-height:80px"></textarea>
+
+            </div>
+            <div class="card-footer text-muted">
+                <button class="btn btn-success" onclick="EncryptDecrypt()">Encrypt</button>
+                <button class="btn btn-success" onclick="EncryptDecrypt(this)">Decrypt</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header text-white bg-danger text-center">
+                Page Access Rights/ Permissions
+            </div>
+            <div class="card-body">
+                <select style="cursor:pointer" id="txtloginTypePermission" class="form-select" onchange="PermissionGrid(this)">
+                    <option>Choose login type...</option>
+                </select>
+                <br />
+                <table id="grid"></table>
+            </div>
+            <div class="card-footer text-muted">
+                <button class="btn btn-success" onclick="EncryptDecrypt()">Update</button>
             </div>
         </div>
     </div>
@@ -143,9 +178,12 @@
             ServerData("/WebAdminDashboard/GetAllLoginType", "Post", null, (data) => {
                 if (data && data.StatusCode == "1") {
                     $('#txtloginType').html('');
+                    $('#txtloginTypePermission').html('');
                     $('#txtloginType').append($("<option selected></option>").attr("value", "").text('Choose login type first'));
+                    $('#txtloginTypePermission').append($("<option selected></option>").attr("value", "").text('Choose login type first'));
                     $.each(data.Data, function (key, value) {
                         $('#txtloginType').append($("<option></option>").attr("value", value.Type).text(value.TypeName));
+                        $('#txtloginTypePermission').append($("<option></option>").attr("value", value.Type).text(value.TypeName));
                     });
                 }
             }, () => { });
@@ -193,10 +231,40 @@
                 $("#txtNewEMailFromAddress").val('');
                 $("#txtUserEmailPasssword").val('');
                 $("#txtuserBlockmessage").val('');
+                $("#txtPassPhrase").val('');
                 $('#txtAvailablelogins').empty();
                 $('.chkbox').prop('checked', false);
+                $('#txtPassPhraseOutput').val('');
+                $('#txtloginTypePermission').html('');
+                $('#txtloginType').html('');
             }
         }
+        function PermissionGrid(typeID) {
+            if (typeID) {
+                var PassObj = {
+                    "userType": typeID.value.trim()
+                }
+                ServerData("/WebAdminDashboard/GetUserAccessTypePermission", "Post", PassObj, (data) => {
+                    if (data && data.StatusCode == "1") {
+                        $('#grid').grid('destroy', true, true);
+                        $('#grid').grid({
+                            primaryKey: 'ID',
+                            uiLibrary: "bootstrap4",
+                            dataSource:data.Data,
+                            columns: [
+                                { field: 'ID', width: 1, hidden: true },
+                                { field: 'Route', sortable: true },
+                                { field: 'IsActive', title: 'Active?', type: 'checkbox', width: 90, align: 'center' }
+                            ],
+                            pager: { limit: 5 }
+                        });
+                    } else {
+                        SwalFire('Permission not updated', data.Error, 'error', null, () => { }, "");
+                    }
+                }, () => { });
+            }
+        }
+
         function UpdateTenant(email) {
             if ($("#txtTenantId").val() && $("#txtTenant").val()) {
                 var PassObj = {
@@ -336,6 +404,23 @@
                 }, () => { });
             } else {
                 SwalFire('Mandatory fields', 'Please choose login first to set status', 'error', null, () => { });
+            }
+        }
+        function EncryptDecrypt(decrypt) {
+            if ($('#txtPassPhrase').val()) {
+                let UserObj = {
+                    "phrase": $('#txtPassPhrase').val().trim(),
+                    "isDecrypt": decrypt ? true : false
+                }
+                ServerData("/WebAdminDashboard/GetEncryptDecryptionString", "Post", UserObj, (data) => {
+                    if (data && data.StatusCode == "1") {
+                        $('#txtPassPhraseOutput').val(data.Data);
+                    } else {
+                        $('#txtPassPhraseOutput').val(data.Error);
+                    }
+                }, () => { });
+            } else {
+                SwalFire('Mandatory fields', 'Please enter input string to encrypt/decrypt', 'error', null, () => { });
             }
         }
     </script>

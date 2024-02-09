@@ -1,5 +1,6 @@
 ﻿using ExamOn.Authorize;
 using ExamOn.DataLayer;
+using ExamOn.DataLayer.GetDataModel;
 using ExamOn.DataLayer.ViewPostData;
 using ExamOn.Models;
 using ExamOn.ServiceLayer;
@@ -7,6 +8,7 @@ using ExamOn.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
@@ -252,6 +254,71 @@ namespace ExamOn.Controllers
             {
                 jsonData.Error = response;
             }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetEncryptDecryptionString(string phrase, bool isDecrypt = false)
+        {
+            JsonData jsonData = new JsonData();
+            try
+            {
+                if (isDecrypt)
+                {
+                    jsonData.Data = EncryptionDecryption.DecryptString(phrase);
+                    jsonData.StatusCode = 1;
+                }
+                else
+                {
+                    jsonData.Data = EncryptionDecryption.EncryptString(phrase);
+                    jsonData.StatusCode = 1;
+                }
+            }
+            catch(Exception excEnc)
+            {
+                jsonData.Error = excEnc.Message;
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetUserAccessTypePermission(int userType)
+        {
+            JsonData jsonData = new JsonData();
+            Assembly asm = Assembly.GetExecutingAssembly();
+           var controllers =  asm.GetTypes()
+                .Where(type => typeof(Controller).IsAssignableFrom(type))
+                .SelectMany(type => type.GetMethods())
+                .Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute)));
+            jsonData.StatusCode = 1;
+            int counter = 1;
+            List<UserTypeAccessPermission> userTypeAccessPermissionsList = new List<UserTypeAccessPermission>();
+            var response = DapperService.GetDapperData<tblUserTypeAccess>("select * from tblUserTypeAccess where TypeId = @typeID", new { typeID = userType }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+                     
+            foreach (var paths in controllers.Where(e => !string.IsNullOrEmpty(e.DeclaringType.Name) 
+            && !string.IsNullOrEmpty(e.Name) 
+            && e.DeclaringType.Name != "Controller"
+            && e.DeclaringType.Name != "ControllerBase"
+            && e.DeclaringType.Name != "Object"))
+            {
+                UserTypeAccessPermission userTypeAccessPermission = new UserTypeAccessPermission();
+                if (response != null && response.Any())
+                {
+                    var isAvailable = response.ToList().Where(e => e.UserPath.Equals(paths.DeclaringType.Name + " / " + paths.Name, StringComparison.OrdinalIgnoreCase));
+                    if (isAvailable != null && isAvailable.Any())
+                    {
+                        userTypeAccessPermission.IsActive = true;
+                    }
+                }
+                userTypeAccessPermission.ID = counter;
+                userTypeAccessPermission.Route = paths.DeclaringType.Name + "/" + paths.Name;
+                userTypeAccessPermissionsList.Add(userTypeAccessPermission);
+                counter++;
+            }
+            jsonData.Data = userTypeAccessPermissionsList.ToArray();
+
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }
