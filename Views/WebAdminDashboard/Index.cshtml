@@ -240,7 +240,7 @@
             }
         }
         function PermissionGrid(typeID) {
-            if (typeID) {
+            if (typeID && typeID.value) {
                 var PassObj = {
                     "userType": typeID.value.trim()
                 }
@@ -250,11 +250,13 @@
                         $('#grid').grid({
                             primaryKey: 'ID',
                             uiLibrary: "bootstrap4",
-                            dataSource:data.Data,
+                            dataSource: data.Data,
+                            iconsLibrary: 'fontawesome',
+                            headerFilter: true,
                             columns: [
-                                { field: 'ID', width: 1, hidden: true },
+                                { field: 'ID', width: 1, hidden: true, filterable: false },
                                 { field: 'Route', sortable: true },
-                                { field: 'IsActive', title: 'Active?', type: 'checkbox', width: 90, align: 'center' }
+                                { field: 'IsActive', title: 'Active?', type: 'checkbox', width: 90, align: 'center', editor: true, mode: 'editOnly', filterable: false }
                             ],
                             pager: { limit: 5 }
                         });
@@ -262,6 +264,8 @@
                         SwalFire('Permission not updated', data.Error, 'error', null, () => { }, "");
                     }
                 }, () => { });
+            } else {
+                $('#grid').grid('destroy', true, true);
             }
         }
 
