@@ -248,6 +248,15 @@
                 ServerData("/WebAdminDashboard/GetUserAccessTypePermission", "Post", PassObj, (data) => {
                     if (data && data.StatusCode == "1") {
                         $('#grid').grid('destroy', true, true);
+                        var IsActiveRender = function (value, record, $cell, $displayEl) {
+                            let ctrl = record.IsActive ? "<div class='form-check form-switch' style='display: inline-block;'><input class='form-check-input' style='cursor:pointer'  checked type='checkbox' id='" + record.ID + "'></div>" : "<div class='form-check form-switch' style='display: inline-block;'><input class='form-check-input' style='cursor:pointer' type='checkbox' id='" + record.ID + "'></div>";
+
+                            var $btn = $(ctrl).on('click', function () {
+                                $('#grid').grid().getById($(this.children[0]).prop('id')).IsActive = $(this.children[0]).prop('checked') ? true : false;
+                            });
+                            $displayEl.empty().append($btn);
+                        };
+
                         $('#grid').grid({
                             primaryKey: 'ID',
                             uiLibrary: "bootstrap4",
@@ -257,7 +266,7 @@
                             columns: [
                                 { field: 'ID', width: 1, hidden: true, filterable: false },
                                 { field: 'Route', sortable: true },
-                                { field: 'IsActive', title: 'Active?', type: 'checkbox', width: 90, align: 'center', editor: true, mode: 'editOnly', filterable: false }
+                                { field: 'IsActive', title: 'Active?', width: 90, align: 'center', renderer: IsActiveRender, filterable: false }
                             ],
                             pager: { limit: 5, sizes: [5, 10, 20] }
                         });

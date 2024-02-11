@@ -302,13 +302,13 @@ namespace ExamOn.Controllers
             && e.DeclaringType.Name != "Controller"
             && e.DeclaringType.Name != "ControllerBase"
             && e.DeclaringType.Name != "Object"
-            //&& e.Name.EndsWith("Go", StringComparison.OrdinalIgnoreCase)
+            && e.Name.EndsWith("Go", StringComparison.OrdinalIgnoreCase)
             ))
             {
                 UserTypeAccessPermission userTypeAccessPermission = new UserTypeAccessPermission();
                 if (response != null && response.Any())
                 {
-                    var isAvailable = response.ToList().Where(e => e.UserPath.Equals(paths.DeclaringType.Name + " / " + paths.Name, StringComparison.OrdinalIgnoreCase));
+                    var isAvailable = response.ToList().Where(e => e.UserPath.Equals(paths.DeclaringType.Name + "/" + paths.Name, StringComparison.OrdinalIgnoreCase));
                     if (isAvailable != null && isAvailable.Any())
                     {
                         userTypeAccessPermission.IsActive = true;
