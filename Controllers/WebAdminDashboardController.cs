@@ -326,9 +326,28 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> UpdatePermissions([FromBody] UserTypeAccessPermission[] userTypeAccessPermissions)
+        public async Task<JsonResult> UpdatePermissions([FromBody] UserTypeAccessPermission[] userTypeAccessPermissions, int TypeId)
         {
             JsonData jsonData = new JsonData();
+            string response = string.Empty;
+            foreach (var item in userTypeAccessPermissions)
+            {
+               response = DapperService.ExecuteQueryResponse("IF NOT EXISTS ( SELECT * FROM tblUserTypeAccess WHERE userPath = @path and typeId = @typeId ) BEGIN IF(@active = 1) Begin INSERT INTO tblUserTypeAccess(typeId,UserPath) values(@typeId, @path) End END ELSE Begin IF(@active = 0) Begin Delete from tblUserTypeAccess where userPath = @path and typeId = @typeId End END",
+               new
+               {
+                   @path = item.Route,
+                   @typeId = TypeId,
+                   @active = item.IsActive ? 1 : 0
+               }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));               
+            }
+            if (string.IsNullOrEmpty(response))
+            {
+                jsonData.StatusCode = 1;
+            }
+            else
+            {
+                jsonData.Error = response;
+            }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }

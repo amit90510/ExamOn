@@ -154,7 +154,7 @@
                 <table id="grid"></table>
             </div>
             <div class="card-footer text-muted">
-                <button class="btn btn-success" onclick="UpdatePermission()" id="btnUpdatePermission">Update first [5] records</button>
+                <button class="btn btn-success" onclick="UpdatePermission()" id="btnUpdatePermission" style="display:none">Update first [5] records</button>
                 <button class="btn btn-success" onclick="UpdatePermission(true)">Update All</button>
             </div>
         </div>
@@ -268,7 +268,7 @@
                             });
                         }
                     } else {
-                        SwalFire('Permission not updated', data.Error, 'error', null, () => { }, "");
+                        SwalFire('Permission not getted', data.Error, 'error', null, () => { }, "");
                     }
                 }, () => { });
             } else {
@@ -281,11 +281,12 @@
                 let loopCount = All ? $("#grid").grid().getAll(true).length : $("[data-role='record-last']")[0].innerText;
                 if (loopCount > 0) {
                     let records = $("#grid").grid().getAll(true);
-                    ServerData("/WebAdminDashboard/UpdatePermissions", "Post", records.filter((rec, idx) => idx < parseInt(loopCount)), (data) => {
+                    ServerData("/WebAdminDashboard/UpdatePermissions?TypeId="+$("#txtloginTypePermission").val(), "Post", records.filter((rec, idx) => idx < parseInt(loopCount)), (data) => {
                         if (data && data.StatusCode == "1") {
-                           
+                            SwalFire('Updated', 'Permission Updated', 'success', null, () => { }, "");
+                            PermissionGrid(document.getElementById("txtloginTypePermission"));
                         } else {
-                           
+                            SwalFire('Permission not updated', data.Error, 'error', null, () => { }, "");
                         }
                     }, () => { });
                 }
