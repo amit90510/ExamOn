@@ -12,7 +12,8 @@ namespace ExamOn.Models
     using ExamOn.DataLayer;
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class tbluserProfile : GenericModel
     {
         public long id { get; set; }
@@ -24,5 +25,8 @@ namespace ExamOn.Models
         public string RealName { get; set; }
     
         public virtual tblshift tblshift { get; set; }
+
+        [NotMapped]
+        public Nullable<int> LoginType { get; set; }
     }
 }

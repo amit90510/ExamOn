@@ -24,9 +24,27 @@ namespace ExamOn.Authorize
             }
             else
             {
-                var userProfile = DapperService.GetDapperData<tbluserProfile>("select top 1 RealName,UserName from tbluserProfile where username = @username", new { @username = AuthorizeService.GetUserName(context.HttpContext.User.Identity.Name) });
-                context.Controller.ViewBag.RealName = userProfile.FirstOrDefault().RealName.ToUpperInvariant();
-                context.Controller.ViewBag.UserName = userProfile.FirstOrDefault().UserName;
+                var userProfile = DapperService.GetDapperData<tbluserProfile>("select top 1 tu.RealName,tu.UserName,tl.LoginType from tbluserProfile tu inner join tblLogin tl on tu.username = tl.username and tl.username = @username", new { @username = AuthorizeService.GetUserName(context.HttpContext.User.Identity.Name) });
+                if (userProfile != null && userProfile.Any())
+                {
+                    context.Controller.ViewBag.RealName = userProfile.FirstOrDefault().RealName.ToUpperInvariant();
+                    context.Controller.ViewBag.UserName = userProfile.FirstOrDefault().UserName;
+                    if (userProfile.FirstOrDefault().LoginType.HasValue)
+                    {
+                        var UserAccess = DapperService.GetDapperData<tblUserTypeAccess>("select top 1 id from tbluserProfile where TypeId = @typeID and UserPath = @path", new { @typeID = userProfile.FirstOrDefault().LoginType.Value, @path = context.ActionDescriptor.ControllerDescriptor.ControllerName + "/" + context.ActionDescriptor.ActionName });
+                        if(UserAccess == null || !UserAccess.Any())
+                        {
+                           // throw new HttpAntiForgeryException("You are not authorized to use this service as you don't have permission for this page. (आपको दोबारा लॉग इन करना होगा, आप इस सेवा का उपयोग करने के लिए अधिकृत नहीं हैं क्योंकि आपके पास इस पृष्ठ के लिए अनुमति नहीं है.)");
+                        }
+                    }
+                }
+                else
+                {
+                    context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                    {
+                        controller = "Login"
+                    }));
+                }
             }
         }
     }

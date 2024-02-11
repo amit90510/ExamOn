@@ -144,7 +144,7 @@
     <div class="col-sm-6">
         <div class="card">
             <div class="card-header text-white bg-danger text-center">
-                Page Access Rights/ Permissions
+                Page Access Rights/ Permissions (carefully assign permission for logins)
             </div>
             <div class="card-body">
                 <select style="cursor:pointer" id="txtloginTypePermission" class="form-select" onchange="PermissionGrid(this)">
@@ -154,7 +154,8 @@
                 <table id="grid"></table>
             </div>
             <div class="card-footer text-muted">
-                <button class="btn btn-success" onclick="EncryptDecrypt()">Update</button>
+                <button class="btn btn-success" onclick="UpdatePermission()" id="btnUpdatePermission">Update first [5] records</button>
+                <button class="btn btn-success" onclick="UpdatePermission(true)">Update All</button>
             </div>
         </div>
     </div>
@@ -258,14 +259,41 @@
                                 { field: 'Route', sortable: true },
                                 { field: 'IsActive', title: 'Active?', type: 'checkbox', width: 90, align: 'center', editor: true, mode: 'editOnly', filterable: false }
                             ],
-                            pager: { limit: 5 }
+                            pager: { limit: 5, sizes: [5, 10, 20] }
                         });
+                        if ($('#grid').grid()) {
+                            $('#grid').grid().on('pageSizeChange', function (e, newSize) {
+                                let visibleRecords = $("[data-role='record-last']")[0].innerText;
+                                $("#btnUpdatePermission").html('Update [' + visibleRecords + "] records");
+                            });
+                        }
                     } else {
                         SwalFire('Permission not updated', data.Error, 'error', null, () => { }, "");
                     }
                 }, () => { });
             } else {
                 $('#grid').grid('destroy', true, true);
+            }
+        }
+
+        function UpdatePermission(All) {
+            if ($("#txtloginTypePermission") && $("#txtloginTypePermission").val()) {
+                let loopCount = All ? $("#grid").grid().getAll(true).length : $("[data-role='record-last']")[0].innerText;
+                if (loopCount > 0) {
+                    let records = $("#grid").grid().getAll(true);
+                    ServerData("/WebAdminDashboard/UpdatePermissions", "Post", records.filter((rec, idx) => idx < parseInt(loopCount)), (data) => {
+                        if (data && data.StatusCode == "1") {
+                           
+                        } else {
+                           
+                        }
+                    }, () => { });
+                }
+                else {
+                    SwalFire('No Data Available', 'There is no data available for updating permission', 'error', null, () => { }, "");
+                }
+            } else {
+                SwalFire('Mendatory fields', 'Please select login type for updating permission', 'error', null, () => { }, "");
             }
         }
 

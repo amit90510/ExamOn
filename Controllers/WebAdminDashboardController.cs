@@ -301,7 +301,9 @@ namespace ExamOn.Controllers
             && !string.IsNullOrEmpty(e.Name) 
             && e.DeclaringType.Name != "Controller"
             && e.DeclaringType.Name != "ControllerBase"
-            && e.DeclaringType.Name != "Object"))
+            && e.DeclaringType.Name != "Object"
+            //&& e.Name.EndsWith("Go", StringComparison.OrdinalIgnoreCase)
+            ))
             {
                 UserTypeAccessPermission userTypeAccessPermission = new UserTypeAccessPermission();
                 if (response != null && response.Any())
@@ -319,6 +321,14 @@ namespace ExamOn.Controllers
             }
             jsonData.Data = userTypeAccessPermissionsList.ToArray();
 
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> UpdatePermissions([FromBody] UserTypeAccessPermission[] userTypeAccessPermissions)
+        {
+            JsonData jsonData = new JsonData();
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }
