@@ -224,5 +224,7 @@ GO
 
 ALTER TABLE [dbo].[tbluserProfile] CHECK CONSTRAINT [FK_tbluserProfile_tbllogin1]
 GO
+INSERT [dbo].[tblUserTypeAccess] ([TypeId], [UserPath], [UpdatedOn]) VALUES (3, N'WebAdminDashboardController/Go', CAST(N'2024-02-11' AS Date))
+GO
 
 
