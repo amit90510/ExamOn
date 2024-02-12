@@ -31,7 +31,7 @@ namespace ExamOn.Authorize
                     context.Controller.ViewBag.UserName = userProfile.FirstOrDefault().UserName;
                     if (userProfile.FirstOrDefault().LoginType.HasValue && context.ActionDescriptor.ActionName.EndsWith("Go", StringComparison.OrdinalIgnoreCase))
                     {
-                        var UserAccess = DapperService.GetDapperData<tblUserTypeAccess>("select top 1 id from tbluserProfile where TypeId = @typeID and UserPath = @path", new { @typeID = userProfile.FirstOrDefault().LoginType.Value, @path = context.ActionDescriptor.ControllerDescriptor.ControllerName + "/" + context.ActionDescriptor.ActionName });
+                        var UserAccess = DapperService.GetDapperData<tblUserTypeAccess>("select top 1 id from tblUserTypeAccess where TypeId = @typeID and UserPath = @path", new { @typeID = userProfile.FirstOrDefault().LoginType.Value, @path = context.ActionDescriptor.ControllerDescriptor.ControllerType.Name + "/" + context.ActionDescriptor.ActionName });
                         if(UserAccess == null || !UserAccess.Any())
                         {
                             throw new HttpAntiForgeryException("You are not authorized to use this service as you don't have permission for this page. (आपको दोबारा लॉग इन करना होगा, आप इस सेवा का उपयोग करने के लिए अधिकृत नहीं हैं क्योंकि आपके पास इस पृष्ठ के लिए अनुमति नहीं है.)");
