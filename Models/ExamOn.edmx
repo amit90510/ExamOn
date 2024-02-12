@@ -64,6 +64,7 @@
           <Property Name="ReviewAfterExam" Type="bit" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="UpdatedOn" Type="datetime" Nullable="false" />
+          <Property Name="SetByUserId" Type="bigint" />
         </EntityType>
         <EntityType Name="tblexamLive">
           <Key>
@@ -265,6 +266,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblexam_tbllogin">
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="0..1" />
+          <End Role="tblexam" Type="Self.tblexam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbllogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexam">
+              <PropertyRef Name="SetByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblexamLive_tblexam">
           <End Role="tblexam" Type="Self.tblexam" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -435,6 +448,9 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
           </ReferentialConstraint>
         </Association>
         <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_tbluserProfile_tbllogin1' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_tbluserProfile_tbllogin1" />-->
+        <!--Errors Found During Generation:
 warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
         <Association Name="FK_tblUserProfileImage_tbllogin" />-->
         <Association Name="FK_tblUserShift_tblshift">
@@ -511,6 +527,10 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <AssociationSet Name="FK_tblBatch_tblClass" Association="Self.FK_tblBatch_tblClass">
             <End Role="tblClass" EntitySet="tblClass" />
             <End Role="tblBatch" EntitySet="tblBatch" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblexam_tbllogin" Association="Self.FK_tblexam_tbllogin">
+            <End Role="tbllogin" EntitySet="tbllogin" />
+            <End Role="tblexam" EntitySet="tblexam" />
           </AssociationSet>
           <AssociationSet Name="FK_tblexamLive_tblexam" Association="Self.FK_tblexamLive_tblexam">
             <End Role="tblexam" EntitySet="tblexam" />
@@ -644,6 +664,8 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <NavigationProperty Name="tblexamLives" Relationship="Self.FK_tblexamLive_tblexam" FromRole="tblexam" ToRole="tblexamLive" />
           <NavigationProperty Name="tblexamSections" Relationship="Self.FK_tblexamSections_tblexam" FromRole="tblexam" ToRole="tblexamSections" />
           <NavigationProperty Name="tblexamStudents" Relationship="Self.FK_tblexamStudents_tblexam" FromRole="tblexam" ToRole="tblexamStudents" />
+          <Property Name="SetByUserId" Type="Int64" />
+          <NavigationProperty Name="tbllogin" Relationship="ExamOn_DummyModel.FK_tblexam_tbllogin" FromRole="tblexam" ToRole="tbllogin" />
         </EntityType>
         <EntityType Name="tblexamLive">
           <Key>
@@ -710,6 +732,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <NavigationProperty Name="tblexamStudents" Relationship="Self.FK_tblexamStudents_tbllogin" FromRole="tbllogin" ToRole="tblexamStudents" />
           <NavigationProperty Name="tblloginType" Relationship="Self.FK_tbllogin_tblloginType" FromRole="tbllogin" ToRole="tblloginType" />
           <NavigationProperty Name="tbltenant" Relationship="Self.FK_tbllogin_tbltenant" FromRole="tbllogin" ToRole="tbltenant" />
+          <NavigationProperty Name="tblexams" Relationship="ExamOn_DummyModel.FK_tblexam_tbllogin" FromRole="tbllogin" ToRole="tblexam" />
         </EntityType>
         <EntityType Name="tblloginType">
           <Key>
@@ -1086,6 +1109,10 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             <End Role="tbluserProfile" EntitySet="tbluserProfiles" />
             <End Role="tblUserShift" EntitySet="tblUserShifts" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblexam_tbllogin" Association="ExamOn_DummyModel.FK_tblexam_tbllogin">
+            <End Role="tbllogin" EntitySet="tbllogins" />
+            <End Role="tblexam" EntitySet="tblexams" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -1175,6 +1202,18 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblexam_tbllogin">
+          <End Type="ExamOn_DummyModel.tbllogin" Role="tbllogin" Multiplicity="0..1" />
+          <End Type="ExamOn_DummyModel.tblexam" Role="tblexam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbllogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblexam">
+              <PropertyRef Name="SetByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1232,6 +1271,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySetMapping Name="tblexams">
             <EntityTypeMapping TypeName="ExamOn_DummyModel.tblexam">
               <MappingFragment StoreEntitySet="tblexam">
+                <ScalarProperty Name="SetByUserId" ColumnName="SetByUserId" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ExamName" ColumnName="ExamName" />
                 <ScalarProperty Name="Instructions" ColumnName="Instructions" />

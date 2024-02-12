@@ -34,6 +34,7 @@ namespace ExamOn.Models
         public bool ReviewAfterExam { get; set; }
         public bool Active { get; set; }
         public System.DateTime UpdatedOn { get; set; }
+        public Nullable<long> SetByUserId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblexamLive> tblexamLives { get; set; }
@@ -41,5 +42,6 @@ namespace ExamOn.Models
         public virtual ICollection<tblexamSection> tblexamSections { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblexamStudent> tblexamStudents { get; set; }
+        public virtual tbllogin tbllogin { get; set; }
     }
 }
