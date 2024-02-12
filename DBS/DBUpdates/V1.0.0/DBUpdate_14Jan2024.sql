@@ -227,4 +227,5 @@ GO
 INSERT [dbo].[tblUserTypeAccess] ([TypeId], [UserPath], [UpdatedOn]) VALUES (3, N'WebAdminDashboardController/Go', CAST(N'2024-02-11' AS Date))
 GO
 
-
+  update tblloginType set TypeName = 'Tenant Admin' where TypeName = 'Admin'
+  GO

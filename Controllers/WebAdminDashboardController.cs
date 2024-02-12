@@ -303,6 +303,7 @@ namespace ExamOn.Controllers
             && e.DeclaringType.Name != "ControllerBase"
             && e.DeclaringType.Name != "Object"
             && e.Name.EndsWith("Go", StringComparison.OrdinalIgnoreCase)
+            && e.CustomAttributes.Any(p=>p.AttributeType.Name.Equals("AuthorizeAction", StringComparison.OrdinalIgnoreCase))
             ))
             {
                 UserTypeAccessPermission userTypeAccessPermission = new UserTypeAccessPermission();

@@ -285,9 +285,11 @@
     <Compile Include="Authorize\AuthorizeService.cs" />
     <Compile Include="Authorize\ForgeryTokenAuthorize.cs" />
     <Compile Include="Controllers\ForgotPassWordController.cs" />
+    <Compile Include="Controllers\InstructorTeacherDashboardController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SignOutController.cs" />
     <Compile Include="Controllers\StudDashboardController.cs" />
+    <Compile Include="Controllers\TenantAdminDashboardController.cs" />
     <Compile Include="Controllers\WebAdminDashboardController.cs" />
     <Compile Include="DataLayer\ApplicationDBContext.cs" />
     <Compile Include="DataLayer\DBConnection.cs" />
@@ -531,6 +533,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\InstructorTeacherDashboard\" />
+    <Folder Include="Views\TenantAdmin\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

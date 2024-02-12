@@ -60,6 +60,12 @@ namespace ExamOn.Controllers
                                         case "W":
                                             jsonData.Error = "WebAdminDashboard";
                                             break;
+                                        case "T":
+                                            jsonData.Error = "InstructorTeacherDashboard";
+                                            break;
+                                        case "A":
+                                            jsonData.Error = "TenantAdminDashboard";
+                                            break;
                                         default:
                                             jsonData.Error = "";
                                             break;
