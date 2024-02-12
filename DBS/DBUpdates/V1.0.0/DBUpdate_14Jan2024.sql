@@ -228,4 +228,101 @@ INSERT [dbo].[tblUserTypeAccess] ([TypeId], [UserPath], [UpdatedOn]) VALUES (3, 
 GO
 
   update tblloginType set TypeName = 'Tenant Admin' where TypeName = 'Admin'
-  GO
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [FK_tblexam_tbllogin]
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [DF_tblexam_CreatedOn]
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [DF_tblexam_Active]
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [DF_tblexam_ReviewAfterExam]
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [DF_tblexam_ResultAfterExam]
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [DF_tblexam_FullScreen]
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [DF_tblexam_KeyBoardBlock]
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [DF_tblexam_EntryAllowedTill]
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [DF_tblexam_End]
+GO
+
+ALTER TABLE [dbo].[tblexam] DROP CONSTRAINT [DF_tblexam_Start]
+GO
+
+/****** Object:  Table [dbo].[tblexam]    Script Date: 12-02-2024 04:12:23 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblexam]') AND type in (N'U'))
+DROP TABLE [dbo].[tblexam]
+GO
+
+/****** Object:  Table [dbo].[tblexam]    Script Date: 12-02-2024 04:12:23 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblexam](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[ExamName] [varchar](500) NOT NULL,
+	[Instructions] [varchar](1500) NULL,
+	[StartExam] [datetime] NOT NULL,
+	[EndExam] [datetime] NOT NULL,
+	[EntryAllowedTill] [datetime] NOT NULL,
+	[KeyBoardBlock] [bit] NOT NULL,
+	[FullScreen] [bit] NOT NULL,
+	[ResultAfterExam] [bit] NOT NULL,
+	[ReviewAfterExam] [bit] NOT NULL,
+	[Active] [bit] NOT NULL,
+	[UpdatedOn] [datetime] NOT NULL,
+	[SetByUserId] [bigint] NULL,
+ CONSTRAINT [PK_tblexam] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblexam] ADD  CONSTRAINT [DF_tblexam_Start]  DEFAULT (getdate()) FOR [StartExam]
+GO
+
+ALTER TABLE [dbo].[tblexam] ADD  CONSTRAINT [DF_tblexam_End]  DEFAULT (dateadd(day,(1),getdate())) FOR [EndExam]
+GO
+
+ALTER TABLE [dbo].[tblexam] ADD  CONSTRAINT [DF_tblexam_EntryAllowedTill]  DEFAULT (dateadd(minute,(15),getdate())) FOR [EntryAllowedTill]
+GO
+
+ALTER TABLE [dbo].[tblexam] ADD  CONSTRAINT [DF_tblexam_KeyBoardBlock]  DEFAULT ((1)) FOR [KeyBoardBlock]
+GO
+
+ALTER TABLE [dbo].[tblexam] ADD  CONSTRAINT [DF_tblexam_FullScreen]  DEFAULT ((1)) FOR [FullScreen]
+GO
+
+ALTER TABLE [dbo].[tblexam] ADD  CONSTRAINT [DF_tblexam_ResultAfterExam]  DEFAULT ((1)) FOR [ResultAfterExam]
+GO
+
+ALTER TABLE [dbo].[tblexam] ADD  CONSTRAINT [DF_tblexam_ReviewAfterExam]  DEFAULT ((1)) FOR [ReviewAfterExam]
+GO
+
+ALTER TABLE [dbo].[tblexam] ADD  CONSTRAINT [DF_tblexam_Active]  DEFAULT ((1)) FOR [Active]
+GO
+
+ALTER TABLE [dbo].[tblexam] ADD  CONSTRAINT [DF_tblexam_CreatedOn]  DEFAULT (getdate()) FOR [UpdatedOn]
+GO
+
+ALTER TABLE [dbo].[tblexam]  WITH CHECK ADD  CONSTRAINT [FK_tblexam_tbllogin] FOREIGN KEY([SetByUserId])
+REFERENCES [dbo].[tbllogin] ([id])
+GO
+
+ALTER TABLE [dbo].[tblexam] CHECK CONSTRAINT [FK_tblexam_tbllogin]
+GO
