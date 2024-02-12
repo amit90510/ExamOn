@@ -61,8 +61,13 @@
                     <option>Choose login type...</option>
                 </select>
                 <br />
-                UserName (this will be auto picked by system as per tenent ID)
-                <input type="text" class="form-control" id="txtNewUserName" placeholder="Username (this is readonly)" readonly="readonly" style="background-color:grey !important">
+                <input class="form-check-input" type="checkbox" value="" id="chkUseCustomUserName">
+                <label class="form-check-label" for="chkUseCustomUserName">
+                    Use my Custom UserName
+                </label>
+                <br />
+                UserName (this will be auto picked by system as per tenent ID, you can change but make sure to add prefix (tenantID-))
+                <input type="text" class="form-control" id="txtNewUserName" placeholder="Username (this is readonly)" style="background-color:grey !important">
                 <br />
                 Profile Name (mendatory)
                 <input type="text" class="form-control" id="txtProfileName" placeholder="Profile Name" maxlength="50">
@@ -336,7 +341,15 @@
         function GetUserUserName(ovverride, email) {
             ServerData("/WebAdminDashboard/GetNextRecordForUserName", "Post", null, (data) => {
                 if (data && data.StatusCode == "1") {
-                    $("#txtNewUserName").val(document.getElementById('txtTenant').value.trim() + '-' + data.Data);
+
+                    if ($("#chkUseCustomUserName").prop('checked')) {
+                        if ($("#txtNewUserName").val() && !$("#txtNewUserName").val().includes(document.getElementById('txtTenant').value.trim() + '-')) {
+                            SwalFire('WrongUser Name format', 'user name should be like ' + document.getElementById('txtTenant').value.trim() + '-{your name}', 'error', null, () => { }, '');
+                            return;
+                        }
+                    } else {
+                        $("#txtNewUserName").val(document.getElementById('txtTenant').value.trim() + '-' + data.Data);
+                    }
                     if (ovverride) {
                         creatLoginOverride(email);
                     }

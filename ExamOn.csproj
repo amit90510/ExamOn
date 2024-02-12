@@ -530,10 +530,10 @@
     <Content Include="Views\StudDashboard\UpdateProfile.cshtml" />
     <Content Include="Views\StudDashboard\UpdatePassword.cshtml" />
     <Content Include="Views\WebAdminDashboard\Index.cshtml" />
+    <Content Include="Views\InstructorTeacherDashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\InstructorTeacherDashboard\" />
     <Folder Include="Views\TenantAdmin\" />
   </ItemGroup>
   <ItemGroup>
