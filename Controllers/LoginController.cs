@@ -52,24 +52,7 @@ namespace ExamOn.Controllers
                                 if (tbllogin.FirstOrDefault().Active)
                                 {
                                     var tblloginType = mainDB.Query<tblloginType>("select Type from tblloginType where id = @typeId", new { typeId = tbllogin.FirstOrDefault().LoginType });
-                                    switch (tblloginType.FirstOrDefault().Type.ToUpper())
-                                    {
-                                        case "S":
-                                            jsonData.Error = "StudDashboard";
-                                            break;
-                                        case "W":
-                                            jsonData.Error = "WebAdminDashboard";
-                                            break;
-                                        case "T":
-                                            jsonData.Error = "InstructorTeacherDashboard";
-                                            break;
-                                        case "A":
-                                            jsonData.Error = "TenantAdminDashboard";
-                                            break;
-                                        default:
-                                            jsonData.Error = "";
-                                            break;
-                                    }
+                                    jsonData.Error = LoginToDashboardMapper.WhichDashboard(tblloginType.FirstOrDefault().Type);
                                     //check for block login
                                     if (tbllogin.FirstOrDefault().BlockLogin.Value)
                                     {

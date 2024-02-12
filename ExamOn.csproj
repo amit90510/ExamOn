@@ -298,6 +298,7 @@
     <Compile Include="DataLayer\GetDataModel\UserShiftAssociation.cs" />
     <Compile Include="DataLayer\GetDataModel\UserTypeAccessPermission.cs" />
     <Compile Include="DataLayer\JsonResponse.cs" />
+    <Compile Include="DataLayer\LoginToDashboardMapper.cs" />
     <Compile Include="DataLayer\ViewPostData\CreateUserLogins.cs" />
     <Compile Include="DataLayer\ViewPostData\UpdateProfile.cs" />
     <Compile Include="Global.asax.cs">

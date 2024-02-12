@@ -28,5 +28,8 @@ namespace ExamOn.Models
 
         [NotMapped]
         public Nullable<int> LoginType { get; set; }
+
+        [NotMapped]
+        public string LoginTypeName { get; set; }
     }
 }
