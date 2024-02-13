@@ -25,12 +25,13 @@ namespace ExamOn.Authorize
             }
             else
             {
-                var userProfile = DapperService.GetDapperData<tbluserProfile>("select top 1 tu.RealName,tu.UserName,tl.LoginType,tt.Type as LoginTypeName from tbluserProfile tu inner join tblLogin tl on tu.username = tl.username inner join tblloginType tt on tt.id = tl.logintype and tl.username = @username", new { @username = AuthorizeService.GetUserName(context.HttpContext.User.Identity.Name) });
+                var userProfile = DapperService.GetDapperData<tbluserProfile>("select top 1 tu.RealName,tu.UserName,tl.LoginType,tt.Type as LoginTypeName, tl.id from tbluserProfile tu inner join tblLogin tl on tu.username = tl.username inner join tblloginType tt on tt.id = tl.logintype and tl.username = @username", new { @username = AuthorizeService.GetUserName(context.HttpContext.User.Identity.Name) });
                 if (userProfile != null && userProfile.Any())
                 {
                     context.Controller.ViewBag.RealName = userProfile.FirstOrDefault().RealName.ToUpperInvariant();
                     context.Controller.ViewBag.UserName = userProfile.FirstOrDefault().UserName;
                     context.Controller.ViewBag.DashboardLink = LoginToDashboardMapper.WhichDashboard(userProfile.FirstOrDefault().LoginTypeName);
+                    context.Controller.ViewBag.LoginId =userProfile.FirstOrDefault().id;
                     if (userProfile.FirstOrDefault().LoginType.HasValue && context.ActionDescriptor.ActionName.EndsWith("Go", StringComparison.OrdinalIgnoreCase))
                     {
                         var UserAccess = DapperService.GetDapperData<tblUserTypeAccess>("select top 1 id from tblUserTypeAccess where TypeId = @typeID and UserPath = @path", new { @typeID = userProfile.FirstOrDefault().LoginType.Value, @path = context.ActionDescriptor.ControllerDescriptor.ControllerType.Name + "/" + context.ActionDescriptor.ActionName });

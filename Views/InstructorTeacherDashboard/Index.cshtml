@@ -141,10 +141,29 @@
             }
         }, () => { });
     }
+
+    function getUpcomingExamsListSetBYTeacher() {
+        ServerData("/InstructorTeacherDashboard/GetUpcomingExamsSetByTeacher", "Post", null, (data) => {
+            if (data.StatusCode == 1) {
+                $("#upcomingExams").html('');
+                let counter = 1;
+                let cardLayout = "";
+                data.Data.forEach((item) => {
+                    let StartExam = examOn_dateParse(item.StartExam);
+                    let updatedOn = examOn_dateParse(item.updatedOn);
+                    let EntryAllowedTill = examOn_dateParse(item.EntryAllowedTill);
+                    item.ExamName = item.ExamName.length > 15 ? item.ExamName.substring(0, 15) + "..." : item.ExamName;
+                    $("#upcomingExams").append("<tr><th scope='row'>" + (counter++) + "</th><td>" + item.ExamName + "</td><td>" + StartExam.toDateString() + ", " + StartExam.toLocaleTimeString() + "</td></tr>");
+                });
+            }
+        }, () => { });
+    }
+
     $(document).ready(() => {
         getLoginHistory();
         getAssociationHistory();
         getGetLicenceExpireHistory();
         GetShiftAssociation();
+        getUpcomingExamsListSetBYTeacher();
     });
 </script>

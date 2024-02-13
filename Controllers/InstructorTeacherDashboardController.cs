@@ -1,5 +1,6 @@
 ﻿using ExamOn.Authorize;
 using ExamOn.DataLayer;
+using ExamOn.DataLayer.GetDataModel;
 using ExamOn.Models;
 using ExamOn.ServiceLayer;
 using System;
@@ -21,14 +22,14 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> GetAssocaitionHistory()
+        public async Task<JsonResult> GetUpcomingExamsSetByTeacher()
         {
             JsonData jsonData = new JsonData();
-            var tenantData = DapperService.GetDapperData<tbltenant>("select TenantName, TenantMobile, TenantEmail, SubscriptionEndDate from tblTenant where Id = @id", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) });
-            if (tenantData != null && tenantData.Any())
+            var upcomingExamGetModel = DapperService.GetDapperDataDynamic<UpcomingExamGetModel>("select  top 5 e.ExamName, e.StartExam, e.updatedOn, e.EntryAllowedTill, count(sec.id) as 'SectionCount' from tblexamStudents es inner join tblexam e on es.exam = e.id and e.Active = 1 and e.SetByUserId = @userID left join tblexamSections sec on e.id = sec.exam group by e.ExamName, e.StartExam, e.updatedOn, e.EntryAllowedTill", new { userID = ViewBag.LoginId });
+            if (upcomingExamGetModel != null && upcomingExamGetModel.Any())
             {
                 jsonData.StatusCode = 1;
-                jsonData.Data = tenantData.ToList();
+                jsonData.Data = upcomingExamGetModel.ToList();
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
