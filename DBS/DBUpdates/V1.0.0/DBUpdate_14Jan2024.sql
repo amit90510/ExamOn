@@ -326,3 +326,40 @@ GO
 
 ALTER TABLE [dbo].[tblexam] CHECK CONSTRAINT [FK_tblexam_tbllogin]
 GO
+
+CREATE TABLE [dbo].[tblTeacherInstructorShifts](
+	[id] [bigint] NOT NULL,
+	[LoginId] [bigint] NOT NULL,
+	[ShiftId] [bigint] NOT NULL,
+	[Active] [bit] NOT NULL,
+	[CreatedOn] [date] NOT NULL,
+	[UpdatedOn] [date] NOT NULL,
+ CONSTRAINT [PK_tblTeacherInstructorShifts] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblTeacherInstructorShifts] ADD  CONSTRAINT [DF_tblTeacherInstructorShifts_Active]  DEFAULT ((1)) FOR [Active]
+GO
+
+ALTER TABLE [dbo].[tblTeacherInstructorShifts] ADD  CONSTRAINT [DF_tblTeacherInstructorShifts_CreatedOn]  DEFAULT (getdate()) FOR [CreatedOn]
+GO
+
+ALTER TABLE [dbo].[tblTeacherInstructorShifts] ADD  CONSTRAINT [DF_tblTeacherInstructorShifts_UpdatedOn]  DEFAULT (getdate()) FOR [UpdatedOn]
+GO
+
+ALTER TABLE [dbo].[tblTeacherInstructorShifts]  WITH CHECK ADD  CONSTRAINT [FK_tblTeacherInstructorShifts_tbllogin] FOREIGN KEY([LoginId])
+REFERENCES [dbo].[tbllogin] ([id])
+GO
+
+ALTER TABLE [dbo].[tblTeacherInstructorShifts] CHECK CONSTRAINT [FK_tblTeacherInstructorShifts_tbllogin]
+GO
+
+ALTER TABLE [dbo].[tblTeacherInstructorShifts]  WITH CHECK ADD  CONSTRAINT [FK_tblTeacherInstructorShifts_tblshift] FOREIGN KEY([ShiftId])
+REFERENCES [dbo].[tblshift] ([id])
+GO
+
+ALTER TABLE [dbo].[tblTeacherInstructorShifts] CHECK CONSTRAINT [FK_tblTeacherInstructorShifts_tblshift]
+GO
