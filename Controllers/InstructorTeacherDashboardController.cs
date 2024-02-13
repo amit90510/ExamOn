@@ -22,6 +22,20 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetActiveTeacherAssociatedShift()
+        {
+            JsonData jsonData = new JsonData();
+            var userShiftProfile = DapperService.GetDapperDataDynamic<UserShiftAssociation>("select top 5 tc.ClassName, bt.Batch, sf.Shift  from tblTeacherInstructorShifts usf inner join tblshift sf on usf.shiftId = sf.id and usf.active = 1 and sf.Active = 1 and usf.Userid = @userID inner join tblbatch bt on sf.batch = bt.id and bt.Active =1 inner join tblclass tc on bt.class = tc.id and tc.Active = 1", new { userID = ViewBag.LoginId });
+            if (userShiftProfile != null && userShiftProfile.Any())
+            {
+                jsonData.StatusCode = 1;
+                jsonData.Data = userShiftProfile.ToList();
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
         public async Task<JsonResult> GetUpcomingExamsSetByTeacher()
         {
             JsonData jsonData = new JsonData();

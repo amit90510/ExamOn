@@ -131,7 +131,7 @@
         }, () => { });
     }
     function GetShiftAssociation() {
-        ServerData("/StudDashboard/GetShiftAssociation", "Post", null, (data) => {
+        ServerData("/InstructorTeacherDashboard/GetActiveTeacherAssociatedShift", "Post", null, (data) => {
             if (data.StatusCode == 1) {
                 $("#AssociationActivity").html('');
                 let counter = 1;

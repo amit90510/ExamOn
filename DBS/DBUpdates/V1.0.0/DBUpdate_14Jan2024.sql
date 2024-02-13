@@ -328,7 +328,7 @@ ALTER TABLE [dbo].[tblexam] CHECK CONSTRAINT [FK_tblexam_tbllogin]
 GO
 
 CREATE TABLE [dbo].[tblTeacherInstructorShifts](
-	[id] [bigint] NOT NULL,
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[LoginId] [bigint] NOT NULL,
 	[ShiftId] [bigint] NOT NULL,
 	[Active] [bit] NOT NULL,
@@ -363,3 +363,5 @@ GO
 
 ALTER TABLE [dbo].[tblTeacherInstructorShifts] CHECK CONSTRAINT [FK_tblTeacherInstructorShifts_tblshift]
 GO
+
+
