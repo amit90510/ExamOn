@@ -170,6 +170,17 @@
           <Property Name="Batch" Type="bigint" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblTeacherInstructorShifts">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="LoginId" Type="bigint" Nullable="false" />
+          <Property Name="ShiftId" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="date" Nullable="false" />
+          <Property Name="UpdatedOn" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbltenant">
           <Key>
             <PropertyRef Name="id" />
@@ -435,6 +446,30 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblTeacherInstructorShifts_tbllogin">
+          <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="1" />
+          <End Role="tblTeacherInstructorShifts" Type="Self.tblTeacherInstructorShifts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbllogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblTeacherInstructorShifts">
+              <PropertyRef Name="LoginId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTeacherInstructorShifts_tblshift">
+          <End Role="tblshift" Type="Self.tblshift" Multiplicity="1" />
+          <End Role="tblTeacherInstructorShifts" Type="Self.tblTeacherInstructorShifts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshift">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblTeacherInstructorShifts">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbluserProfile_tbllogin">
           <End Role="tblshift" Type="Self.tblshift" Multiplicity="0..1" />
           <End Role="tbluserProfile" Type="Self.tbluserProfile" Multiplicity="*" />
@@ -511,6 +546,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySet Name="tblQuestions" EntityType="Self.tblQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSection" EntityType="Self.tblSection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblshift" EntityType="Self.tblshift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTeacherInstructorShifts" EntityType="Self.tblTeacherInstructorShifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbltenant" EntityType="Self.tbltenant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbluserProfile" EntityType="Self.tbluserProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserProfileImage" EntityType="Self.tblUserProfileImage" Schema="dbo" store:Type="Tables" />
@@ -575,6 +611,14 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <AssociationSet Name="FK_tblshift_tblBatch" Association="Self.FK_tblshift_tblBatch">
             <End Role="tblBatch" EntitySet="tblBatch" />
             <End Role="tblshift" EntitySet="tblshift" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTeacherInstructorShifts_tbllogin" Association="Self.FK_tblTeacherInstructorShifts_tbllogin">
+            <End Role="tbllogin" EntitySet="tbllogin" />
+            <End Role="tblTeacherInstructorShifts" EntitySet="tblTeacherInstructorShifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTeacherInstructorShifts_tblshift" Association="Self.FK_tblTeacherInstructorShifts_tblshift">
+            <End Role="tblshift" EntitySet="tblshift" />
+            <End Role="tblTeacherInstructorShifts" EntitySet="tblTeacherInstructorShifts" />
           </AssociationSet>
           <AssociationSet Name="FK_tbluserProfile_tbllogin" Association="Self.FK_tbluserProfile_tbllogin">
             <End Role="tblshift" EntitySet="tblshift" />
@@ -733,6 +777,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <NavigationProperty Name="tblloginType" Relationship="Self.FK_tbllogin_tblloginType" FromRole="tbllogin" ToRole="tblloginType" />
           <NavigationProperty Name="tbltenant" Relationship="Self.FK_tbllogin_tbltenant" FromRole="tbllogin" ToRole="tbltenant" />
           <NavigationProperty Name="tblexams" Relationship="ExamOn_DummyModel.FK_tblexam_tbllogin" FromRole="tbllogin" ToRole="tblexam" />
+          <NavigationProperty Name="tblTeacherInstructorShifts" Relationship="ExamOn_DummyModel.FK_tblTeacherInstructorShifts_tbllogin" FromRole="tbllogin" ToRole="tblTeacherInstructorShift" />
         </EntityType>
         <EntityType Name="tblloginType">
           <Key>
@@ -775,6 +820,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <NavigationProperty Name="tblBatch" Relationship="Self.FK_tblshift_tblBatch" FromRole="tblshift" ToRole="tblBatch" />
           <NavigationProperty Name="tbluserProfiles" Relationship="Self.FK_tbluserProfile_tbllogin" FromRole="tblshift" ToRole="tbluserProfile" />
           <NavigationProperty Name="tblUserShifts" Relationship="ExamOn_DummyModel.FK_tblUserShift_tblshift" FromRole="tblshift" ToRole="tblUserShift" />
+          <NavigationProperty Name="tblTeacherInstructorShifts" Relationship="ExamOn_DummyModel.FK_tblTeacherInstructorShifts_tblshift" FromRole="tblshift" ToRole="tblTeacherInstructorShift" />
         </EntityType>
         <EntityType Name="tbltenant">
           <Key>
@@ -1113,6 +1159,15 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             <End Role="tbllogin" EntitySet="tbllogins" />
             <End Role="tblexam" EntitySet="tblexams" />
           </AssociationSet>
+          <EntitySet Name="tblTeacherInstructorShifts" EntityType="ExamOn_DummyModel.tblTeacherInstructorShift" />
+          <AssociationSet Name="FK_tblTeacherInstructorShifts_tbllogin" Association="ExamOn_DummyModel.FK_tblTeacherInstructorShifts_tbllogin">
+            <End Role="tbllogin" EntitySet="tbllogins" />
+            <End Role="tblTeacherInstructorShift" EntitySet="tblTeacherInstructorShifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTeacherInstructorShifts_tblshift" Association="ExamOn_DummyModel.FK_tblTeacherInstructorShifts_tblshift">
+            <End Role="tblshift" EntitySet="tblshifts" />
+            <End Role="tblTeacherInstructorShift" EntitySet="tblTeacherInstructorShifts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -1211,6 +1266,43 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             </Principal>
             <Dependent Role="tblexam">
               <PropertyRef Name="SetByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblTeacherInstructorShift">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="LoginId" Type="Int64" Nullable="false" />
+          <Property Name="ShiftId" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UpdatedOn" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="tbllogin" Relationship="ExamOn_DummyModel.FK_tblTeacherInstructorShifts_tbllogin" FromRole="tblTeacherInstructorShift" ToRole="tbllogin" />
+          <NavigationProperty Name="tblshift" Relationship="ExamOn_DummyModel.FK_tblTeacherInstructorShifts_tblshift" FromRole="tblTeacherInstructorShift" ToRole="tblshift" />
+        </EntityType>
+        <Association Name="FK_tblTeacherInstructorShifts_tbllogin">
+          <End Type="ExamOn_DummyModel.tbllogin" Role="tbllogin" Multiplicity="1" />
+          <End Type="ExamOn_DummyModel.tblTeacherInstructorShift" Role="tblTeacherInstructorShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbllogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblTeacherInstructorShift">
+              <PropertyRef Name="LoginId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTeacherInstructorShifts_tblshift">
+          <End Type="ExamOn_DummyModel.tblshift" Role="tblshift" Multiplicity="1" />
+          <End Type="ExamOn_DummyModel.tblTeacherInstructorShift" Role="tblTeacherInstructorShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshift">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblTeacherInstructorShift">
+              <PropertyRef Name="ShiftId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1457,6 +1549,18 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTeacherInstructorShifts">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblTeacherInstructorShift">
+              <MappingFragment StoreEntitySet="tblTeacherInstructorShifts">
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

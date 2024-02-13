@@ -371,6 +371,9 @@
     <Compile Include="Models\tblshift.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tblTeacherInstructorShift.cs">
+      <DependentUpon>ExamOn.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbltenant.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
