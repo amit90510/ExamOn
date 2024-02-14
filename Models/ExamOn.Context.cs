@@ -53,5 +53,8 @@ namespace ExamOn.Models
         public virtual DbSet<tblUserShift> tblUserShifts { get; set; }
         public virtual DbSet<tblTeacherInstructorShift> tblTeacherInstructorShifts { get; set; }
 
+        public virtual DbSet<tblStudentEnrollmentSignUp> tblStudentEnrollmentSignUps { get; set; }
+
+
     }
 }
