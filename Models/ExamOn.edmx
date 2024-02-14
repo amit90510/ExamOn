@@ -170,11 +170,38 @@
           <Property Name="Batch" Type="bigint" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblStudentEnrollmentSignUp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenantId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ProfileName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Mobile" Type="varchar" MaxLength="10" />
+          <Property Name="Address" Type="varchar" MaxLength="500" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="EnrollmentNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsHighSchool" Type="bit" Nullable="false" />
+          <Property Name="HighSchoolPercentageCGPA" Type="int" />
+          <Property Name="IsInter" Type="bit" Nullable="false" />
+          <Property Name="InterPercentageCGPA" Type="int" />
+          <Property Name="HighSchoolCollege" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="InterCollege" Type="varchar" MaxLength="500" />
+          <Property Name="IsGraduate" Type="bit" Nullable="false" />
+          <Property Name="GradutePercentageCGPA" Type="int" />
+          <Property Name="GraduateCollege" Type="varchar" MaxLength="500" />
+          <Property Name="IsPostGradute" Type="bit" Nullable="false" />
+          <Property Name="PostGradutePercentageCGPA" Type="int" />
+          <Property Name="CreatedOn" Type="date" Nullable="false" />
+          <Property Name="InterestedInShift" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblTeacherInstructorShifts">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LoginId" Type="bigint" Nullable="false" />
           <Property Name="ShiftId" Type="bigint" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
@@ -446,6 +473,18 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblStudentEnrollmentSignUp_tbltenant">
+          <End Role="tbltenant" Type="Self.tbltenant" Multiplicity="1" />
+          <End Role="tblStudentEnrollmentSignUp" Type="Self.tblStudentEnrollmentSignUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltenant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblStudentEnrollmentSignUp">
+              <PropertyRef Name="TenantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblTeacherInstructorShifts_tbllogin">
           <End Role="tbllogin" Type="Self.tbllogin" Multiplicity="1" />
           <End Role="tblTeacherInstructorShifts" Type="Self.tblTeacherInstructorShifts" Multiplicity="*" />
@@ -546,6 +585,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySet Name="tblQuestions" EntityType="Self.tblQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSection" EntityType="Self.tblSection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblshift" EntityType="Self.tblshift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStudentEnrollmentSignUp" EntityType="Self.tblStudentEnrollmentSignUp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTeacherInstructorShifts" EntityType="Self.tblTeacherInstructorShifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbltenant" EntityType="Self.tbltenant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbluserProfile" EntityType="Self.tbluserProfile" Schema="dbo" store:Type="Tables" />
@@ -611,6 +651,10 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <AssociationSet Name="FK_tblshift_tblBatch" Association="Self.FK_tblshift_tblBatch">
             <End Role="tblBatch" EntitySet="tblBatch" />
             <End Role="tblshift" EntitySet="tblshift" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStudentEnrollmentSignUp_tbltenant" Association="Self.FK_tblStudentEnrollmentSignUp_tbltenant">
+            <End Role="tbltenant" EntitySet="tbltenant" />
+            <End Role="tblStudentEnrollmentSignUp" EntitySet="tblStudentEnrollmentSignUp" />
           </AssociationSet>
           <AssociationSet Name="FK_tblTeacherInstructorShifts_tbllogin" Association="Self.FK_tblTeacherInstructorShifts_tbllogin">
             <End Role="tbllogin" EntitySet="tbllogin" />
@@ -837,6 +881,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <Property Name="LastRechargeOn" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RechargeAmount" Type="Int64" Nullable="false" />
           <NavigationProperty Name="tbllogins" Relationship="Self.FK_tbllogin_tbltenant" FromRole="tbltenant" ToRole="tbllogin" />
+          <NavigationProperty Name="tblStudentEnrollmentSignUps" Relationship="ExamOn_DummyModel.FK_tblStudentEnrollmentSignUp_tbltenant" FromRole="tbltenant" ToRole="tblStudentEnrollmentSignUp" />
         </EntityType>
         <EntityType Name="tbluserProfile">
           <Key>
@@ -1168,6 +1213,11 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             <End Role="tblshift" EntitySet="tblshifts" />
             <End Role="tblTeacherInstructorShift" EntitySet="tblTeacherInstructorShifts" />
           </AssociationSet>
+          <EntitySet Name="tblStudentEnrollmentSignUps" EntityType="ExamOn_DummyModel.tblStudentEnrollmentSignUp" />
+          <AssociationSet Name="FK_tblStudentEnrollmentSignUp_tbltenant" Association="ExamOn_DummyModel.FK_tblStudentEnrollmentSignUp_tbltenant">
+            <End Role="tbltenant" EntitySet="tbltenants" />
+            <End Role="tblStudentEnrollmentSignUp" EntitySet="tblStudentEnrollmentSignUps" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -1303,6 +1353,46 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             </Principal>
             <Dependent Role="tblTeacherInstructorShift">
               <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblStudentEnrollmentSignUp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenantId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ProfileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EnrollmentNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsHighSchool" Type="Boolean" Nullable="false" />
+          <Property Name="HighSchoolPercentageCGPA" Type="Int32" />
+          <Property Name="IsInter" Type="Boolean" Nullable="false" />
+          <Property Name="InterPercentageCGPA" Type="Int32" />
+          <Property Name="HighSchoolCollege" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InterCollege" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsGraduate" Type="Boolean" Nullable="false" />
+          <Property Name="GradutePercentageCGPA" Type="Int32" />
+          <Property Name="GraduateCollege" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsPostGradute" Type="Boolean" Nullable="false" />
+          <Property Name="PostGradutePercentageCGPA" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="InterestedInShift" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tbltenant" Relationship="ExamOn_DummyModel.FK_tblStudentEnrollmentSignUp_tbltenant" FromRole="tblStudentEnrollmentSignUp" ToRole="tbltenant" />
+        </EntityType>
+        <Association Name="FK_tblStudentEnrollmentSignUp_tbltenant">
+          <End Type="ExamOn_DummyModel.tbltenant" Role="tbltenant" Multiplicity="1" />
+          <End Type="ExamOn_DummyModel.tblStudentEnrollmentSignUp" Role="tblStudentEnrollmentSignUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltenant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblStudentEnrollmentSignUp">
+              <PropertyRef Name="TenantId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1561,6 +1651,34 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
                 <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStudentEnrollmentSignUps">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblStudentEnrollmentSignUp">
+              <MappingFragment StoreEntitySet="tblStudentEnrollmentSignUp">
+                <ScalarProperty Name="InterestedInShift" ColumnName="InterestedInShift" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="PostGradutePercentageCGPA" ColumnName="PostGradutePercentageCGPA" />
+                <ScalarProperty Name="IsPostGradute" ColumnName="IsPostGradute" />
+                <ScalarProperty Name="GraduateCollege" ColumnName="GraduateCollege" />
+                <ScalarProperty Name="GradutePercentageCGPA" ColumnName="GradutePercentageCGPA" />
+                <ScalarProperty Name="IsGraduate" ColumnName="IsGraduate" />
+                <ScalarProperty Name="InterCollege" ColumnName="InterCollege" />
+                <ScalarProperty Name="HighSchoolCollege" ColumnName="HighSchoolCollege" />
+                <ScalarProperty Name="InterPercentageCGPA" ColumnName="InterPercentageCGPA" />
+                <ScalarProperty Name="IsInter" ColumnName="IsInter" />
+                <ScalarProperty Name="HighSchoolPercentageCGPA" ColumnName="HighSchoolPercentageCGPA" />
+                <ScalarProperty Name="IsHighSchool" ColumnName="IsHighSchool" />
+                <ScalarProperty Name="EnrollmentNumber" ColumnName="EnrollmentNumber" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
+                <ScalarProperty Name="TenantId" ColumnName="TenantId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

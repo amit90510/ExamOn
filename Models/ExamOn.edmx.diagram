@@ -49,6 +49,8 @@
         <EntityTypeShape EntityType="ExamOn_DummyModel.tblTeacherInstructorShift" Width="1.5" PointX="15.5" PointY="6.375" />
         <AssociationConnector Association="ExamOn_DummyModel.FK_tblTeacherInstructorShifts_tbllogin" />
         <AssociationConnector Association="ExamOn_DummyModel.FK_tblTeacherInstructorShifts_tblshift" />
+        <EntityTypeShape EntityType="ExamOn_DummyModel.tblStudentEnrollmentSignUp" Width="1.5" PointX="3" PointY="17.125" />
+        <AssociationConnector Association="ExamOn_DummyModel.FK_tblStudentEnrollmentSignUp_tbltenant" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
