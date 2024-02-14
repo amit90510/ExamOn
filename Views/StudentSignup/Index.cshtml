@@ -1,25 +1,100 @@
-﻿<div class="col-md-12">
-    <div class="row justify-content-center py-4 col-md-12 border rounded-5">
-        <div class="card" style="max-width: fit-content !important;">
-            <div class="card-header" style="text-align: center; text-decoration: underline;">
-                <i class="fa fa-etsy" aria-hidden="true"></i>xamOn Student <i class="fa fa-graduation-cap" aria-hidden="true"></i> Enrollment @ViewBag.Version
-            </div>
-            <div class="card-body">
-                <form>
-                    <div class="col-md-12">
-                        <label for="txtInstituionlist" class="form-label">Enroll Institutions : (वह संस्थान चुनें जिसमें आप नामांकन चाहते हैं)</label>
-                        <div class="input-group" error-For="Insituition list">
-                            <span class="input-group-text" id="basic-prefix"><i class="fa fa-university" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" id="txtOldPass" placeholder="अपना पुराना पासवर्ड दर्ज करें" required maxlength="50" tabindex="0" autocomplete="off" autofocus="">
-                        </div>
+﻿<br />
+<div class="col-md-12">
+    <div class="card col-md-12">
+        <div class="card-header" style="text-align: center; text-decoration: underline;">
+            <i class="fa fa-etsy" aria-hidden="true"></i>xamOn Student <i class="fa fa-graduation-cap" aria-hidden="true"></i> Enrollment @ViewBag.Version
+        </div>
+        <div class="card-body col-md-12">
+            <form class="row g-3">
+                <div class="col-md-6">
+                    <label for="txtInstituionlist" class="form-label">Enroll Institutions : (वह संस्थान चुनें जिसमें आप नामांकन चाहते हैं)</label>
+                    <div class="select2-results__option--group" error-For="Insituition list">
+                        <span class="input-group-text" id="basic-prefix">
+                            <i class="fa fa-university" aria-hidden="true"></i>
+                            <select style="cursor:pointer" id="txtInstituionlist" class="form-control form-select js-example-basic-single" onchange="">
+                                <option>Choose Institute...</option>
+                            </select>
+                        </span>
                     </div>
-                    <br />
-                </form>
-            </div>
-            <div class="card-footer text-muted " style="text-align:center; margin:auto 0">
-                <a type="button" class="btn btn-secondary" id="btnGoLogin" href="~/Login">Go to Login (लॉग इन पर जाएं)</a>
-                <button type="button" class="btn btn-primary" onclick="">Request Enrollment (नामांकन का अनुरोध करें)</button>
-            </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="txtProfileName" class="form-label">Your Name : (आपका नाम)</label>
+                    <div class="input-group" error-For="Profile Name">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-user" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" id="txtProfileName" autocomplete="off" maxlength="50">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="txtEMail" class="form-label">Email</label>
+                    <div class="input-group" error-For="Email Id">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+                        <input type="email" class="form-control" id="txtEMail" autocomplete="off" placeholder="" maxlength="50" onfocusout="this.value = CheckEmailValid(this.value) ? this.value: ''">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="txtMobile" class="form-label">Mobile <span class="badge rounded-pill bg-danger">(do not use +91)</span></label>
+                    <div class="input-group" error-For="Mobile Number">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-mobile" aria-hidden="true"></i></span>
+                        <input type="number" class="form-control" id="txtMobile" autocomplete="off" placeholder="" maxlength="10" data-maxlength="10" oninput="this.value=this.value.slice(0,this.dataset.maxlength)">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label for="txtAddress" class="form-label">Address (पता)</label>
+                    <div class="input-group" error-For="Address (पता)">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-address-card-o" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" id="txtAddress" placeholder="" maxlength="150">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="txtCity" class="form-label">City (शहर)</label>
+                    <div class="input-group" error-For="City (शहर)">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-crosshairs" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" id="txtCity" maxlength="100">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="txtState" class="form-label">State (राज्य)</label>
+                    <div class="select2-results__option--group" error-For="State (राज्य)">
+                        <span class="input-group-text" id="basic-prefix">
+                            <i class="fa fa-certificate" aria-hidden="true"></i>
+                            <select style="cursor:pointer" id="txtState" class="form-select js-example-basic-single">
+                                <option>Choose state...</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <br />
+            </form>
+        </div>
+        <div class="card-footer text-muted " style="text-align:center; margin:auto 0">
+            <a type="button" class="btn btn-secondary" id="btnGoLogin" href="~/Login">Go to Login (लॉग इन पर जाएं)</a>
+            <button type="button" class="btn btn-primary" onclick="">Request Enrollment (नामांकन का अनुरोध करें)</button>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(() => {
+        $('.js-example-basic-single').select2({ width: 'resolve' });
+        ServerData("/WebAdminDashboard/GetAllTenants", "Post", null, (data) => {
+            if (data && data.StatusCode == "1") {
+                $('#txtInstituionlist').html('');
+                $('#txtInstituionlist').append($("<option selected></option>").attr("value", "").text('Choose Institute...'));
+                $.each(data.Data, function (key, value) {
+                    $('#txtInstituionlist').append($("<option></option>").attr("value", value.TenantUniqueKey).text(value.TenantDBName));
+                });
+            }
+        }, () => { });
+
+        ServerData("/StudDashboard/GetStatesInfo", "Post", null, (data) => {
+            if (data && data.StatusCode == "1") {
+                $('#txtState').html('');
+                $('#txtState').append($("<option selected></option>").attr("value", "").text('Choose State'))
+                $.each(data.Data, function (key, value) {
+                    $('#txtState').append($("<option></option>").attr("value", key).text(value));
+                });
+                GetProfileData();
+            }
+        }, () => { });
+    });
+
+</script>

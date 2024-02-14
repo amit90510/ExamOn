@@ -91,7 +91,7 @@ namespace ExamOn.Controllers
             return PartialView("UpdatePassword");
         }
 
-        [AuthorizeAction]
+        
         [ForgeryTokenAuthorize]
         public async Task<JsonResult> GetStatesInfo()
         {

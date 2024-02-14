@@ -364,4 +364,57 @@ GO
 ALTER TABLE [dbo].[tblTeacherInstructorShifts] CHECK CONSTRAINT [FK_tblTeacherInstructorShifts_tblshift]
 GO
 
+CREATE TABLE [dbo].[tblStudentEnrollmentSignUp](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[TenantId] [varchar](100) NOT NULL,
+	[ProfileName] [varchar](100) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
+	[Mobile] [varchar](10) NULL,
+	[Address] [varchar](500) NULL,
+	[City] [varchar](50) NULL,
+	[State] [varchar](10) NOT NULL,
+	[EnrollmentNumber] [varchar](50) NOT NULL,
+	[IsHighSchool] [bit] NOT NULL,
+	[HighSchoolPercentageCGPA] [int] NULL,
+	[IsInter] [bit] NOT NULL,
+	[InterPercentageCGPA] [int] NULL,
+	[HighSchoolCollege] [varchar](500) NOT NULL,
+	[InterCollege] [varchar](500) NULL,
+	[IsGraduate] [bit] NOT NULL,
+	[GradutePercentageCGPA] [int] NULL,
+	[GraduateCollege] [varchar](500) NULL,
+	[IsPostGradute] [bit] NOT NULL,
+	[PostGradutePercentageCGPA] [int] NULL,
+	[CreatedOn] [date] NOT NULL,
+	[InterestedInShift] [int] NOT NULL,
+ CONSTRAINT [PK_tblStudentEnrollmentSignUp] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsHighSchool]  DEFAULT ((1)) FOR [IsHighSchool]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsInter]  DEFAULT ((0)) FOR [IsInter]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsGraduate]  DEFAULT ((0)) FOR [IsGraduate]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsPostGradute]  DEFAULT ((0)) FOR [IsPostGradute]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_CreatedOn]  DEFAULT (getdate()) FOR [CreatedOn]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp]  WITH CHECK ADD  CONSTRAINT [FK_tblStudentEnrollmentSignUp_tbltenant] FOREIGN KEY([TenantId])
+REFERENCES [dbo].[tbltenant] ([id])
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] CHECK CONSTRAINT [FK_tblStudentEnrollmentSignUp_tbltenant]
+GO
+
+
 

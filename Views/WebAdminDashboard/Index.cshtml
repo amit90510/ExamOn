@@ -4,10 +4,6 @@
 }
 <a class="btn btn-danger" href="~/signout"> Logout from web admin?</a>
 <hr />
-<script src="~/Scripts/gijgo.min.js" type="text/javascript"></script>
-<link href="~/Content/gijgo.min.css" rel="stylesheet" type="text/css" />
-<script src="~/Scripts/select2.min.js" type="text/javascript"></script>
-<link href="~/Content/select2.min.css" rel="stylesheet" type="text/css" />
 <div class="input-group container" error-For="Tenant">
     <select style="cursor:pointer" id="txtTenant" class="form-select js-example-basic-single" onchange="OnTenantCHange(this)">
         <option>Choose...</option>
@@ -35,11 +31,7 @@
                 Subscription  End date
                 <input type="text" class="form-control" readonly="readonly" id="txtSubscriptionENdDate" placeholder="Subcription end Date" width="312">
 
-                <script>
-                    /*  $('#txtSubscriptionENdDate').datetimepicker({ footer: true, modal: false, header: true, format: "dd-mm-yyyy hh:MM tt" });*/
-                    $('#txtSubscriptionENdDate').datepicker({ footer: true, modal: false, header: true, format: "dd-mm-yyyy" });
-                </script>
-                Subscription End Message
+                 Subscription End Message
                 <input type="text" class="form-control" id="txtTenantsubscriptionEndMessage" placeholder="tenant subscription end message">
                 Last Recharge Amount
                 <input type="number" class="form-control" id="txtTenantLastRecharge" placeholder="Last Recharge Amount">
@@ -197,6 +189,7 @@
                 document.getElementsByTagName('footer')[0].hidden = true
             }
             catch { }
+            setTimeout(() => { $('#txtSubscriptionENdDate').datepicker({ footer: true, modal: false, header: true, format: "dd-mm-yyyy" }); }, 500);
         });
         function OnTenantCHange(select) {
             if (select && select.value) {
