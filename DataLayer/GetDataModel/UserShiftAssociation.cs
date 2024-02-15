@@ -10,5 +10,7 @@ namespace ExamOn.DataLayer.GetDataModel
         public string ClassName { get; set; }
         public string Batch { get; set; }
         public string Shift { get; set; }
+
+        public long ShiftID { get; set; }
     }
 }

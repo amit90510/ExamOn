@@ -26,7 +26,7 @@ namespace ExamOn.Controllers
             return View("Index");
         }
 
-       
+        [AuthorizeAction]
         [ForgeryTokenAuthorize]
         public async Task<JsonResult> GetAllTenants()
         {

@@ -7,35 +7,53 @@
         <div class="card-body col-md-12">
             <form class="row g-3">
                 <div class="col-md-6">
-                    <label for="txtInstituionlist" class="form-label">Enroll Institutions : (वह संस्थान चुनें जिसमें आप नामांकन चाहते हैं)</label>
+                    <label for="txtInstituionlist" class="form-label"><span class="text-danger">*</span>Enroll Institutions : (वह संस्थान चुनें जिसमें आप नामांकन चाहते हैं)</label>
                     <div class="select2-results__option--group" error-For="Insituition list">
                         <span class="input-group-text" id="basic-prefix">
                             <i class="fa fa-university" aria-hidden="true"></i>
-                            <select style="cursor:pointer" id="txtInstituionlist" class="form-control form-select js-example-basic-single" onchange="">
+                            <select style="cursor:pointer;" id="txtInstituionlist" class="form-control form-select js-example-basic-single" onchange="GetCourseShift(this)">
                                 <option>Choose Institute...</option>
                             </select>
                         </span>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="txtProfileName" class="form-label">Your Name : (आपका नाम)</label>
+                    <label for="txtAvavilableShift" class="form-label">Available Course/Shifts : (उपलब्ध पाठ्यक्रम/शिफ्ट)</label>
+                    <div class="select2-results__option--group" error-For="Available shifts">
+                        <select style="cursor:pointer" id="txtAvavilableShift" class="form-control form-select js-example-basic-single" multiple="multiple">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="txtProfileName" class="form-label"><span class="text-danger">*</span>Your Name : (आपका नाम)</label>
                     <div class="input-group" error-For="Profile Name">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-user" aria-hidden="true"></i></span>
                         <input type="text" class="form-control" id="txtProfileName" autocomplete="off" maxlength="50">
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="txtEMail" class="form-label">Email</label>
+                    <label for="txtEMail" class="form-label"><span class="text-danger">*</span>Email</label>
                     <div class="input-group" error-For="Email Id">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
                         <input type="email" class="form-control" id="txtEMail" autocomplete="off" placeholder="" maxlength="50" onfocusout="this.value = CheckEmailValid(this.value) ? this.value: ''">
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="txtMobile" class="form-label">Mobile <span class="badge rounded-pill bg-danger">(do not use +91)</span></label>
+                    <label for="txtMobile" class="form-label"><span class="text-danger">*</span>Mobile <span class="badge rounded-pill bg-danger">(do not use +91)</span></label>
                     <div class="input-group" error-For="Mobile Number">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-mobile" aria-hidden="true"></i></span>
                         <input type="number" class="form-control" id="txtMobile" autocomplete="off" placeholder="" maxlength="10" data-maxlength="10" oninput="this.value=this.value.slice(0,this.dataset.maxlength)">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="txtGender" class="form-label">Gender</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="txtGEnder" id="txtMaleGender" checked value="0">
+                        <label class="form-check-label" for="txtMaleGender">Male (पुरुष)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="txtGEnder" id="txtFemaleGender" value="1" >
+                        <label class="form-check-label" for="txtFemaleGender">Female (महिला)</label>
                     </div>
                 </div>
                 <div class="col-12">
@@ -53,7 +71,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="txtState" class="form-label">State (राज्य)</label>
+                    <label for="txtState" class="form-label"><span class="text-danger">*</span>State (राज्य)</label>
                     <div class="select2-results__option--group" error-For="State (राज्य)">
                         <span class="input-group-text" id="basic-prefix">
                             <i class="fa fa-certificate" aria-hidden="true"></i>
@@ -74,8 +92,8 @@
 </div>
 <script type="text/javascript">
     $(document).ready(() => {
-        $('.js-example-basic-single').select2({ width: 'resolve' });
-        ServerData("/WebAdminDashboard/GetAllTenants", "Post", null, (data) => {
+        $('.js-example-basic-single').select2({ width: 'resolve', allowClear: true });
+        ServerData("/StudentSignup/GetAllInstituitionsLinked", "Post", null, (data) => {
             if (data && data.StatusCode == "1") {
                 $('#txtInstituionlist').html('');
                 $('#txtInstituionlist').append($("<option selected></option>").attr("value", "").text('Choose Institute...'));
@@ -92,9 +110,28 @@
                 $.each(data.Data, function (key, value) {
                     $('#txtState').append($("<option></option>").attr("value", key).text(value));
                 });
-                GetProfileData();
             }
         }, () => { });
     });
 
+    function GetCourseShift(isEmpty) {      
+        if (isEmpty && isEmpty.value) {
+            ServerData("/StudentSignup/GetCourseShiftAvailable?tenantId=" + isEmpty.value.trim(), "Post", null, (data) => {
+                if (data && data.StatusCode == "1") {
+                    console.log(data.Data);
+                    $('#txtAvavilableShift').select2({
+                        width: 'resolve',
+                        allowClear: true,
+                        dropdownAutoWidth: true, closeOnSelect: false
+                    });
+                    $.each(data.Data, function (key, value) {
+                        $('#txtAvavilableShift').append($("<option></option>").attr("value", value.ShiftID).text("Class(" + value.ClassName + "), Batch(" + value.Batch + "), Shift(" + value.Shift+")"));
+                    });
+
+                }
+            }, () => { });
+        } else {
+            $('#txtAvavilableShift').select2({ data: ''});
+        }
+    }
 </script>
