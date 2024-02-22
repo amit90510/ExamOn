@@ -19,9 +19,9 @@
                 </div>
                 <div class="col-md-6">
                     <label for="txtAvavilableShift" class="form-label">Available Course/Shifts : (उपलब्ध पाठ्यक्रम/शिफ्ट)</label>
-                    <div class="select2-results__option--group" error-For="Available shifts">
-                        <select style="cursor:pointer" id="txtAvavilableShift" class="form-control form-select js-example-basic-single" multiple="multiple">
-                        </select>
+                    <div class="input-group" error-For="Available shifts">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-shirtsinbulk" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" id="txtAvavilableShift" autocomplete="off" maxlength="1000" readonly="readonly">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -90,7 +90,34 @@
         </div>
     </div>
 </div>
+<div class="modal" tabindex="-1" id="shiftDialog">
+    <div class="modal-dialog  modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-shirtsinbulk" aria-hidden="true"></i> Available shifts</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover caption-top">
+                    <caption>Choose multiple from checkbox</caption>
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Class</th>
+                            <th scope="col">Batch</th>
+                            <th scope="col">Shift</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shiftDialogBody">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
+    var shiftSelected = [];
     $(document).ready(() => {
         $('.js-example-basic-single').select2({ width: 'resolve', allowClear: true });
         ServerData("/StudentSignup/GetAllInstituitionsLinked", "Post", null, (data) => {
@@ -112,26 +139,45 @@
                 });
             }
         }, () => { });
+
+        $('#txtAvavilableShift').focus(function () {
+            if ($('#txtInstituionlist').val()) {
+                $('#shiftDialog').modal('show');
+            } else {
+                $('#txtAvavilableShift').val('');
+            }
+        });       
     });
 
     function GetCourseShift(isEmpty) {      
         if (isEmpty && isEmpty.value) {
             ServerData("/StudentSignup/GetCourseShiftAvailable?tenantId=" + isEmpty.value.trim(), "Post", null, (data) => {
                 if (data && data.StatusCode == "1") {
-                    console.log(data.Data);
-                    $('#txtAvavilableShift').select2({
-                        width: 'resolve',
-                        allowClear: true,
-                        dropdownAutoWidth: true, closeOnSelect: false
-                    });
+                    $("#shiftDialogBody").html('');
                     $.each(data.Data, function (key, value) {
-                        $('#txtAvavilableShift').append($("<option></option>").attr("value", value.ShiftID).text("Class(" + value.ClassName + "), Batch(" + value.Batch + "), Shift(" + value.Shift+")"));
+                        $("#shiftDialogBody").append("<tr><td><div class='form-check form-switch'><input class='form-check-input' type='checkbox' id='" + value.ShiftID +"' onClick='shiftToggleCheck(this)'></div></td><td>" + value.ClassName + "</td><td>" + value.Batch + "</td><td>" + value.Shift + "</td></tr>");
                     });
 
                 }
             }, () => { });
         } else {
-            $('#txtAvavilableShift').select2({ data: ''});
+            $('#txtAvavilableShift').val('');
+        }
+    }
+
+    function shiftToggleCheck(event) {
+        if ($(event).is(':checked')) {
+            shiftSelected.push($(event).attr('id'));
+        } else {
+            shiftSelected = shiftSelected.filter(function (item) {
+                return item !== $(event).attr('id'); // Keep all items except the one to remove
+            });
+        }
+
+        if (shiftSelected && shiftSelected.length > 0) {
+            $('#txtAvavilableShift').val(shiftSelected.length + " shifts selected");
+        } else {
+            $('#txtAvavilableShift').val('');
         }
     }
 </script>
