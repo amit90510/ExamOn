@@ -57,7 +57,7 @@ namespace ExamOn.Controllers
                                     if (tbllogin.FirstOrDefault().BlockLogin.Value)
                                     {
                                         jsonData.StatusCode = 500;
-                                        HubContext.Notify(true, "ExamOn Alert", "Temporary blocked login, Please contact adminisitator. <br/>अस्थायी रूप से अवरुद्ध लॉगिन, कृपया अपने संस्थान से संपर्क करें।", false, true, false, ViewBag.srKey);
+                                        HubContext.Notify(true, "ExamOn Alert", "Temporary blocked login, Please contact administrator. <br/>अस्थायी रूप से अवरुद्ध लॉगिन, कृपया अपने संस्थान से संपर्क करें।", false, true, false, ViewBag.srKey);
                                     }
                                     else
                                     {
@@ -80,7 +80,7 @@ namespace ExamOn.Controllers
                                     else
                                     {
                                         jsonData.StatusCode = 500;
-                                        HubContext.Notify(true, "ExamOn Alert", "We could not find your instituition, Please contact adminisitator. <br/> कृपया अपने संस्थान से संपर्क करें।", false, true, false, ViewBag.srKey);
+                                        HubContext.Notify(true, "ExamOn Alert", "We could not find your instituition, Please contact administrator. <br/> कृपया अपने संस्थान से संपर्क करें।", false, true, false, ViewBag.srKey);
                                     }
                                 }
                             }

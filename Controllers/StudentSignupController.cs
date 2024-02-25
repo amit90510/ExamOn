@@ -58,5 +58,12 @@ namespace ExamOn.Controllers
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
+
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetEnrollmentStatus(string eid)
+        {
+            JsonData jsonData = new JsonData();
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
     }
 }
