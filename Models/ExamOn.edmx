@@ -170,6 +170,14 @@
           <Property Name="Batch" Type="bigint" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblStudentEnrollmentShifts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EnrollmentId" Type="bigint" Nullable="false" />
+          <Property Name="ShiftId" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblStudentEnrollmentSignUp">
           <Key>
             <PropertyRef Name="id" />
@@ -187,7 +195,7 @@
           <Property Name="HighSchoolPercentageCGPA" Type="int" />
           <Property Name="IsInter" Type="bit" Nullable="false" />
           <Property Name="InterPercentageCGPA" Type="int" />
-          <Property Name="HighSchoolCollege" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="HighSchoolCollege" Type="varchar" MaxLength="500" />
           <Property Name="InterCollege" Type="varchar" MaxLength="500" />
           <Property Name="IsGraduate" Type="bit" Nullable="false" />
           <Property Name="GradutePercentageCGPA" Type="int" />
@@ -195,7 +203,9 @@
           <Property Name="IsPostGradute" Type="bit" Nullable="false" />
           <Property Name="PostGradutePercentageCGPA" Type="int" />
           <Property Name="CreatedOn" Type="date" Nullable="false" />
-          <Property Name="InterestedInShift" Type="int" Nullable="false" />
+          <Property Name="InterestedInShift" Type="int" />
+          <Property Name="Gender" Type="bit" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="tblTeacherInstructorShifts">
           <Key>
@@ -473,6 +483,34 @@ warning 6035: The relationship 'FK_tblLoginHistory_tbllogin' has columns that ar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblStudentEnrollmentShifts_tblshift">
+          <End Role="tblshift" Type="Self.tblshift" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblStudentEnrollmentShifts" Type="Self.tblStudentEnrollmentShifts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshift">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblStudentEnrollmentShifts">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp">
+          <End Role="tblStudentEnrollmentSignUp" Type="Self.tblStudentEnrollmentSignUp" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblStudentEnrollmentShifts" Type="Self.tblStudentEnrollmentShifts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStudentEnrollmentSignUp">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblStudentEnrollmentShifts">
+              <PropertyRef Name="EnrollmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblStudentEnrollmentSignUp_tbltenant">
           <End Role="tbltenant" Type="Self.tbltenant" Multiplicity="1" />
           <End Role="tblStudentEnrollmentSignUp" Type="Self.tblStudentEnrollmentSignUp" Multiplicity="*" />
@@ -585,6 +623,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySet Name="tblQuestions" EntityType="Self.tblQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSection" EntityType="Self.tblSection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblshift" EntityType="Self.tblshift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStudentEnrollmentShifts" EntityType="Self.tblStudentEnrollmentShifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStudentEnrollmentSignUp" EntityType="Self.tblStudentEnrollmentSignUp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTeacherInstructorShifts" EntityType="Self.tblTeacherInstructorShifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbltenant" EntityType="Self.tbltenant" Schema="dbo" store:Type="Tables" />
@@ -651,6 +690,14 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <AssociationSet Name="FK_tblshift_tblBatch" Association="Self.FK_tblshift_tblBatch">
             <End Role="tblBatch" EntitySet="tblBatch" />
             <End Role="tblshift" EntitySet="tblshift" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStudentEnrollmentShifts_tblshift" Association="Self.FK_tblStudentEnrollmentShifts_tblshift">
+            <End Role="tblshift" EntitySet="tblshift" />
+            <End Role="tblStudentEnrollmentShifts" EntitySet="tblStudentEnrollmentShifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp" Association="Self.FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp">
+            <End Role="tblStudentEnrollmentSignUp" EntitySet="tblStudentEnrollmentSignUp" />
+            <End Role="tblStudentEnrollmentShifts" EntitySet="tblStudentEnrollmentShifts" />
           </AssociationSet>
           <AssociationSet Name="FK_tblStudentEnrollmentSignUp_tbltenant" Association="Self.FK_tblStudentEnrollmentSignUp_tbltenant">
             <End Role="tbltenant" EntitySet="tbltenant" />
@@ -865,6 +912,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <NavigationProperty Name="tbluserProfiles" Relationship="Self.FK_tbluserProfile_tbllogin" FromRole="tblshift" ToRole="tbluserProfile" />
           <NavigationProperty Name="tblUserShifts" Relationship="ExamOn_DummyModel.FK_tblUserShift_tblshift" FromRole="tblshift" ToRole="tblUserShift" />
           <NavigationProperty Name="tblTeacherInstructorShifts" Relationship="ExamOn_DummyModel.FK_tblTeacherInstructorShifts_tblshift" FromRole="tblshift" ToRole="tblTeacherInstructorShift" />
+          <NavigationProperty Name="tblStudentEnrollmentShifts" Relationship="ExamOn_DummyModel.FK_tblStudentEnrollmentShifts_tblshift" FromRole="tblshift" ToRole="tblStudentEnrollmentShift" />
         </EntityType>
         <EntityType Name="tbltenant">
           <Key>
@@ -1218,6 +1266,15 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             <End Role="tbltenant" EntitySet="tbltenants" />
             <End Role="tblStudentEnrollmentSignUp" EntitySet="tblStudentEnrollmentSignUps" />
           </AssociationSet>
+          <EntitySet Name="tblStudentEnrollmentShifts" EntityType="ExamOn_DummyModel.tblStudentEnrollmentShift" />
+          <AssociationSet Name="FK_tblStudentEnrollmentShifts_tblshift" Association="ExamOn_DummyModel.FK_tblStudentEnrollmentShifts_tblshift">
+            <End Role="tblshift" EntitySet="tblshifts" />
+            <End Role="tblStudentEnrollmentShift" EntitySet="tblStudentEnrollmentShifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp" Association="ExamOn_DummyModel.FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp">
+            <End Role="tblStudentEnrollmentSignUp" EntitySet="tblStudentEnrollmentSignUps" />
+            <End Role="tblStudentEnrollmentShift" EntitySet="tblStudentEnrollmentShifts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -1373,7 +1430,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <Property Name="HighSchoolPercentageCGPA" Type="Int32" />
           <Property Name="IsInter" Type="Boolean" Nullable="false" />
           <Property Name="InterPercentageCGPA" Type="Int32" />
-          <Property Name="HighSchoolCollege" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="HighSchoolCollege" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="InterCollege" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="IsGraduate" Type="Boolean" Nullable="false" />
           <Property Name="GradutePercentageCGPA" Type="Int32" />
@@ -1381,8 +1438,11 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <Property Name="IsPostGradute" Type="Boolean" Nullable="false" />
           <Property Name="PostGradutePercentageCGPA" Type="Int32" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="InterestedInShift" Type="Int32" Nullable="false" />
+          <Property Name="InterestedInShift" Type="Int32" />
           <NavigationProperty Name="tbltenant" Relationship="ExamOn_DummyModel.FK_tblStudentEnrollmentSignUp_tbltenant" FromRole="tblStudentEnrollmentSignUp" ToRole="tbltenant" />
+          <Property Name="Gender" Type="Boolean" Nullable="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblStudentEnrollmentShifts" Relationship="ExamOn_DummyModel.FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp" FromRole="tblStudentEnrollmentSignUp" ToRole="tblStudentEnrollmentShift" />
         </EntityType>
         <Association Name="FK_tblStudentEnrollmentSignUp_tbltenant">
           <End Type="ExamOn_DummyModel.tbltenant" Role="tbltenant" Multiplicity="1" />
@@ -1393,6 +1453,44 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             </Principal>
             <Dependent Role="tblStudentEnrollmentSignUp">
               <PropertyRef Name="TenantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblStudentEnrollmentShift">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EnrollmentId" Type="Int64" Nullable="false" />
+          <Property Name="ShiftId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="tblshift" Relationship="ExamOn_DummyModel.FK_tblStudentEnrollmentShifts_tblshift" FromRole="tblStudentEnrollmentShift" ToRole="tblshift" />
+          <NavigationProperty Name="tblStudentEnrollmentSignUp" Relationship="ExamOn_DummyModel.FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp" FromRole="tblStudentEnrollmentShift" ToRole="tblStudentEnrollmentSignUp" />
+        </EntityType>
+        <Association Name="FK_tblStudentEnrollmentShifts_tblshift">
+          <End Type="ExamOn_DummyModel.tblshift" Role="tblshift" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ExamOn_DummyModel.tblStudentEnrollmentShift" Role="tblStudentEnrollmentShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshift">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblStudentEnrollmentShift">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp">
+          <End Type="ExamOn_DummyModel.tblStudentEnrollmentSignUp" Role="tblStudentEnrollmentSignUp" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ExamOn_DummyModel.tblStudentEnrollmentShift" Role="tblStudentEnrollmentShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStudentEnrollmentSignUp">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblStudentEnrollmentShift">
+              <PropertyRef Name="EnrollmentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1658,6 +1756,8 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySetMapping Name="tblStudentEnrollmentSignUps">
             <EntityTypeMapping TypeName="ExamOn_DummyModel.tblStudentEnrollmentSignUp">
               <MappingFragment StoreEntitySet="tblStudentEnrollmentSignUp">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="InterestedInShift" ColumnName="InterestedInShift" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="PostGradutePercentageCGPA" ColumnName="PostGradutePercentageCGPA" />
@@ -1680,6 +1780,15 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
                 <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
                 <ScalarProperty Name="TenantId" ColumnName="TenantId" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStudentEnrollmentShifts">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblStudentEnrollmentShift">
+              <MappingFragment StoreEntitySet="tblStudentEnrollmentShifts">
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+                <ScalarProperty Name="EnrollmentId" ColumnName="EnrollmentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
