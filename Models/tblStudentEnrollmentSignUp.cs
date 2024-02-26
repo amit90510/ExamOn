@@ -33,6 +33,7 @@ namespace ExamOn.Models
         public bool IsGraduate { get; set; }
         public Nullable<int> GradutePercentageCGPA { get; set; }
         public string GraduateCollege { get; set; }
+        public string Status { get; set; }
         public bool IsPostGradute { get; set; }
         public Nullable<int> PostGradutePercentageCGPA { get; set; }
         public System.DateTime CreatedOn { get; set; }

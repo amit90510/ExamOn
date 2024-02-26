@@ -167,7 +167,6 @@
     }
 
     function shiftToggleCheck(event, custom) {
-        debugger;
         if ($(event).is(':checked') && !shiftSelected.includes($(event).attr('id'))) {
             shiftSelected.push($(event).attr('id'));
         } else {
@@ -204,13 +203,15 @@
             inputLabel: "Enrollment ID",
             inputPlaceholder: "Enter enrollment ID (अपनी नामांकन आईडी दर्ज करें)",
             inputAttributes: {
-                maxlength: "10",
+                maxlength: "50",
                 autocapitalize: "off",
                 autocorrect: "off"
             }
         });
-        if (enrollmentID) {
-           
+        if (enrollmentID && enrollmentID.includes("-")) {
+            ServerData("/StudentSignup/GetEnrollmentStatus?eid=" + enrollmentID.trim(), "Post", null, () => { }, () => { });
+        } else {
+            SwalFire('ExamOn-Alert', 'Invalid Enrollment ID', 'error', null, () => { },'');
         }
     }
 </script>

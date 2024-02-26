@@ -506,4 +506,196 @@ ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] CHECK CONSTRAINT [FK_tblStudentEn
 GO
 
 
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [FK_tblStudentEnrollmentSignUp_tbltenant]
+GO
 
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_Status]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_Gender]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_CreatedOn]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsPostGradute]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsGraduate]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsInter]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsHighSchool]
+GO
+
+/****** Object:  Table [dbo].[tblStudentEnrollmentSignUp]    Script Date: 26-02-2024 03:30:29 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblStudentEnrollmentSignUp]') AND type in (N'U'))
+DROP TABLE [dbo].[tblStudentEnrollmentSignUp]
+GO
+
+/****** Object:  Table [dbo].[tblStudentEnrollmentSignUp]    Script Date: 26-02-2024 03:30:29 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblStudentEnrollmentSignUp](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[TenantId] [varchar](100) NOT NULL,
+	[ProfileName] [varchar](100) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
+	[Mobile] [varchar](10) NULL,
+	[Address] [varchar](500) NULL,
+	[City] [varchar](50) NULL,
+	[State] [varchar](10) NOT NULL,
+	[EnrollmentNumber] [varchar](50) NOT NULL,
+	[IsHighSchool] [bit] NOT NULL,
+	[HighSchoolPercentageCGPA] [int] NULL,
+	[IsInter] [bit] NOT NULL,
+	[InterPercentageCGPA] [int] NULL,
+	[HighSchoolCollege] [varchar](500) NOT NULL,
+	[InterCollege] [varchar](500) NULL,
+	[IsGraduate] [bit] NOT NULL,
+	[GradutePercentageCGPA] [int] NULL,
+	[GraduateCollege] [varchar](500) NULL,
+	[IsPostGradute] [bit] NOT NULL,
+	[PostGradutePercentageCGPA] [int] NULL,
+	[CreatedOn] [date] NOT NULL,
+	[InterestedInShift] [int] NOT NULL,
+	[Gender] [bit] NOT NULL,
+	[Status] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_tblStudentEnrollmentSignUp] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsHighSchool]  DEFAULT ((1)) FOR [IsHighSchool]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsInter]  DEFAULT ((0)) FOR [IsInter]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsGraduate]  DEFAULT ((0)) FOR [IsGraduate]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsPostGradute]  DEFAULT ((0)) FOR [IsPostGradute]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_CreatedOn]  DEFAULT (getdate()) FOR [CreatedOn]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_Gender]  DEFAULT ((1)) FOR [Gender]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_Status]  DEFAULT ('InProcess') FOR [Status]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp]  WITH CHECK ADD  CONSTRAINT [FK_tblStudentEnrollmentSignUp_tbltenant] FOREIGN KEY([TenantId])
+REFERENCES [dbo].[tbltenant] ([id])
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] CHECK CONSTRAINT [FK_tblStudentEnrollmentSignUp_tbltenant]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [FK_tblStudentEnrollmentSignUp_tbltenant]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_Status]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_Gender]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_CreatedOn]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsPostGradute]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsGraduate]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsInter]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] DROP CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsHighSchool]
+GO
+
+/****** Object:  Table [dbo].[tblStudentEnrollmentSignUp]    Script Date: 26-02-2024 04:34:46 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblStudentEnrollmentSignUp]') AND type in (N'U'))
+DROP TABLE [dbo].[tblStudentEnrollmentSignUp]
+GO
+
+/****** Object:  Table [dbo].[tblStudentEnrollmentSignUp]    Script Date: 26-02-2024 04:34:46 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblStudentEnrollmentSignUp](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[TenantId] [varchar](100) NOT NULL,
+	[ProfileName] [varchar](100) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
+	[Mobile] [varchar](10) NULL,
+	[Address] [varchar](500) NULL,
+	[City] [varchar](50) NULL,
+	[State] [varchar](10) NOT NULL,
+	[EnrollmentNumber] [varchar](50) NOT NULL,
+	[IsHighSchool] [bit] NOT NULL,
+	[HighSchoolPercentageCGPA] [int] NULL,
+	[IsInter] [bit] NOT NULL,
+	[InterPercentageCGPA] [int] NULL,
+	[HighSchoolCollege] [varchar](500) NULL,
+	[InterCollege] [varchar](500) NULL,
+	[IsGraduate] [bit] NOT NULL,
+	[GradutePercentageCGPA] [int] NULL,
+	[GraduateCollege] [varchar](500) NULL,
+	[IsPostGradute] [bit] NOT NULL,
+	[PostGradutePercentageCGPA] [int] NULL,
+	[CreatedOn] [date] NOT NULL,
+	[InterestedInShift] [int] NULL,
+	[Gender] [bit] NOT NULL,
+	[Status] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_tblStudentEnrollmentSignUp] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsHighSchool]  DEFAULT ((1)) FOR [IsHighSchool]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsInter]  DEFAULT ((0)) FOR [IsInter]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsGraduate]  DEFAULT ((0)) FOR [IsGraduate]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_IsPostGradute]  DEFAULT ((0)) FOR [IsPostGradute]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_CreatedOn]  DEFAULT (getdate()) FOR [CreatedOn]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_Gender]  DEFAULT ((1)) FOR [Gender]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] ADD  CONSTRAINT [DF_tblStudentEnrollmentSignUp_Status]  DEFAULT ('InProcess') FOR [Status]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp]  WITH CHECK ADD  CONSTRAINT [FK_tblStudentEnrollmentSignUp_tbltenant] FOREIGN KEY([TenantId])
+REFERENCES [dbo].[tbltenant] ([id])
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] CHECK CONSTRAINT [FK_tblStudentEnrollmentSignUp_tbltenant]
+GO
+
+create nonclustered index idx_studentEnrollmentSignup on [tblStudentEnrollmentSignUp](EnrollmentNumber)
