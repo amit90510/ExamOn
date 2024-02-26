@@ -699,3 +699,50 @@ ALTER TABLE [dbo].[tblStudentEnrollmentSignUp] CHECK CONSTRAINT [FK_tblStudentEn
 GO
 
 create nonclustered index idx_studentEnrollmentSignup on [tblStudentEnrollmentSignUp](EnrollmentNumber)
+
+ALTER TABLE [dbo].[tblStudentEnrollmentShifts] DROP CONSTRAINT [FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentShifts] DROP CONSTRAINT [FK_tblStudentEnrollmentShifts_tblshift]
+GO
+
+/****** Object:  Table [dbo].[tblStudentEnrollmentShifts]    Script Date: 26-02-2024 04:46:09 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblStudentEnrollmentShifts]') AND type in (N'U'))
+DROP TABLE [dbo].[tblStudentEnrollmentShifts]
+GO
+
+/****** Object:  Table [dbo].[tblStudentEnrollmentShifts]    Script Date: 26-02-2024 04:46:09 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblStudentEnrollmentShifts](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[EnrollmentId] [bigint] NOT NULL,
+	[ShiftId] [bigint] NOT NULL,
+ CONSTRAINT [PK_tblStudentEnrollmentShifts] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentShifts]  WITH CHECK ADD  CONSTRAINT [FK_tblStudentEnrollmentShifts_tblshift] FOREIGN KEY([ShiftId])
+REFERENCES [dbo].[tblshift] ([id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentShifts] CHECK CONSTRAINT [FK_tblStudentEnrollmentShifts_tblshift]
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentShifts]  WITH CHECK ADD  CONSTRAINT [FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp] FOREIGN KEY([EnrollmentId])
+REFERENCES [dbo].[tblStudentEnrollmentSignUp] ([id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[tblStudentEnrollmentShifts] CHECK CONSTRAINT [FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp]
+GO
+
+
