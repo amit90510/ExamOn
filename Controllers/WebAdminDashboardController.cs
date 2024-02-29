@@ -61,7 +61,7 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetAllTenantSubscriptionHistory(string tid)
         {
             JsonData jsonData = new JsonData();
-            var tenants = DapperService.GetDapperData<tbltenant>("EXEC sp_MSforeachdb 'IF EXISTS (SELECT 1 FROM [?].dbo.sysobjects WHERE name = ''tbltenant'') BEGIN USE[?]; SELECT[id] ,[TenantName], [TenantEmail], [TenantMobile],[SubscriptionEndDate] , [LastRechargeOn] ,[RechargeAmount] FROM[?].dbo.tbltenant;END';", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            var tenants = DapperService.GetDapperData<tbltenant>("EXEC sp_MSforeachdb 'IF EXISTS (SELECT 1 FROM [?].dbo.sysobjects WHERE name = ''tblTenantRechargeHistory'') BEGIN USE[?]; SELECT * FROM[?].dbo.tblTenantRechargeHistory where TID = '"+tid+"';END';", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
             if (tenants != null && tenants.Any())
             {
                 jsonData.StatusCode = 1;
