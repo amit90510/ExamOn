@@ -502,6 +502,7 @@
     <Content Include="fonts\gijgo-material.woff" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\Dashboard.js" />
+    <Content Include="Scripts\ExamOn_Util_common.js" />
     <Content Include="Scripts\gijgo.min.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
