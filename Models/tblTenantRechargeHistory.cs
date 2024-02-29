@@ -9,10 +9,11 @@
 
 namespace ExamOn.Models
 {
+    using ExamOn.DataLayer;
     using System;
     using System.Collections.Generic;
     
-    public partial class tblTenantRechargeHistory
+    public partial class tblTenantRechargeHistory : GenericModel
     {
         public long id { get; set; }
         public System.DateTime SubscptionStartFrom { get; set; }
