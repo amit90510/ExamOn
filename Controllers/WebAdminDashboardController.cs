@@ -61,11 +61,11 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetAllTenantSubscriptionHistory(string tid)
         {
             JsonData jsonData = new JsonData();
-            var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("EXEC sp_MSforeachdb 'IF EXISTS (SELECT 1 FROM [?].dbo.sysobjects WHERE name = ''tblTenantRechargeHistory'') BEGIN USE[?]; SELECT * FROM[?].dbo.tblTenantRechargeHistory where TID = ''"+tid+"'';END';", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("EXEC sp_MSforeachdb 'IF EXISTS (SELECT 1 FROM [?].dbo.sysobjects WHERE name = ''tblTenantRechargeHistory'') BEGIN USE[?]; SELECT [SubscptionStartFrom],[SubscriptionEndAt],[RechargeAmount],[CreatedDate] FROM[?].dbo.tblTenantRechargeHistory where TID = ''" + tid+"'';END';", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
             if (tenants != null && tenants.Any())
             {
                 jsonData.StatusCode = 1;
-                jsonData.Data = tenants.OrderBy(e => e.CreatedDate).ToList();
+                jsonData.Data = tenants.OrderByDescending(e => e.CreatedDate).ToList();
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
@@ -101,13 +101,17 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> SaveTenantDetails([FromBody] tbltenant tblTenantMaster)
+        public async Task<JsonResult> SaveTenantDetails([FromBody] tbltenant tblTenantMaster, bool history = false)
         {
             JsonData jsonData = new JsonData();
             string response = updateTenant(tblTenantMaster);
             if (string.IsNullOrEmpty(response))
             {
                 jsonData.StatusCode = 1;
+                if(history)
+                {
+                    updateTenantHistory(tblTenantMaster);
+                }
             }
             else
             {
@@ -133,15 +137,31 @@ namespace ExamOn.Controllers
                 }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
         }
 
+        [NonAction]
+        public string updateTenantHistory(tbltenant tblTenantMaster)
+        {
+            return DapperService.ExecuteQueryResponse("Insert into tblTenantRechargeHistory(SubscriptionEndAt,RechargeAmount, TID) values(@subEnd, @rech, @tid)",
+                 new
+                 {
+                     tid = tblTenantMaster.id,
+                     rech = tblTenantMaster.RechargeAmount,
+                     subEnd = tblTenantMaster.SubscriptionEndDate.ToString("yyyy-MM-dd")
+                 }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+        }
+
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> SaveTenantDetailsMail([FromBody] tbltenant tblTenantMaster)
+        public async Task<JsonResult> SaveTenantDetailsMail([FromBody] tbltenant tblTenantMaster, bool history = false)
         {
             JsonData jsonData = new JsonData();
             string response = updateTenant(tblTenantMaster);
             if (string.IsNullOrEmpty(response))
             {
                 jsonData.StatusCode = 1;
+                if (history)
+                {
+                    updateTenantHistory(tblTenantMaster);
+                }
                 EmailService.SendEmail(new string[] { tblTenantMaster.TenantEmail }, "ExamOn : Tenant Profile Updated !!", $"Hi {tblTenantMaster.TenantName},<br/>Your profile has been updated by web admininstrator, Please find below details", $"<br> Subscription end date - {tblTenantMaster.SubscriptionEndDate.ToLongDateString()} <br/> Amount - {tblTenantMaster.RechargeAmount} <br/> Mobile - {tblTenantMaster.TenantMobile}");
             }
             else
