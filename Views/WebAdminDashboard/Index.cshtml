@@ -507,7 +507,23 @@
                     { field: 'LastRechargeOn', sortable: true },
                     { field: 'RechargeAmount', sortable: true }
                 ],
-                pager: { limit: 5, sizes: [5, 10, 20] }
+                pager: { limit: 5, sizes: [5, 10, 20] },
+                detailTemplate: '<div><table class="table table-striped table-sm table-responsive-sm"/></div>'
+            });
+
+            $('#gridSubscptionEnd').grid().on('detailExpand', function (e, $detailWrapper, id) {
+                ServerData("/WebAdminDashboard/GetAllTenantSubscriptionHistory?tid="+id, "Post", null, (data) => {
+                    $detailWrapper.find('table').grid({
+                        uiLibrary: "bootstrap4",
+                        dataSource: data.Data,
+                        iconsLibrary: 'fontawesome',
+                        headerFilter: true,
+                        pager: { limit: 5 }
+                    });
+                });
+            });
+            $('#gridSubscptionEnd').grid().on('detailCollapse', function (e, $detailWrapper, id) {
+                $detailWrapper.find('table').grid('destroy', true, true);
             });
         }, () => { });
     }
