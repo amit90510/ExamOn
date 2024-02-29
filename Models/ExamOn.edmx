@@ -233,6 +233,17 @@
           <Property Name="LastRechargeOn" Type="date" Nullable="false" />
           <Property Name="RechargeAmount" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblTenantRechargeHistory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubscptionStartFrom" Type="date" Nullable="false" />
+          <Property Name="SubscriptionEndAt" Type="date" Nullable="false" />
+          <Property Name="RechargeAmount" Type="float" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="TID" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbluserProfile">
           <Key>
             <PropertyRef Name="id" />
@@ -627,6 +638,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySet Name="tblStudentEnrollmentSignUp" EntityType="Self.tblStudentEnrollmentSignUp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTeacherInstructorShifts" EntityType="Self.tblTeacherInstructorShifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbltenant" EntityType="Self.tbltenant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTenantRechargeHistory" EntityType="Self.tblTenantRechargeHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbluserProfile" EntityType="Self.tbluserProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserProfileImage" EntityType="Self.tblUserProfileImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserShift" EntityType="Self.tblUserShift" Schema="dbo" store:Type="Tables" />
@@ -1275,6 +1287,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             <End Role="tblStudentEnrollmentSignUp" EntitySet="tblStudentEnrollmentSignUps" />
             <End Role="tblStudentEnrollmentShift" EntitySet="tblStudentEnrollmentShifts" />
           </AssociationSet>
+          <EntitySet Name="tblTenantRechargeHistories" EntityType="ExamOn_DummyModel.tblTenantRechargeHistory" />
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -1494,6 +1507,17 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblTenantRechargeHistory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubscptionStartFrom" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SubscriptionEndAt" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RechargeAmount" Type="Double" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1789,6 +1813,18 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
                 <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
                 <ScalarProperty Name="EnrollmentId" ColumnName="EnrollmentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTenantRechargeHistories">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblTenantRechargeHistory">
+              <MappingFragment StoreEntitySet="tblTenantRechargeHistory">
+                <ScalarProperty Name="TID" ColumnName="TID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="RechargeAmount" ColumnName="RechargeAmount" />
+                <ScalarProperty Name="SubscriptionEndAt" ColumnName="SubscriptionEndAt" />
+                <ScalarProperty Name="SubscptionStartFrom" ColumnName="SubscptionStartFrom" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

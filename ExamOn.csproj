@@ -385,6 +385,9 @@
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblTenantMaster.cs" />
+    <Compile Include="Models\tblTenantRechargeHistory.cs">
+      <DependentUpon>ExamOn.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbluserProfile.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
