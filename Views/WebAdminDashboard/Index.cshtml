@@ -4,6 +4,11 @@
 }
 <a class="btn btn-danger" href="~/signout"> Logout from web admin?</a>
 <hr />
+<span>All tenants subscriptions - <button onclick="exportToExcel()" class="gj-button-md">Download</button></span>
+<table id="gridSubscptionEnd" class="table table-striped table-sm table-responsive-sm">
+</table>
+
+<hr />
 <div class="input-group container" error-For="Tenant">
     <select style="cursor:pointer" id="txtTenant" class="form-select js-example-basic-single" onchange="OnTenantCHange(this)">
         <option>Choose...</option>
@@ -31,7 +36,7 @@
                 Subscription  End date
                 <input type="text" class="form-control" readonly="readonly" id="txtSubscriptionENdDate" placeholder="Subcription end Date" width="312">
 
-                 Subscription End Message
+                Subscription End Message
                 <input type="text" class="form-control" id="txtTenantsubscriptionEndMessage" placeholder="tenant subscription end message">
                 Last Recharge Amount
                 <input type="number" class="form-control" id="txtTenantLastRecharge" placeholder="Last Recharge Amount">
@@ -159,316 +164,372 @@
 </div>
 
 
-    <script type="text/javascript">
-        $(document).ready(() => {
-            $("#accordionFlushExample").hide();
-            $('.js-example-basic-single').select2({ width: 'resolve' });
-            ServerData("/WebAdminDashboard/GetAllTenants", "Post", null, (data) => {
-                if (data && data.StatusCode == "1") {
-                    $('#txtTenant').html('');
-                    $('#txtTenant').append($("<option selected></option>").attr("value", "").text('Choose Tenant first'));
-                    $.each(data.Data, function (key, value) {
-                        $('#txtTenant').append($("<option></option>").attr("value", value.TenantUniqueKey).text(value.TenantDBName));
-                    });
-                }
-            }, () => { });
+<script type="text/javascript">
+    $(document).ready(() => {
+        $("#accordionFlushExample").hide();
+        $('.js-example-basic-single').select2({ width: 'resolve' });
+        TenantsSubscriptions();
+        //ServerData("/WebAdminDashboard/GetAllTenants", "Post", null, (data) => {
+        //    if (data && data.StatusCode == "1") {
+        //        $('#txtTenant').html('');
+        //        $('#txtTenant').append($("<option selected></option>").attr("value", "").text('Choose Tenant first'));
+        //        $.each(data.Data, function (key, value) {
+        //            $('#txtTenant').append($("<option></option>").attr("value", value.TenantUniqueKey).text(value.TenantDBName));
+        //        });
+        //    }
+        //}, () => { });
 
-            ServerData("/WebAdminDashboard/GetAllLoginType", "Post", null, (data) => {
-                if (data && data.StatusCode == "1") {
-                    $('#txtloginType').html('');
-                    $('#txtloginTypePermission').html('');
-                    $('#txtloginType').append($("<option selected></option>").attr("value", "").text('Choose login type first'));
-                    $('#txtloginTypePermission').append($("<option selected></option>").attr("value", "").text('Choose login type first'));
-                    $.each(data.Data, function (key, value) {
-                        $('#txtloginType').append($("<option></option>").attr("value", value.Type).text(value.TypeName));
-                        $('#txtloginTypePermission').append($("<option></option>").attr("value", value.Type).text(value.TypeName));
-                    });
-                }
-            }, () => { });
-            try {
-                document.getElementsByTagName('footer')[0].hidden = true
-            }
-            catch { }
-            setTimeout(() => { $('#txtSubscriptionENdDate').datepicker({ footer: true, modal: false, header: true, format: "dd-mm-yyyy" }); }, 500);
-        });
-        function OnTenantCHange(select) {
-            if (select && select.value) {
-                $("#accordionFlushExample").show();
-                var loginObj = {
-                    "TenantUniqueKey": select.value.trim()
-                }
-                ServerData("/WebAdminDashboard/GetTenantDetails", "Post", loginObj, (data) => {
-                    if (data && data.StatusCode == "1") {
-                        $("#txtTenantId").val(data.Data.id);
-                        $("#txtTenantName").val(data.Data.TenantName);
-                        $("#txtAddress").val(data.Data.TenantAddress);
-                        $("#txtTenantMobile").val(data.Data.TenantMobile);
-                        $("#txtTenantEMail").val(data.Data.TenantEmail);
-                        $("#txtTenantLastRecharge").val(data.Data.RechargeAmount);
-                        $("#txtTenantsubscriptionEndMessage").val(data.Data.SubscriptionEndMessage);
-                        $("#txtSubscriptionENdDate").val(toShowSqlDateinUI(data.Data.SubscriptionEndDate));
-                    }
-                }, () => { });
-
-                GetUserUserName();
-                GetEmailCredientials();
-                getAvailablelogins();
-            } else {
-                $("#txtTenantId").val('');
-                $("#txtTenantName").val('');
-                $("#txtAddress").val('');
-                $("#txtTenantMobile").val('');
-                $("#txtTenantEMail").val('');
-                $("#txtTenantLastRecharge").val('');
-                $("#txtTenantsubscriptionEndMessage").val('');
-                $("#txtSubscriptionENdDate").val(toShowSqlDateinUI(''));
-                $("#accordionFlushExample").hide();
-                $("#txtNewUserName").val('');
-                $("#txtProfileName").val('');
-                $("#txtUserPasssword").val('');
-                $("#txtUserEMail").val('');
-                $("#txtNewEMailFromAddress").val('');
-                $("#txtUserEmailPasssword").val('');
-                $("#txtuserBlockmessage").val('');
-                $("#txtPassPhrase").val('');
-                $('#txtAvailablelogins').empty();
-                $('.chkbox').prop('checked', false);
-                $('#txtPassPhraseOutput').val('');
-                $('#txtloginTypePermission').html('');
+        ServerData("/WebAdminDashboard/GetAllLoginType", "Post", null, (data) => {
+            if (data && data.StatusCode == "1") {
                 $('#txtloginType').html('');
+                $('#txtloginTypePermission').html('');
+                $('#txtloginType').append($("<option selected></option>").attr("value", "").text('Choose login type first'));
+                $('#txtloginTypePermission').append($("<option selected></option>").attr("value", "").text('Choose login type first'));
+                $.each(data.Data, function (key, value) {
+                    $('#txtloginType').append($("<option></option>").attr("value", value.Type).text(value.TypeName));
+                    $('#txtloginTypePermission').append($("<option></option>").attr("value", value.Type).text(value.TypeName));
+                });
             }
+        }, () => { });
+        try {
+            document.getElementsByTagName('footer')[0].hidden = true
         }
-        function PermissionGrid(typeID) {
-            if (typeID && typeID.value) {
-                var PassObj = {
-                    "userType": typeID.value.trim()
-                }
-                ServerData("/WebAdminDashboard/GetUserAccessTypePermission", "Post", PassObj, (data) => {
-                    if (data && data.StatusCode == "1") {
-                        $('#grid').grid('destroy', true, true);
-                        var IsActiveRender = function (value, record, $cell, $displayEl) {
-                            let ctrl = record.IsActive ? "<div class='form-check form-switch' style='display: inline-block;'><input class='form-check-input' style='cursor:pointer'  checked type='checkbox' id='" + record.ID + "'></div>" : "<div class='form-check form-switch' style='display: inline-block;'><input class='form-check-input' style='cursor:pointer' type='checkbox' id='" + record.ID + "'></div>";
-
-                            var $btn = $(ctrl).on('click', function () {
-                                $('#grid').grid().getById($(this.children[0]).prop('id')).IsActive = $(this.children[0]).prop('checked') ? true : false;
-                            });
-                            $displayEl.empty().append($btn);
-                        };
-
-                        $('#grid').grid({
-                            primaryKey: 'ID',
-                            uiLibrary: "bootstrap4",
-                            dataSource: data.Data,
-                            iconsLibrary: 'fontawesome',
-                            headerFilter: true,
-                            columns: [
-                                { field: 'ID', width: 1, hidden: true, filterable: false },
-                                { field: 'Route', sortable: true },
-                                { field: 'IsActive', title: 'Active?', width: 90, align: 'center', renderer: IsActiveRender, filterable: false }
-                            ],
-                            pager: { limit: 5, sizes: [5, 10, 20] }
-                        });
-                        if ($('#grid').grid()) {
-                            $('#grid').grid().on('pageSizeChange', function (e, newSize) {
-                                let visibleRecords = $("[data-role='record-last']")[0].innerText;
-                                $("#btnUpdatePermission").html('Update [' + visibleRecords + "] records");
-                            });
-                        }
-                    } else {
-                        SwalFire('Permission not getted', data.Error, 'error', null, () => { }, "");
-                    }
-                }, () => { });
-            } else {
-                $('#grid').grid('destroy', true, true);
+        catch { }
+        setTimeout(() => { $('#txtSubscriptionENdDate').datepicker({ footer: true, modal: false, header: true, format: "dd-mm-yyyy" }); }, 500);
+    });
+    function OnTenantCHange(select) {
+        if (select && select.value) {
+            $("#accordionFlushExample").show();
+            var loginObj = {
+                "TenantUniqueKey": select.value.trim()
             }
-        }
-
-        function UpdatePermission(All) {
-            if ($("#txtloginTypePermission") && $("#txtloginTypePermission").val()) {
-                let loopCount = All ? $("#grid").grid().getAll(true).length : $("[data-role='record-last']")[0].innerText;
-                if (loopCount > 0) {
-                    let records = $("#grid").grid().getAll(true);
-                    ServerData("/WebAdminDashboard/UpdatePermissions?TypeId="+$("#txtloginTypePermission").val(), "Post", records.filter((rec, idx) => idx < parseInt(loopCount)), (data) => {
-                        if (data && data.StatusCode == "1") {
-                            SwalFire('Updated', 'Permission Updated', 'success', null, () => { }, "");
-                            PermissionGrid(document.getElementById("txtloginTypePermission"));
-                        } else {
-                            SwalFire('Permission not updated', data.Error, 'error', null, () => { }, "");
-                        }
-                    }, () => { });
-                }
-                else {
-                    SwalFire('No Data Available', 'There is no data available for updating permission', 'error', null, () => { }, "");
-                }
-            } else {
-                SwalFire('Mendatory fields', 'Please select login type for updating permission', 'error', null, () => { }, "");
-            }
-        }
-
-        function UpdateTenant(email) {
-            if ($("#txtTenantId").val() && $("#txtTenant").val()) {
-                var PassObj = {
-                    "id": $("#txtTenantId").val().trim(),
-                    "TenantName": $("#txtTenantName").val().trim(),
-                    "TenantAddress": $("#txtAddress").val().trim(),
-                    "TenantAddress": $("#txtAddress").val().trim(),
-                    "TenantEmail": $("#txtTenantEMail").val().trim(),
-                    "TenantMobile": $("#txtTenantMobile").val().trim(),
-                    "SubscriptionEndMessage": $("#txtTenantsubscriptionEndMessage").val().trim(),
-                    "RechargeAmount": $("#txtTenantLastRecharge").val().trim(),
-                    "SubscriptionEndDate": toSaveSqlDBDateFormat($("#txtSubscriptionENdDate").val().trim())
-                }
-                let urlhit = email ? "/WebAdminDashboard/SaveTenantDetailsMail" : "/WebAdminDashboard/SaveTenantDetails";
-                ServerData(urlhit, "Post", PassObj, (data) => {
-                    if (data && data.StatusCode == "1") {
-                        OnTenantCHange(document.getElementById('txtTenant'));
-                        SwalFire('Tenant details Updated', 'Updated', 'success', null, () => { }, "");
-                    } else {
-                        SwalFire('Tenant details not found', data.Error, 'error', null, () => { }, "");
-                    }
-                }, () => { });
-            } else {
-                SwalFire('Tenant details not found', 'details not found, either you did not select any tenant or data not found for selected tenant', 'error', null, () => { }, "");
-            }
-        }
-        function GetUserUserName(ovverride, email) {
-            ServerData("/WebAdminDashboard/GetNextRecordForUserName", "Post", null, (data) => {
+            ServerData("/WebAdminDashboard/GetTenantDetails", "Post", loginObj, (data) => {
                 if (data && data.StatusCode == "1") {
+                    $("#txtTenantId").val(data.Data.id);
+                    $("#txtTenantName").val(data.Data.TenantName);
+                    $("#txtAddress").val(data.Data.TenantAddress);
+                    $("#txtTenantMobile").val(data.Data.TenantMobile);
+                    $("#txtTenantEMail").val(data.Data.TenantEmail);
+                    $("#txtTenantLastRecharge").val(data.Data.RechargeAmount);
+                    $("#txtTenantsubscriptionEndMessage").val(data.Data.SubscriptionEndMessage);
+                    $("#txtSubscriptionENdDate").val(toShowSqlDateinUI(data.Data.SubscriptionEndDate));
+                }
+            }, () => { });
 
-                    if ($("#chkUseCustomUserName").prop('checked')) {
-                        if ($("#txtNewUserName").val() && !$("#txtNewUserName").val().includes(document.getElementById('txtTenant').value.trim() + '-')) {
-                            SwalFire('WrongUser Name format', 'user name should be like ' + document.getElementById('txtTenant').value.trim() + '-{your name}', 'error', null, () => { }, '');
-                            return;
-                        }
-                    } else {
-                        $("#txtNewUserName").val(document.getElementById('txtTenant').value.trim() + '-' + data.Data);
-                    }
-                    if (ovverride) {
-                        creatLoginOverride(email);
-                    }
-                }
-            }, () => { });
-        }
-        function CreateLogin(email) {
-            if ($("#txtloginType").val() && $("#txtProfileName").val() && $("#txtUserPasssword").val() && $("#txtUserEMail").val()) {
-                GetUserUserName(true, email);
-            }
-            else {
-                SwalFire('Mandatory fields', 'all fields are mandatory for login create', 'error', null, () => { });
-            }
-        }
-        function creatLoginOverride(email) {
-            let UserObj = {
-                "UserName": $('#txtNewUserName').val().trim(),
-                "ProfileName": $('#txtProfileName').val().trim(),
-                "Password": $('#txtUserPasssword').val().trim(),
-                "Email": $('#txtUserEMail').val().trim(),
-                "LoginType": $("#txtloginType").val(),
-                "TenantToken": $("#txtTenant").val()
-            }
-            let hiturl = email ? "/WebAdminDashboard/CreateUserLogin?Isemail=1" : "/WebAdminDashboard/CreateUserLogin";
-            ServerData(hiturl, "Post", UserObj, (data) => {
-                GetUserUserName();
-                if (data && data.StatusCode == "1") {                    
-                    SwalFire('Created', 'User login is created', 'success', null, () => { }, "");
-                } else {
-                    SwalFire('User login can not be created', data.Error, 'error', null, () => { }, "");
-                }
-               
-            }, () => { });
-        }
-
-        function GetEmailCredientials() {
-            ServerData("/WebAdminDashboard/GetTenantEmailCredientials", "Post", null, (data) => {
-                if (data && data.StatusCode == "1") {
-                    $("#txtNewEMailFromAddress").val(data.Data.UserName);
-                    $("#txtUserEmailPasssword").val(data.Data.Password);
-                }
-            }, () => { });
-        }
-        function UpdateEMailCredientials() {
-            if ($("#txtNewEMailFromAddress").val() && $("#txtUserEmailPasssword").val()) {
-                var loginObj = {
-                    "UserName": $("#txtNewEMailFromAddress").val().trim(),
-                    "Password": $("#txtUserEmailPasssword").val().trim()
-                }
-                ServerData("/WebAdminDashboard/UpdateTenantEMailCredientials", "Post", loginObj, (data) => {
-                    if (data && data.StatusCode == "1") {
-                        GetEmailCredientials();
-                        SwalFire('Tenant email credientials Updated', 'Updated', 'success', null, () => { }, "");
-                    } else {
-                        SwalFire('Tenant email credientials not updated', data.Error, 'error', null, () => { }, "");
-                    }
-                }, () => { });
-            }
-            else {
-                SwalFire('Mandatory fields', 'all fields are mandatory for Emailcredientials Update', 'error', null, () => { });
-            }
-        }
-        function getAvailablelogins() {
-            $('#txtAvailablelogins').html('');
-            ServerData("/WebAdminDashboard/GetTenantAvailablelogins", "Post", null, (data) => {
-                if (data && data.StatusCode == "1") {
-                    $('#txtAvailablelogins').append($("<option selected></option>").attr("value", "").text('Choose Login first'));
-                    $.each(data.Data, function (key, value) {
-                        $('#txtAvailablelogins').append($("<option></option>").attr("value", value.UserName).text(value.EmailId));
-                    });
-                }
-            }, () => { });
-        }
-        function getLoginStatusByUserName(userName) {
+            GetUserUserName();
+            GetEmailCredientials();
+            getAvailablelogins();
+        } else {
+            $("#txtTenantId").val('');
+            $("#txtTenantName").val('');
+            $("#txtAddress").val('');
+            $("#txtTenantMobile").val('');
+            $("#txtTenantEMail").val('');
+            $("#txtTenantLastRecharge").val('');
+            $("#txtTenantsubscriptionEndMessage").val('');
+            $("#txtSubscriptionENdDate").val(toShowSqlDateinUI(''));
+            $("#accordionFlushExample").hide();
+            $("#txtNewUserName").val('');
+            $("#txtProfileName").val('');
+            $("#txtUserPasssword").val('');
+            $("#txtUserEMail").val('');
+            $("#txtNewEMailFromAddress").val('');
+            $("#txtUserEmailPasssword").val('');
             $("#txtuserBlockmessage").val('');
+            $("#txtPassPhrase").val('');
+            $('#txtAvailablelogins').empty();
             $('.chkbox').prop('checked', false);
-            if (userName && userName.value.trim()) {
-                let UserObj = {
-                    "UserName": userName.value.trim()
-                }
-                ServerData("/WebAdminDashboard/GetUserLoginStatus", "Post", UserObj, (data) => {
-                    if (data && data.StatusCode == "1") {
-                        if (data.Data.Active) {
-                            $("#chkActive").prop('checked', true);
-                        }
-                        if (data.Data.BlockLogin) {
-                            $("#chkBlock").prop('checked', true);
-                        }
-                        $("#txtuserBlockmessage").val(data.Data.BlockMessage);
-                    }
-                }, () => { });
-            }
+            $('#txtPassPhraseOutput').val('');
+            $('#txtloginTypePermission').html('');
+            $('#txtloginType').html('');
         }
-        function UpdateLoginStatus() {
-            if ($('#txtAvailablelogins').val()) {
-                let UserObj = {
-                    "UserName": $('#txtAvailablelogins').val().trim(),
-                    "Active": $("#chkActive").prop('checked') ? 1 : 0,
-                    "BlockLogin": $("#chkBlock").prop('checked') ? 1 : 0
+    }
+    function PermissionGrid(typeID) {
+        if (typeID && typeID.value) {
+            var PassObj = {
+                "userType": typeID.value.trim()
+            }
+            ServerData("/WebAdminDashboard/GetUserAccessTypePermission", "Post", PassObj, (data) => {
+                if (data && data.StatusCode == "1") {
+                    $('#grid').grid('destroy', true, true);
+                    var IsActiveRender = function (value, record, $cell, $displayEl) {
+                        let ctrl = record.IsActive ? "<div class='form-check form-switch' style='display: inline-block;'><input class='form-check-input' style='cursor:pointer'  checked type='checkbox' id='" + record.ID + "'></div>" : "<div class='form-check form-switch' style='display: inline-block;'><input class='form-check-input' style='cursor:pointer' type='checkbox' id='" + record.ID + "'></div>";
+
+                        var $btn = $(ctrl).on('click', function () {
+                            $('#grid').grid().getById($(this.children[0]).prop('id')).IsActive = $(this.children[0]).prop('checked') ? true : false;
+                        });
+                        $displayEl.empty().append($btn);
+                    };
+
+                    $('#grid').grid({
+                        primaryKey: 'ID',
+                        uiLibrary: "bootstrap4",
+                        dataSource: data.Data,
+                        iconsLibrary: 'fontawesome',
+                        headerFilter: true,
+                        columns: [
+                            { field: 'ID', width: 1, hidden: true, filterable: false },
+                            { field: 'Route', sortable: true },
+                            { field: 'IsActive', title: 'Active?', width: 90, align: 'center', renderer: IsActiveRender, filterable: false }
+                        ],
+                        pager: { limit: 5, sizes: [5, 10, 20] }
+                    });
+                    if ($('#grid').grid()) {
+                        $('#grid').grid().on('pageSizeChange', function (e, newSize) {
+                            let visibleRecords = $("[data-role='record-last']")[0].innerText;
+                            $("#btnUpdatePermission").html('Update [' + visibleRecords + "] records");
+                        });
+                    }
+                } else {
+                    SwalFire('Permission not getted', data.Error, 'error', null, () => { }, "");
                 }
-                ServerData("/WebAdminDashboard/UpdateUserLoginStatus", "Post", UserObj, (data) => {
+            }, () => { });
+        } else {
+            $('#grid').grid('destroy', true, true);
+        }
+    }
+
+    function UpdatePermission(All) {
+        if ($("#txtloginTypePermission") && $("#txtloginTypePermission").val()) {
+            let loopCount = All ? $("#grid").grid().getAll(true).length : $("[data-role='record-last']")[0].innerText;
+            if (loopCount > 0) {
+                let records = $("#grid").grid().getAll(true);
+                ServerData("/WebAdminDashboard/UpdatePermissions?TypeId=" + $("#txtloginTypePermission").val(), "Post", records.filter((rec, idx) => idx < parseInt(loopCount)), (data) => {
                     if (data && data.StatusCode == "1") {
-                        SwalFire('Updated','User status is updated',  'success', null, () => { }, "");
+                        SwalFire('Updated', 'Permission Updated', 'success', null, () => { }, "");
+                        PermissionGrid(document.getElementById("txtloginTypePermission"));
                     } else {
-                        SwalFire('User login status is updated', data.Error, 'error', null, () => { }, "");
+                        SwalFire('Permission not updated', data.Error, 'error', null, () => { }, "");
                     }
                 }, () => { });
-            } else {
-                SwalFire('Mandatory fields', 'Please choose login first to set status', 'error', null, () => { });
             }
+            else {
+                SwalFire('No Data Available', 'There is no data available for updating permission', 'error', null, () => { }, "");
+            }
+        } else {
+            SwalFire('Mendatory fields', 'Please select login type for updating permission', 'error', null, () => { }, "");
         }
-        function EncryptDecrypt(decrypt) {
-            if ($('#txtPassPhrase').val()) {
-                let UserObj = {
-                    "phrase": $('#txtPassPhrase').val().trim(),
-                    "isDecrypt": decrypt ? true : false
+    }
+
+    function UpdateTenant(email) {
+        if ($("#txtTenantId").val() && $("#txtTenant").val()) {
+            var PassObj = {
+                "id": $("#txtTenantId").val().trim(),
+                "TenantName": $("#txtTenantName").val().trim(),
+                "TenantAddress": $("#txtAddress").val().trim(),
+                "TenantAddress": $("#txtAddress").val().trim(),
+                "TenantEmail": $("#txtTenantEMail").val().trim(),
+                "TenantMobile": $("#txtTenantMobile").val().trim(),
+                "SubscriptionEndMessage": $("#txtTenantsubscriptionEndMessage").val().trim(),
+                "RechargeAmount": $("#txtTenantLastRecharge").val().trim(),
+                "SubscriptionEndDate": toSaveSqlDBDateFormat($("#txtSubscriptionENdDate").val().trim())
+            }
+            let urlhit = email ? "/WebAdminDashboard/SaveTenantDetailsMail" : "/WebAdminDashboard/SaveTenantDetails";
+            ServerData(urlhit, "Post", PassObj, (data) => {
+                if (data && data.StatusCode == "1") {
+                    OnTenantCHange(document.getElementById('txtTenant'));
+                    SwalFire('Tenant details Updated', 'Updated', 'success', null, () => { }, "");
+                } else {
+                    SwalFire('Tenant details not found', data.Error, 'error', null, () => { }, "");
                 }
-                ServerData("/WebAdminDashboard/GetEncryptDecryptionString", "Post", UserObj, (data) => {
-                    if (data && data.StatusCode == "1") {
-                        $('#txtPassPhraseOutput').val(data.Data);
-                    } else {
-                        $('#txtPassPhraseOutput').val(data.Error);
-                    }
-                }, () => { });
-            } else {
-                SwalFire('Mandatory fields', 'Please enter input string to encrypt/decrypt', 'error', null, () => { });
-            }
+            }, () => { });
+        } else {
+            SwalFire('Tenant details not found', 'details not found, either you did not select any tenant or data not found for selected tenant', 'error', null, () => { }, "");
         }
-    </script>
+    }
+    function GetUserUserName(ovverride, email) {
+        ServerData("/WebAdminDashboard/GetNextRecordForUserName", "Post", null, (data) => {
+            if (data && data.StatusCode == "1") {
+
+                if ($("#chkUseCustomUserName").prop('checked')) {
+                    if ($("#txtNewUserName").val() && !$("#txtNewUserName").val().includes(document.getElementById('txtTenant').value.trim() + '-')) {
+                        SwalFire('WrongUser Name format', 'user name should be like ' + document.getElementById('txtTenant').value.trim() + '-{your name}', 'error', null, () => { }, '');
+                        return;
+                    }
+                } else {
+                    $("#txtNewUserName").val(document.getElementById('txtTenant').value.trim() + '-' + data.Data);
+                }
+                if (ovverride) {
+                    creatLoginOverride(email);
+                }
+            }
+        }, () => { });
+    }
+    function CreateLogin(email) {
+        if ($("#txtloginType").val() && $("#txtProfileName").val() && $("#txtUserPasssword").val() && $("#txtUserEMail").val()) {
+            GetUserUserName(true, email);
+        }
+        else {
+            SwalFire('Mandatory fields', 'all fields are mandatory for login create', 'error', null, () => { });
+        }
+    }
+    function creatLoginOverride(email) {
+        let UserObj = {
+            "UserName": $('#txtNewUserName').val().trim(),
+            "ProfileName": $('#txtProfileName').val().trim(),
+            "Password": $('#txtUserPasssword').val().trim(),
+            "Email": $('#txtUserEMail').val().trim(),
+            "LoginType": $("#txtloginType").val(),
+            "TenantToken": $("#txtTenant").val()
+        }
+        let hiturl = email ? "/WebAdminDashboard/CreateUserLogin?Isemail=1" : "/WebAdminDashboard/CreateUserLogin";
+        ServerData(hiturl, "Post", UserObj, (data) => {
+            GetUserUserName();
+            if (data && data.StatusCode == "1") {
+                SwalFire('Created', 'User login is created', 'success', null, () => { }, "");
+            } else {
+                SwalFire('User login can not be created', data.Error, 'error', null, () => { }, "");
+            }
+
+        }, () => { });
+    }
+
+    function GetEmailCredientials() {
+        ServerData("/WebAdminDashboard/GetTenantEmailCredientials", "Post", null, (data) => {
+            if (data && data.StatusCode == "1") {
+                $("#txtNewEMailFromAddress").val(data.Data.UserName);
+                $("#txtUserEmailPasssword").val(data.Data.Password);
+            }
+        }, () => { });
+    }
+    function UpdateEMailCredientials() {
+        if ($("#txtNewEMailFromAddress").val() && $("#txtUserEmailPasssword").val()) {
+            var loginObj = {
+                "UserName": $("#txtNewEMailFromAddress").val().trim(),
+                "Password": $("#txtUserEmailPasssword").val().trim()
+            }
+            ServerData("/WebAdminDashboard/UpdateTenantEMailCredientials", "Post", loginObj, (data) => {
+                if (data && data.StatusCode == "1") {
+                    GetEmailCredientials();
+                    SwalFire('Tenant email credientials Updated', 'Updated', 'success', null, () => { }, "");
+                } else {
+                    SwalFire('Tenant email credientials not updated', data.Error, 'error', null, () => { }, "");
+                }
+            }, () => { });
+        }
+        else {
+            SwalFire('Mandatory fields', 'all fields are mandatory for Emailcredientials Update', 'error', null, () => { });
+        }
+    }
+    function getAvailablelogins() {
+        $('#txtAvailablelogins').html('');
+        ServerData("/WebAdminDashboard/GetTenantAvailablelogins", "Post", null, (data) => {
+            if (data && data.StatusCode == "1") {
+                $('#txtAvailablelogins').append($("<option selected></option>").attr("value", "").text('Choose Login first'));
+                $.each(data.Data, function (key, value) {
+                    $('#txtAvailablelogins').append($("<option></option>").attr("value", value.UserName).text(value.EmailId));
+                });
+            }
+        }, () => { });
+    }
+    function getLoginStatusByUserName(userName) {
+        $("#txtuserBlockmessage").val('');
+        $('.chkbox').prop('checked', false);
+        if (userName && userName.value.trim()) {
+            let UserObj = {
+                "UserName": userName.value.trim()
+            }
+            ServerData("/WebAdminDashboard/GetUserLoginStatus", "Post", UserObj, (data) => {
+                if (data && data.StatusCode == "1") {
+                    if (data.Data.Active) {
+                        $("#chkActive").prop('checked', true);
+                    }
+                    if (data.Data.BlockLogin) {
+                        $("#chkBlock").prop('checked', true);
+                    }
+                    $("#txtuserBlockmessage").val(data.Data.BlockMessage);
+                }
+            }, () => { });
+        }
+    }
+    function UpdateLoginStatus() {
+        if ($('#txtAvailablelogins').val()) {
+            let UserObj = {
+                "UserName": $('#txtAvailablelogins').val().trim(),
+                "Active": $("#chkActive").prop('checked') ? 1 : 0,
+                "BlockLogin": $("#chkBlock").prop('checked') ? 1 : 0
+            }
+            ServerData("/WebAdminDashboard/UpdateUserLoginStatus", "Post", UserObj, (data) => {
+                if (data && data.StatusCode == "1") {
+                    SwalFire('Updated', 'User status is updated', 'success', null, () => { }, "");
+                } else {
+                    SwalFire('User login status is updated', data.Error, 'error', null, () => { }, "");
+                }
+            }, () => { });
+        } else {
+            SwalFire('Mandatory fields', 'Please choose login first to set status', 'error', null, () => { });
+        }
+    }
+    function EncryptDecrypt(decrypt) {
+        if ($('#txtPassPhrase').val()) {
+            let UserObj = {
+                "phrase": $('#txtPassPhrase').val().trim(),
+                "isDecrypt": decrypt ? true : false
+            }
+            ServerData("/WebAdminDashboard/GetEncryptDecryptionString", "Post", UserObj, (data) => {
+                if (data && data.StatusCode == "1") {
+                    $('#txtPassPhraseOutput').val(data.Data);
+                } else {
+                    $('#txtPassPhraseOutput').val(data.Error);
+                }
+            }, () => { });
+        } else {
+            SwalFire('Mandatory fields', 'Please enter input string to encrypt/decrypt', 'error', null, () => { });
+        }
+    }
+
+    function TenantsSubscriptions() {
+        $('#gridSubscptionEnd').grid('destroy', true, true);
+        ServerData("/WebAdminDashboard/GetAllTenantSubscription", "Post", null, (data) => {
+            $('#txtTenant').html('');
+            $('#txtTenant').append($("<option selected></option>").attr("value", "").text('Choose Tenant first'));
+            $.each(data.Data, function (key, value) {
+                try {
+                    value.SubscriptionEndDate = toShowSqlDateinUI(value.SubscriptionEndDate);
+                    value.LastRechargeOn = toShowSqlDateinUI(value.LastRechargeOn);
+                }
+                catch (error) { console.error(error); }
+                $('#txtTenant').append($("<option></option>").attr("value", value.id).text(value.TenantName));
+            });
+
+            $('#gridSubscptionEnd').grid({
+                primaryKey: 'ID',
+                uiLibrary: "bootstrap4",
+                dataSource: data.Data,
+                iconsLibrary: 'fontawesome',
+                headerFilter: true,
+                columns: [
+                    { field: 'id', width: 50, sortable: true },
+                    { field: 'TenantName', sortable: true },
+                    { field: 'TenantEmail', sortable: true },
+                    { field: 'TenantMobile', sortable: true },
+                    { field: 'SubscriptionEndDate', sortable: true },
+                    { field: 'LastRechargeOn', sortable: true },
+                    { field: 'RechargeAmount', sortable: true }
+                ],
+                pager: { limit: 5, sizes: [5, 10, 20] }
+            });
+        }, () => { });
+    }
+
+    function exportToExcel() {
+        const table = document.getElementById("gridSubscptionEnd");
+        const rows = table.querySelectorAll("tr");
+
+        let csv = [];
+        for (let i = 0; i < rows.length; i++) {
+            let row = [], cols = rows[i].querySelectorAll("td, th");
+            for (let j = 0; j < cols.length; j++)
+                row.push(cols[j].innerText);
+            csv.push(row.join(","));
+        }
+
+        const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "AllTenant.csv");
+        document.body.appendChild(link);
+        link.click();
+    }
+</script>
