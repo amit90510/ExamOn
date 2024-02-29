@@ -61,11 +61,11 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetAllTenantSubscriptionHistory(string tid)
         {
             JsonData jsonData = new JsonData();
-            var tenants = DapperService.GetDapperData<tbltenant>("EXEC sp_MSforeachdb 'IF EXISTS (SELECT 1 FROM [?].dbo.sysobjects WHERE name = ''tblTenantRechargeHistory'') BEGIN USE[?]; SELECT * FROM[?].dbo.tblTenantRechargeHistory where TID = '"+tid+"';END';", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("EXEC sp_MSforeachdb 'IF EXISTS (SELECT 1 FROM [?].dbo.sysobjects WHERE name = ''tblTenantRechargeHistory'') BEGIN USE[?]; SELECT * FROM[?].dbo.tblTenantRechargeHistory where TID = ''"+tid+"'';END';", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
             if (tenants != null && tenants.Any())
             {
                 jsonData.StatusCode = 1;
-                jsonData.Data = tenants.OrderByDescending(e => e.SubscriptionEndDate).ToList();
+                jsonData.Data = tenants.OrderBy(e => e.CreatedDate).ToList();
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }

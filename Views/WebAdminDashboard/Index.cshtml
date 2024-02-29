@@ -512,14 +512,25 @@
             });
 
             $('#gridSubscptionEnd').grid().on('detailExpand', function (e, $detailWrapper, id) {
-                ServerData("/WebAdminDashboard/GetAllTenantSubscriptionHistory?tid="+id, "Post", null, (data) => {
-                    $detailWrapper.find('table').grid({
-                        uiLibrary: "bootstrap4",
-                        dataSource: data.Data,
-                        iconsLibrary: 'fontawesome',
-                        headerFilter: true,
-                        pager: { limit: 5 }
-                    });
+                console.log(e, $detailWrapper, id);
+                ServerData("/WebAdminDashboard/GetAllTenantSubscriptionHistory?tid=" + $('#gridSubscptionEnd').grid().get(id).id, "Post", null, (data) => {
+                    if (data && data.StatusCode == "1") {
+                        $.each(data.Data, function (key, value) {
+                            try {
+                                value.SubscptionStartFrom = toShowSqlDateinUI(value.SubscptionStartFrom);
+                                value.SubscriptionEndAt = toShowSqlDateinUI(value.SubscriptionEndAt);
+                                value.CreatedDate = toShowSqlDatetimeinUI(value.CreatedDate);
+                            }
+                            catch (error) { console.error(error); }
+                        });
+                        $detailWrapper.find('table').grid({
+                            dataSource: data.Data,
+                            autoGenerateColumns: true,
+                            pager: { limit: 5 }
+                        });
+                    } else {
+                        $detailWrapper.find('table').grid('destroy', true, true);
+                    }
                 });
             });
             $('#gridSubscptionEnd').grid().on('detailCollapse', function (e, $detailWrapper, id) {
