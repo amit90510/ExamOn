@@ -104,10 +104,10 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> GetAllLoginType()
+        public async Task<JsonResult> GetAllLoginType(string tid)
         {
             JsonData jsonData = new JsonData();
-            var logintype = DapperService.GetDapperData<tblloginType>("select id as 'type', TypeName  from tblloginType", null, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            var logintype = DapperService.GetDapperData<tblloginType>("select id as 'type', TypeName  from tblloginType", null, GetDBNameFromId(tid));
             if (logintype != null && logintype.Any())
             {
                 jsonData.StatusCode = 1;
@@ -257,10 +257,10 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> GetTenantAvailablelogins()
+        public async Task<JsonResult> GetTenantAvailablelogins(string tid)
         {
             JsonData jsonData = new JsonData();
-            var response = DapperService.GetDapperData<tbllogin>("select tbl.Username, CONCAT(up.RealName,'>>',ty.typeName,'>>', EmailId,'>>', TenantToken) as emailId from tbllogin tbl inner join tbluserProfile up on tbl.UserName = up.UserName left join tblloginType ty on Logintype = ty.id", null, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            var response = DapperService.GetDapperData<tbllogin>("select tbl.Username, CONCAT(up.RealName,'>>',ty.typeName,'>>', EmailId,'>>', TenantToken) as emailId from tbllogin tbl inner join tbluserProfile up on tbl.UserName = up.UserName left join tblloginType ty on Logintype = ty.id", null, GetDBNameFromId(tid));
             if (response != null && response.Any())
             {
                 jsonData.StatusCode = 1;
@@ -271,10 +271,10 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> GetUserLoginStatus([FromBody] tbllogin tbllogin)
+        public async Task<JsonResult> GetUserLoginStatus([FromBody] tbllogin tbllogin, string tid)
         {
             JsonData jsonData = new JsonData();
-            var response = DapperService.GetDapperData<tbllogin>("select top 1 Active, BlockLogin, BlockMessage from tbllogin where username = @username", new { username = tbllogin.UserName}, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            var response = DapperService.GetDapperData<tbllogin>("select top 1 Active, BlockLogin, BlockMessage from tbllogin where username = @username", new { username = tbllogin.UserName}, GetDBNameFromId(tid));
             if (response != null && response.Any())
             {
                 jsonData.StatusCode = 1;
@@ -285,7 +285,7 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> UpdateUserLoginStatus([FromBody] tbllogin tbllogin)
+        public async Task<JsonResult> UpdateUserLoginStatus([FromBody] tbllogin tbllogin, string tid)
         {
             JsonData jsonData = new JsonData();
             string response = DapperService.ExecuteQueryResponse("update tbllogin set Active = @act, blockLogin = @bl where username = @username",
@@ -295,7 +295,7 @@ namespace ExamOn.Controllers
                     act = tbllogin.Active,
                     bl = tbllogin.BlockLogin,
                     bm = tbllogin.BlockMessage
-                }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+                }, GetDBNameFromId(tid));
             if (string.IsNullOrEmpty(response))
             {
                 jsonData.StatusCode = 1;

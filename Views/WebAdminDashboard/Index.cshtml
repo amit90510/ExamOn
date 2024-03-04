@@ -411,7 +411,7 @@
     }
     function getAvailablelogins() {
         $('#txtAvailablelogins').html('');
-        ServerData("/WebAdminDashboard/GetTenantAvailablelogins", "Post", null, (data) => {
+        ServerData("/WebAdminDashboard/GetTenantAvailablelogins?tid=" + document.getElementById('txtTenant').value, "Post", null, (data) => {
             if (data && data.StatusCode == "1") {
                 $('#txtAvailablelogins').append($("<option selected></option>").attr("value", "").text('Choose Login first'));
                 $.each(data.Data, function (key, value) {
@@ -427,7 +427,7 @@
             let UserObj = {
                 "UserName": userName.value.trim()
             }
-            ServerData("/WebAdminDashboard/GetUserLoginStatus", "Post", UserObj, (data) => {
+            ServerData("/WebAdminDashboard/GetUserLoginStatus?tid=" + document.getElementById('txtTenant').value, "Post", UserObj, (data) => {
                 if (data && data.StatusCode == "1") {
                     if (data.Data.Active) {
                         $("#chkActive").prop('checked', true);
@@ -447,7 +447,7 @@
                 "Active": $("#chkActive").prop('checked') ? 1 : 0,
                 "BlockLogin": $("#chkBlock").prop('checked') ? 1 : 0
             }
-            ServerData("/WebAdminDashboard/UpdateUserLoginStatus", "Post", UserObj, (data) => {
+            ServerData("/WebAdminDashboard/UpdateUserLoginStatus?tid=" + document.getElementById('txtTenant').value, "Post", UserObj, (data) => {
                 if (data && data.StatusCode == "1") {
                     SwalFire('Updated', 'User status is updated', 'success', null, () => { }, "");
                 } else {
