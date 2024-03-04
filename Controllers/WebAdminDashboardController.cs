@@ -88,11 +88,15 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetTenantDetails([FromBody] tblTenantMaster tblTenantMaster)
         {
             JsonData jsonData = new JsonData();
-            var tenantData = DapperService.GetDapperData<tbltenant>("select top 1 *  from tbltenant where id = @tenantid", new { tenantid = tblTenantMaster.TenantUniqueKey}, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
-            if (tenantData != null && tenantData.Any())
+            var tenantDB = DapperService.GetDapperData<tblTenantMaster>("Select [TenantDBName] from tbltenantMaster where TenantUniqueKey = @tid", new { @tid = tblTenantMaster.TenantUniqueKey }, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            if (tenantDB != null && tenantDB.Any())
             {
-                jsonData.StatusCode = 1;
-                jsonData.Data = tenantData.FirstOrDefault();
+                var tenantData = DapperService.GetDapperData<tbltenant>("select top 1 *  from tbltenant where id = @tenantid", new { tenantid = tblTenantMaster.TenantUniqueKey }, tenantDB.FirstOrDefault().TenantDBName);
+                if (tenantData != null && tenantData.Any())
+                {
+                    jsonData.StatusCode = 1;
+                    jsonData.Data = tenantData.FirstOrDefault();
+                }
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }

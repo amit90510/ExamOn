@@ -175,16 +175,6 @@
         $("#accordionFlushExample").hide();
         $('.js-example-basic-single').select2({ width: 'resolve' });
         TenantsSubscriptions();
-        //ServerData("/WebAdminDashboard/GetAllTenants", "Post", null, (data) => {
-        //    if (data && data.StatusCode == "1") {
-        //        $('#txtTenant').html('');
-        //        $('#txtTenant').append($("<option selected></option>").attr("value", "").text('Choose Tenant first'));
-        //        $.each(data.Data, function (key, value) {
-        //            $('#txtTenant').append($("<option></option>").attr("value", value.TenantUniqueKey).text(value.TenantDBName));
-        //        });
-        //    }
-        //}, () => { });
-
         ServerData("/WebAdminDashboard/GetAllLoginType", "Post", null, (data) => {
             if (data && data.StatusCode == "1") {
                 $('#txtloginType').html('');
