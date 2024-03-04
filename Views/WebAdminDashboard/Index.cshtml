@@ -245,7 +245,7 @@
             var PassObj = {
                 "userType": typeID.value.trim()
             }
-            ServerData("/WebAdminDashboard/GetUserAccessTypePermission", "Post", PassObj, (data) => {
+            ServerData("/WebAdminDashboard/GetUserAccessTypePermission?tid=" + document.getElementById('txtTenant').value, "Post", PassObj, (data) => {
                 if (data && data.StatusCode == "1") {
                     $('#grid').grid('destroy', true, true);
                     var IsActiveRender = function (value, record, $cell, $displayEl) {
@@ -290,7 +290,7 @@
             let loopCount = All ? $("#grid").grid().getAll(true).length : $("[data-role='record-last']")[0].innerText;
             if (loopCount > 0) {
                 let records = $("#grid").grid().getAll(true);
-                ServerData("/WebAdminDashboard/UpdatePermissions?TypeId=" + $("#txtloginTypePermission").val(), "Post", records.filter((rec, idx) => idx < parseInt(loopCount)), (data) => {
+                ServerData("/WebAdminDashboard/UpdatePermissions?TypeId=" + $("#txtloginTypePermission").val() + "&tid=" + document.getElementById('txtTenant').value, "Post", records.filter((rec, idx) => idx < parseInt(loopCount)), (data) => {
                     if (data && data.StatusCode == "1") {
                         SwalFire('Updated', 'Permission Updated', 'success', null, () => { }, "");
                         PermissionGrid(document.getElementById("txtloginTypePermission"));
@@ -336,7 +336,7 @@
         }
     }
     function GetUserUserName(ovverride, email) {
-        ServerData("/WebAdminDashboard/GetNextRecordForUserName", "Post", null, (data) => {
+        ServerData("/WebAdminDashboard/GetNextRecordForUserName?tid=" + document.getElementById('txtTenant').value, "Post", null, (data) => {
             if (data && data.StatusCode == "1") {
 
                 if ($("#chkUseCustomUserName").prop('checked')) {
@@ -370,7 +370,7 @@
             "LoginType": $("#txtloginType").val(),
             "TenantToken": $("#txtTenant").val()
         }
-        let hiturl = email ? "/WebAdminDashboard/CreateUserLogin?Isemail=1" : "/WebAdminDashboard/CreateUserLogin";
+        let hiturl = email ? "/WebAdminDashboard/CreateUserLogin?Isemail=1&tid=" + document.getElementById('txtTenant').value : "/WebAdminDashboard/CreateUserLogin?tid=" + document.getElementById('txtTenant').value;
         ServerData(hiturl, "Post", UserObj, (data) => {
             GetUserUserName();
             if (data && data.StatusCode == "1") {
@@ -383,7 +383,7 @@
     }
 
     function GetEmailCredientials() {
-        ServerData("/WebAdminDashboard/GetTenantEmailCredientials", "Post", null, (data) => {
+        ServerData("/WebAdminDashboard/GetTenantEmailCredientials?tid=" + document.getElementById('txtTenant').value, "Post", null, (data) => {
             if (data && data.StatusCode == "1") {
                 $("#txtNewEMailFromAddress").val(data.Data.UserName);
                 $("#txtUserEmailPasssword").val(data.Data.Password);
@@ -396,7 +396,7 @@
                 "UserName": $("#txtNewEMailFromAddress").val().trim(),
                 "Password": $("#txtUserEmailPasssword").val().trim()
             }
-            ServerData("/WebAdminDashboard/UpdateTenantEMailCredientials", "Post", loginObj, (data) => {
+            ServerData("/WebAdminDashboard/UpdateTenantEMailCredientials?tid=" + document.getElementById('txtTenant').value, "Post", loginObj, (data) => {
                 if (data && data.StatusCode == "1") {
                     GetEmailCredientials();
                     SwalFire('Tenant email credientials Updated', 'Updated', 'success', null, () => { }, "");

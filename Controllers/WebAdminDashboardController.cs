@@ -151,7 +151,7 @@ namespace ExamOn.Controllers
                     mobile = tblTenantMaster.TenantMobile,
                     endmessage = tblTenantMaster.SubscriptionEndMessage,
                     subendDate = tblTenantMaster.SubscriptionEndDate.ToString("yyyy-MM-dd")
-                }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+                }, GetDBNameFromId(tblTenantMaster.id));
         }
 
         [NonAction]
@@ -163,7 +163,7 @@ namespace ExamOn.Controllers
                      tid = tblTenantMaster.id,
                      rech = tblTenantMaster.RechargeAmount,
                      subEnd = tblTenantMaster.SubscriptionEndDate.ToString("yyyy-MM-dd")
-                 }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+                 }, GetDBNameFromId(tblTenantMaster.id));
         }
 
         [AuthorizeAction]
@@ -190,10 +190,10 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> GetNextRecordForUserName()
+        public async Task<JsonResult> GetNextRecordForUserName(string tid)
         {
             JsonData jsonData = new JsonData();
-            var response = DapperService.GetDapperData<tbllogin>("select top 1 case when count(id) > 0 then (count(id)+1) else 1 end as id from tbllogin",null, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            var response = DapperService.GetDapperData<tbllogin>("select top 1 case when count(id) > 0 then (count(id)+1) else 1 end as id from tbllogin",null, GetDBNameFromId(tid));
             if (response != null && response.Any())
             {
                 jsonData.StatusCode = 1;
@@ -202,12 +202,25 @@ namespace ExamOn.Controllers
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
+
+        [NonActionAttribute]
+        public string GetDBNameFromId(string id)
+        {
+            string dbName = "";
+            var tenantDB = DapperService.GetDapperData<tblTenantMaster>("Select [TenantDBName] from tbltenantMaster where TenantUniqueKey = @tid", new { @tid = id }, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            if (tenantDB != null && tenantDB.Any())
+            {
+                dbName =  tenantDB.FirstOrDefault().TenantDBName;
+            }
+            return dbName;
+        }
+
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> GetTenantEmailCredientials()
+        public async Task<JsonResult> GetTenantEmailCredientials(string tid)
         {
             JsonData jsonData = new JsonData();
-            var response = DapperService.GetDapperData<tbllogin>("select top 1 EmailFromAddress as 'UserName', Password from tblEmailCredientials", null, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            var response = DapperService.GetDapperData<tbllogin>("select top 1 EmailFromAddress as 'UserName', Password from tblEmailCredientials", null, GetDBNameFromId(tid));
             if (response != null && response.Any())
             {
                 jsonData.StatusCode = 1;
@@ -222,7 +235,7 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> UpdateTenantEMailCredientials([FromBody] tbllogin tbllogin)
+        public async Task<JsonResult> UpdateTenantEMailCredientials([FromBody] tbllogin tbllogin, string tid)
         {
             JsonData jsonData = new JsonData();
             string response = DapperService.ExecuteQueryResponse("delete from tblEmailCredientials; Insert into tblEmailCredientials values(@email, @password)",
@@ -230,7 +243,7 @@ namespace ExamOn.Controllers
                 {
                     email = tbllogin.UserName,
                     password = EncryptionDecryption.EncryptString(tbllogin.Password)
-                }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name)) ;
+                }, GetDBNameFromId(tid)) ;
             if (string.IsNullOrEmpty(response))
             {
                 jsonData.StatusCode = 1;
@@ -296,7 +309,7 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> CreateUserLogin([FromBody] CreateUserLogins createUserLogins, string Isemail = "0")
+        public async Task<JsonResult> CreateUserLogin([FromBody] CreateUserLogins createUserLogins, string Isemail = "0", string tid = "")
         {
             JsonData jsonData = new JsonData();
             string response = DapperService.ExecuteQueryResponse("Insert into tbllogin(username, password, EmailId, TenantToken, LoginType) values(@username, @password, @EmailId, @TenantToken, @LoginType); insert into tbluserProfile(username,RealName) values(@username,@RealName);",
@@ -308,7 +321,7 @@ namespace ExamOn.Controllers
                     TenantToken = createUserLogins.TenantToken,
                     LoginType = createUserLogins.LoginType,
                     RealName = createUserLogins.ProfileName
-                }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+                }, GetDBNameFromId(tid));
             if (string.IsNullOrEmpty(response))
             {
                 jsonData.StatusCode = 1;
@@ -351,7 +364,7 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> GetUserAccessTypePermission(int userType)
+        public async Task<JsonResult> GetUserAccessTypePermission(int userType, string tid)
         {
             JsonData jsonData = new JsonData();
             Assembly asm = Assembly.GetExecutingAssembly();
@@ -362,7 +375,7 @@ namespace ExamOn.Controllers
             jsonData.StatusCode = 1;
             int counter = 1;
             List<UserTypeAccessPermission> userTypeAccessPermissionsList = new List<UserTypeAccessPermission>();
-            var response = DapperService.GetDapperData<tblUserTypeAccess>("select * from tblUserTypeAccess where TypeId = @typeID", new { typeID = userType }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));
+            var response = DapperService.GetDapperData<tblUserTypeAccess>("select * from tblUserTypeAccess where TypeId = @typeID", new { typeID = userType }, GetDBNameFromId(tid));
                      
             foreach (var paths in controllers.Where(e => !string.IsNullOrEmpty(e.DeclaringType.Name) 
             && !string.IsNullOrEmpty(e.Name) 
@@ -394,7 +407,7 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<JsonResult> UpdatePermissions([FromBody] UserTypeAccessPermission[] userTypeAccessPermissions, int TypeId)
+        public async Task<JsonResult> UpdatePermissions([FromBody] UserTypeAccessPermission[] userTypeAccessPermissions, int TypeId, string tid)
         {
             JsonData jsonData = new JsonData();
             string response = string.Empty;
@@ -406,7 +419,7 @@ namespace ExamOn.Controllers
                    @path = item.Route,
                    @typeId = TypeId,
                    @active = item.IsActive ? 1 : 0
-               }, AuthorizeService.GetUserDBName(System.Web.HttpContext.Current.User.Identity.Name));               
+               }, GetDBNameFromId(tid));               
             }
             if (string.IsNullOrEmpty(response))
             {
