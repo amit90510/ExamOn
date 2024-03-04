@@ -46,11 +46,20 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetAllTenantSubscription()
         {
             JsonData jsonData = new JsonData();
-            var tenants = DapperService.GetDapperData<tbltenant>("EXEC sp_MSforeachdb 'IF EXISTS (SELECT 1 FROM [?].dbo.sysobjects WHERE name = ''tbltenant'') BEGIN USE[?]; SELECT[id] ,[TenantName], [TenantEmail], [TenantMobile],[SubscriptionEndDate] , [LastRechargeOn] ,[RechargeAmount] FROM[?].dbo.tbltenant;END';", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            var tenants = DapperService.GetDapperData<tblTenantMaster>("Select * from tbltenantMaster", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
             if (tenants != null && tenants.Any())
             {
                 jsonData.StatusCode = 1;
-                jsonData.Data = tenants.OrderByDescending(e=>e.SubscriptionEndDate).ToList();
+                List<tbltenant> tbltenants = new List<tbltenant>();
+                foreach (var tblTenant in tenants)
+                {
+                    var tenantDetails = DapperService.GetDapperData<tbltenant>("SELECT [id] ,[TenantName], [TenantEmail], [TenantMobile],[SubscriptionEndDate] , [LastRechargeOn] ,[RechargeAmount] FROM [" + tblTenant.TenantDBName + "].dbo.tbltenant;", null, tblTenant.TenantDBName);
+                    if(tenantDetails != null && tenantDetails.Any())
+                    {
+                        tbltenants.Add(tenantDetails.FirstOrDefault());
+                    }
+                }
+                jsonData.Data = tbltenants.OrderByDescending(e=>e.SubscriptionEndDate).ToList();
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
@@ -61,12 +70,16 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetAllTenantSubscriptionHistory(string tid)
         {
             JsonData jsonData = new JsonData();
-            var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("EXEC sp_MSforeachdb 'IF EXISTS (SELECT 1 FROM [?].dbo.sysobjects WHERE name = ''tblTenantRechargeHistory'') BEGIN USE[?]; SELECT [SubscptionStartFrom],[SubscriptionEndAt],[RechargeAmount],[CreatedDate] FROM[?].dbo.tblTenantRechargeHistory where TID = ''" + tid+"'';END';", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
-            if (tenants != null && tenants.Any())
+            var tenantDB = DapperService.GetDapperData<tblTenantMaster>("Select [TenantDBName] from tbltenantMaster where TenantUniqueKey = @tid", new { @tid = tid}, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            if(tenantDB != null && tenantDB.Any())
             {
-                jsonData.StatusCode = 1;
-                jsonData.Data = tenants.OrderByDescending(e => e.CreatedDate).ToList();
-            }
+                var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT [SubscptionStartFrom],[SubscriptionEndAt],[RechargeAmount],[CreatedDate] from [dbo].[tblTenantRechargeHistory] where TID = '" + tid + "'", null, tenantDB.FirstOrDefault().TenantDBName);
+                if (tenants != null && tenants.Any())
+                {
+                    jsonData.StatusCode = 1;
+                    jsonData.Data = tenants.OrderByDescending(e => e.CreatedDate).ToList();
+                }
+            }            
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 

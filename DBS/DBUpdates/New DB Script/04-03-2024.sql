@@ -847,7 +847,25 @@ INSERT [dbo].[tblloginType] ([id], [Type], [TypeName]) VALUES (3, N'W', N'WebMas
 INSERT [dbo].[tblloginType] ([id], [Type], [TypeName]) VALUES (4, N'T', N'Teacher')
 SET IDENTITY_INSERT [dbo].[tblloginType] OFF
 GO
-INSERT [dbo].[tblUserTypeAccess] ([TypeId], [UserPath], [UpdatedOn]) VALUES (3, N'WebAdminDashboardController/Go', CAST(N'2024-02-11' AS Date))
+Delete from [dbo].[tblUserTypeAccess]
 GO
-  update tblloginType set TypeName = 'Tenant Admin' where TypeName = 'Admin'
+SET IDENTITY_INSERT [dbo].[tblUserTypeAccess] ON 
+GO
+INSERT [dbo].[tblUserTypeAccess] ([Id], [TypeId], [UserPath], [UpdatedOn]) VALUES (2, 3, N'WebAdminDashboardController/Go', CAST(N'2024-02-11' AS Date))
+GO
+INSERT [dbo].[tblUserTypeAccess] ([Id], [TypeId], [UserPath], [UpdatedOn]) VALUES (3, 3, N'ForgotPassWordController/Go', CAST(N'2024-02-11' AS Date))
+GO
+INSERT [dbo].[tblUserTypeAccess] ([Id], [TypeId], [UserPath], [UpdatedOn]) VALUES (4, 3, N'LoginController/Go', CAST(N'2024-02-11' AS Date))
+GO
+INSERT [dbo].[tblUserTypeAccess] ([Id], [TypeId], [UserPath], [UpdatedOn]) VALUES (5, 3, N'SignOutController/Go', CAST(N'2024-02-11' AS Date))
+GO
+INSERT [dbo].[tblUserTypeAccess] ([Id], [TypeId], [UserPath], [UpdatedOn]) VALUES (6, 3, N'StudDashboardController/Go', CAST(N'2024-02-11' AS Date))
+GO
+INSERT [dbo].[tblUserTypeAccess] ([Id], [TypeId], [UserPath], [UpdatedOn]) VALUES (7, 1, N'StudDashboardController/Go', CAST(N'2024-02-12' AS Date))
+GO
+INSERT [dbo].[tblUserTypeAccess] ([Id], [TypeId], [UserPath], [UpdatedOn]) VALUES (8, 4, N'InstructorTeacherDashboardController/Go', CAST(N'2024-02-12' AS Date))
+GO
+SET IDENTITY_INSERT [dbo].[tblUserTypeAccess] OFF
+GO
+update tblloginType set TypeName = 'Tenant Admin' where TypeName = 'Admin'
 GO
