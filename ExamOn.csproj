@@ -443,6 +443,7 @@
     <Content Include="DBS\AddServerLogin.sql" />
     <Content Include="DBS\DBMaster.sql" />
     <Content Include="DBS\DBScripts.sql" />
+    <Content Include="DBS\DBUpdates\New DB Script\04-03-2024.sql" />
     <Content Include="DBS\DBUpdates\V1.0.0\DBUpdate_13Jan2024.sql" />
     <Content Include="DBS\DBUpdates\V1.0.0\DBUpdate_14Jan2024.sql" />
     <Content Include="fonts\fontawesome-webfont.svg" />
