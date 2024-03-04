@@ -538,6 +538,9 @@
             $('#gridSubscptionEnd').grid().on('detailCollapse', function (e, $detailWrapper, id) {
                 $detailWrapper.find('table').grid('destroy', true, true);
             });
+            $('#gridSubscptionEnd').grid().on('rowSelect', function (e, $row, id, record) {
+                //alert($('#gridSubscptionEnd').grid().get(id).id + ' is selected.');
+            });
         }, () => { });
     }
 
