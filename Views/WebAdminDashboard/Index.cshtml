@@ -2,10 +2,12 @@
 @{
     ViewBag.Title = "ExamOn - Web Admin";
 }
+<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
 <a class="btn btn-danger" href="~/signout"> Logout from web admin?</a>
 <hr />
-<span>All tenants subscriptions - <button onclick="exportToExcel()" class="gj-button-md">Download</button></span>
-<table id="gridSubscptionEnd" class="table table-striped table-sm table-responsive-sm">
+<span>All tenants subscriptions - <button onclick="exportToExcel('gridSubscptionEnd')" class="gj-button-md">Download</button></span>
+<span>All tenants More details - <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="gj-button-md btn btn-primary">Click here</button></span>
+<table data-cols-width="20,40,40,40,40,40" id="gridSubscptionEnd" class="table table-striped table-sm table-responsive-sm">
 </table>
 
 <hr />
@@ -169,6 +171,23 @@
     </div>
 </div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:fit-content !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tenants - <button onclick="exportToExcel('gridAllTenantsDetails')" class="gj-button-md">Download</button></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table data-cols-width="20,40,40,40,40,40" class="table table-striped table-sm table-responsive-sm" id="gridAllTenantsDetails">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     $(document).ready(() => {
@@ -192,6 +211,7 @@
         }
         catch { }
         setTimeout(() => { $('#txtSubscriptionENdDate').datepicker({ footer: true, modal: false, header: true, format: "dd-mm-yyyy" }); }, 500);
+        GetAllTenantDeepInformation();
     });
     function OnTenantCHange(select) {
         if (select && select.value) {
@@ -476,6 +496,62 @@
         }
     }
 
+    function GetAllTenantDeepInformation() {
+        $('#gridAllTenantsDetails').grid('destroy', true, true);
+        ServerData("/WebAdminDashboard/GetAllTenantDeepInformationSubscription", "Post", null, (data) => {
+            $('#gridAllTenantsDetails').grid({
+                primaryKey: 'Id',
+                uiLibrary: "bootstrap4",
+                dataSource: data.Data,
+                iconsLibrary: 'fontawesome',
+                headerFilter: true,
+                columns: [
+                    { field: 'Id', sortable: true },
+                    { field: 'TenantName', sortable: true },
+                    { field: 'Mobile', sortable: true },
+                    { field: 'Email', sortable: true },
+                    { field: 'TotalStudent', sortable: true },
+                    { field: 'TotalActiveStudent', sortable: true },
+                    { field: 'TotalBlockStudent', sortable: true },
+                    { field: 'TotalInstructor', sortable: true },
+                    { field: 'TotalAdmin', sortable: true },
+                    { field: 'TotalExam', sortable: true }
+                ],
+                pager: { limit: 5, sizes: [5, 10, 20] },
+                detailTemplate: '<div><table class="table table-striped table-sm table-responsive-sm"/></div>'
+            });
+            $('#gridAllTenantsDetails').grid().on('detailExpand', function (e, $detailWrapper, id) {
+                ServerData("/WebAdminDashboard/GetAllTenantSubscriptionHistory?tid=" + id, "Post", null, (data) => {
+                    if (data && data.StatusCode == "1") {
+                        $.each(data.Data, function (key, value) {
+                            try {
+                                value.SubscptionStartFrom = toShowSqlDateinUI(value.SubscptionStartFrom);
+                                value.SubscriptionEndAt = toShowSqlDateinUI(value.SubscriptionEndAt);
+                                value.CreatedDate = toShowSqlDatetimeinUI(value.CreatedDate);
+                            }
+                            catch (error) { console.error(error); }
+                        });
+                        $detailWrapper.find('table').grid({
+                            dataSource: data.Data, columns: [
+                                { field: 'SubscptionStartFrom', sortable: true },
+                                { field: 'SubscriptionEndAt', sortable: true },
+                                { field: 'RechargeAmount', sortable: true },
+                                { field: 'CreatedDate', sortable: true }
+                            ],
+                            pager: { limit: 5 }
+                        });
+                    } else {
+                        $detailWrapper.find('table').grid('destroy', true, true);
+                    }
+                });
+            });
+            $('#gridAllTenantsDetails').grid().on('detailCollapse', function (e, $detailWrapper, id) {
+                $detailWrapper.find('table').grid('destroy', true, true);
+            });
+
+        }, () => { });
+    }
+
     function TenantsSubscriptions() {
         $('#gridSubscptionEnd').grid('destroy', true, true);
         ServerData("/WebAdminDashboard/GetAllTenantSubscription", "Post", null, (data) => {
@@ -506,11 +582,10 @@
                     { field: 'RechargeAmount', sortable: true }
                 ],
                 pager: { limit: 5, sizes: [5, 10, 20] },
-                detailTemplate: '<div><table class="table table-striped table-sm table-responsive-sm"/></div>'
+                detailTemplate: '<div data-exclude="true"><table data-exclude="true" class="table table-striped table-sm table-responsive-sm"/></div>'
             });
 
             $('#gridSubscptionEnd').grid().on('detailExpand', function (e, $detailWrapper, id) {
-                console.log(e, $detailWrapper, id);
                 ServerData("/WebAdminDashboard/GetAllTenantSubscriptionHistory?tid=" + $('#gridSubscptionEnd').grid().get(id).id, "Post", null, (data) => {
                     if (data && data.StatusCode == "1") {
                         $.each(data.Data, function (key, value) {
@@ -544,24 +619,35 @@
         }, () => { });
     }
 
-    function exportToExcel() {
-        const table = document.getElementById("gridSubscptionEnd");
-        const rows = table.querySelectorAll("tr");
+    function exportToExcel(gridTable) {
+        $('tfoot tr').attr('data-exclude', 'true');
+        //$('thead tr th').each((index, item) => {
+        //    if (!item.innerText) {
+        //        $(item).attr('data-exclude', 'true');
+        //    }
+        // });
+        let table = document.querySelector("#"+gridTable);
+        TableToExcel.convert(table);
 
-        let csv = [];
-        for (let i = 0; i < rows.length; i++) {
-            let row = [], cols = rows[i].querySelectorAll("td, th");
-            for (let j = 0; j < cols.length; j++)
-                row.push(cols[j].innerText);
-            csv.push(row.join(","));
-        }
 
-        const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "AllTenant.csv");
-        document.body.appendChild(link);
-        link.click();
+
+        //const table = document.getElementById("gridSubscptionEnd");
+        //const rows = table.querySelectorAll("tr");
+
+        //let csv = [];
+        //for (let i = 0; i < rows.length; i++) {
+        //    let row = [], cols = rows[i].querySelectorAll("td, th");
+        //    for (let j = 0; j < cols.length; j++)
+        //        row.push(cols[j].innerText);
+        //    csv.push(row.join(","));
+        //}
+
+        //const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+        //const encodedUri = encodeURI(csvContent);
+        //const link = document.createElement("a");
+        //link.setAttribute("href", encodedUri);
+        //link.setAttribute("download", "AllTenant.csv");
+        //document.body.appendChild(link);
+        //link.click();
     }
 </script>

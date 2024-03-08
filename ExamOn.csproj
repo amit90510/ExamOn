@@ -295,6 +295,7 @@
     <Compile Include="DataLayer\ApplicationDBContext.cs" />
     <Compile Include="DataLayer\DBConnection.cs" />
     <Compile Include="DataLayer\GenericModel.cs" />
+    <Compile Include="DataLayer\GetDataModel\GetAllTenantDeepInformation.cs" />
     <Compile Include="DataLayer\GetDataModel\UpcomingExamGetModel.cs" />
     <Compile Include="DataLayer\GetDataModel\UserShiftAssociation.cs" />
     <Compile Include="DataLayer\GetDataModel\UserTypeAccessPermission.cs" />

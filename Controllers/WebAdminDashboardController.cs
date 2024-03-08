@@ -64,6 +64,30 @@ namespace ExamOn.Controllers
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetAllTenantDeepInformationSubscription()
+        {
+            JsonData jsonData = new JsonData();
+            var tenants = DapperService.GetDapperData<tblTenantMaster>("Select * from tbltenantMaster", null, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            if (tenants != null && tenants.Any())
+            {
+                jsonData.StatusCode = 1;
+                List<GetAllTenantDeepInformation> tbltenants = new List<GetAllTenantDeepInformation>();
+                foreach (var tblTenant in tenants)
+                {
+                    var tenantDetails = DapperService.GetDapperData<GetAllTenantDeepInformation>("select id,TenantName, TenantMobile as 'Mobile', TenantEmail as 'Email', (select count(id) from tbllogin where LoginType in (select id from tblloginType where Type = 'S')) as 'TotalStudent', (select count(id) from tbllogin where Active = 1 and LoginType in (select id from tblloginType where Type = 'S')) as 'TotalActiveStudent', (select count(id) from tbllogin where BlockLogin = 1 and LoginType in (select id from tblloginType where Type = 'S')) as 'TotalBlockStudent', (select count(id) from tbllogin where LoginType in (select id from tblloginType where Type = 'T')) as 'TotalInstructor' , (select count(id) from tbllogin where LoginType in (select id from tblloginType where Type = 'A')) as 'TotalAdmin', (select count(id) FROM [dbo].[tblexam]) as 'TotalExam' FROM [" + tblTenant.TenantDBName + "].dbo.tbltenant;", null, tblTenant.TenantDBName);
+                    if (tenantDetails != null && tenantDetails.Any())
+                    {
+                        tenantDetails.FirstOrDefault().TenantName = !string.IsNullOrEmpty(tenantDetails.FirstOrDefault().TenantName) ? tenantDetails.FirstOrDefault().TenantName.Length > 15 ? tenantDetails.FirstOrDefault().TenantName.Substring(0,14) : tenantDetails.FirstOrDefault().TenantName : "";
+                        tbltenants.Add(tenantDetails.FirstOrDefault());
+                    }
+                }
+                jsonData.Data = tbltenants.OrderBy(e => e.TenantName).ToList();
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
