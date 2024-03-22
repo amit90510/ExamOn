@@ -12,7 +12,7 @@
                         <span class="input-group-text" id="basic-prefix">
                             <i class="fa fa-university" aria-hidden="true"></i>
                             <select style="cursor:pointer;" id="txtInstituionlist" class="form-control form-select js-example-basic-single" onchange="GetCourseShift(this)">
-                                <option>Choose Institute...</option>
+                                <option value="">Choose Institute...</option>
                             </select>
                         </span>
                     </div>
@@ -52,7 +52,7 @@
                         <label class="form-check-label" for="txtMaleGender">Male (पुरुष)</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="txtGEnder" id="txtFemaleGender" value="1" >
+                        <input class="form-check-input" type="radio" name="txtGEnder" id="txtFemaleGender" value="1">
                         <label class="form-check-label" for="txtFemaleGender">Female (महिला)</label>
                     </div>
                 </div>
@@ -81,6 +81,118 @@
                         </span>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <label for="High School" class="form-label"><span class="text-danger">*</span>HighSchool Completed</label>
+                    <div class="input-group" error-For="High School">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="txtHighSchoolCOmpleted" id="txthighSchoolYesCompleted" checked value="0">
+                            <label class="form-check-label" for="txthighSchoolYesCompleted">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="txtHighSchoolCOmpleted" id="txthighSchoolNotCompleted" value="1">
+                            <label class="form-check-label" for="txthighSchoolNotCompleted">No</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 isHighSchoolCompleted">
+                    <label for="txtState" class="form-label">HighSchool Percentage\CGPA</label>
+                    <div class="input-group" error-For="HighSchool Percentage">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                        <input type="number" class="form-control" id="txtHighSchoolPercentage" autocomplete="off" placeholder="" maxlength="3" data-maxlength="3" oninput="this.value = this.value.slice(0, this.dataset.maxlength); this.value = this.value > 100 ? '0' : this.value">
+                    </div>
+                </div>
+                <div class="col-md-5 isHighSchoolCompleted">
+                    <label for="txtState" class="form-label">HighSchool College</label>
+                    <div class="input-group" error-For="HighSchool College">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-asterisk" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" id="txtHighSchoolName" autocomplete="off" placeholder="" maxlength="200" data-maxlength="200" oninput="this.value=this.value.slice(0,this.dataset.maxlength)">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="Inter" class="form-label"><span class="text-danger">*</span>Intermediate Completed</label>
+                    <div class="input-group" error-For="Inter">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="txtInterCOmpleted" id="txtInterYesCompleted" checked value="0">
+                            <label class="form-check-label" for="txtInterYesCompleted">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="txtInterCOmpleted" id="txtInterNotCompleted" value="1">
+                            <label class="form-check-label" for="txtInterNotCompleted">No</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 isHighSchoolCompleted">
+                    <label for="Intermediate Percentage" class="form-label">Intermediate Percentage\CGPA</label>
+                    <div class="input-group" error-For="Intermediate Percentage">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                        <input type="number" class="form-control" id="txtIntermediatePercentage" autocomplete="off" placeholder="" maxlength="3" data-maxlength="3" oninput="this.value = this.value.slice(0, this.dataset.maxlength); this.value = this.value > 100 ? '0' : this.value">
+                    </div>
+                </div>
+                <div class="col-md-5 isHighSchoolCompleted">
+                    <label for="Intermediate College" class="form-label">Intermediate College</label>
+                    <div class="input-group" error-For="Intermediate College">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-asterisk" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" id="txtIntermediateSchoolName" autocomplete="off" placeholder="" maxlength="200" data-maxlength="200" oninput="this.value=this.value.slice(0,this.dataset.maxlength)">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="Graduation" class="form-label"><span class="text-danger">*</span>Graduation Completed</label>
+                    <div class="input-group" error-For="Graduation">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="txtGraduationCOmpleted" id="txtGraduationYesCompleted" checked value="0">
+                            <label class="form-check-label" for="txtGraduationYesCompleted">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="txtGraduationCOmpleted" id="txtGraduationNotCompleted" value="1">
+                            <label class="form-check-label" for="txtGraduationNotCompleted">No</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 isHighSchoolCompleted">
+                    <label for="Graduation Percentage" class="form-label">Graduation Percentage\CGPA</label>
+                    <div class="input-group" error-For="Graduation Percentage">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                        <input type="number" class="form-control" id="txtGraduationercentage" autocomplete="off" placeholder="" maxlength="3" data-maxlength="3" oninput="this.value = this.value.slice(0, this.dataset.maxlength); this.value = this.value > 100 ? '0' : this.value">
+                    </div>
+                </div>
+                <div class="col-md-5 isHighSchoolCompleted">
+                    <label for="Graduation College" class="form-label">Graduation College</label>
+                    <div class="input-group" error-For="Graduation College">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-asterisk" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" id="txtGraduationSchoolName" autocomplete="off" placeholder="" maxlength="200" data-maxlength="200" oninput="this.value=this.value.slice(0,this.dataset.maxlength)">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="PostGraduation" class="form-label"><span class="text-danger">*</span>PostGraduation Completed</label>
+                    <div class="input-group" error-For="PostGraduation">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="txtPostGraduationCOmpleted" id="txtPostGraduationYesCompleted" checked value="0">
+                            <label class="form-check-label" for="txtPostGraduationYesCompleted">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="txtPostGraduationCOmpleted" id="txtPostGraduationNotCompleted" value="1">
+                            <label class="form-check-label" for="txtPostGraduationNotCompleted">No</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 isHighSchoolCompleted">
+                    <label for="PostGraduation Percentage" class="form-label">PostGraduation Percentage\CGPA</label>
+                    <div class="input-group" error-For="PostGraduation Percentage">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                        <input type="number" class="form-control" id="txtPostGraduationercentage" autocomplete="off" placeholder="" maxlength="3" data-maxlength="3" oninput="this.value = this.value.slice(0, this.dataset.maxlength); this.value = this.value > 100 ? '0' : this.value">
+                    </div>
+                </div>
+                <div class="col-md-5 isHighSchoolCompleted">
+                    <label for="PostGraduation College" class="form-label">PostGraduation College</label>
+                    <div class="input-group" error-For="Graduation College">
+                        <span class="input-group-text" id="basic-prefix"><i class="fa fa-asterisk" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" id="txtPostGraduationSchoolName" autocomplete="off" placeholder="" maxlength="200" data-maxlength="200" oninput="this.value=this.value.slice(0,this.dataset.maxlength)">
+                    </div>
+                </div>
+
                 <br />
             </form>
         </div>
@@ -147,7 +259,7 @@
             } else {
                 $('#txtAvavilableShift').val('');
             }
-        });       
+        });
     });
 
     function GetCourseShift(isEmpty) {      
