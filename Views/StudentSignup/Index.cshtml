@@ -122,14 +122,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 isHighSchoolCompleted">
+                <div class="col-md-3 isIntermediateCompleted">
                     <label for="Intermediate Percentage" class="form-label">Intermediate Percentage\CGPA</label>
                     <div class="input-group" error-For="Intermediate Percentage">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
                         <input type="number" class="form-control" id="txtIntermediatePercentage" autocomplete="off" placeholder="" maxlength="3" data-maxlength="3" oninput="this.value = this.value.slice(0, this.dataset.maxlength); this.value = this.value > 100 ? '0' : this.value">
                     </div>
                 </div>
-                <div class="col-md-5 isHighSchoolCompleted">
+                <div class="col-md-5 isIntermediateCompleted">
                     <label for="Intermediate College" class="form-label">Intermediate College</label>
                     <div class="input-group" error-For="Intermediate College">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-asterisk" aria-hidden="true"></i></span>
@@ -150,14 +150,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 isHighSchoolCompleted">
+                <div class="col-md-3 isGraduationCompleted">
                     <label for="Graduation Percentage" class="form-label">Graduation Percentage\CGPA</label>
                     <div class="input-group" error-For="Graduation Percentage">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
                         <input type="number" class="form-control" id="txtGraduationercentage" autocomplete="off" placeholder="" maxlength="3" data-maxlength="3" oninput="this.value = this.value.slice(0, this.dataset.maxlength); this.value = this.value > 100 ? '0' : this.value">
                     </div>
                 </div>
-                <div class="col-md-5 isHighSchoolCompleted">
+                <div class="col-md-5 isGraduationCompleted">
                     <label for="Graduation College" class="form-label">Graduation College</label>
                     <div class="input-group" error-For="Graduation College">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-asterisk" aria-hidden="true"></i></span>
@@ -178,14 +178,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 isHighSchoolCompleted">
+                <div class="col-md-3 isPostGraduationCompleted">
                     <label for="PostGraduation Percentage" class="form-label">PostGraduation Percentage\CGPA</label>
                     <div class="input-group" error-For="PostGraduation Percentage">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
                         <input type="number" class="form-control" id="txtPostGraduationercentage" autocomplete="off" placeholder="" maxlength="3" data-maxlength="3" oninput="this.value = this.value.slice(0, this.dataset.maxlength); this.value = this.value > 100 ? '0' : this.value">
                     </div>
                 </div>
-                <div class="col-md-5 isHighSchoolCompleted">
+                <div class="col-md-5 isPostGraduationCompleted">
                     <label for="PostGraduation College" class="form-label">PostGraduation College</label>
                     <div class="input-group" error-For="Graduation College">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-asterisk" aria-hidden="true"></i></span>
@@ -238,8 +238,9 @@
                 $('#txtInstituionlist').html('');
                 $('#txtInstituionlist').append($("<option selected></option>").attr("value", "").text('Choose Institute...'));
                 $.each(data.Data, function (key, value) {
-                    $('#txtInstituionlist').append($("<option></option>").attr("value", value.TenantUniqueKey).text(value.TenantDBName));
+                    $('#txtInstituionlist').append($('<option data-bs-toggle="tooltip" examon_tooltip="' + value.TenantAddress + "-" + value.TenantEmail + '" title="' + value.TenantAddress + "-" + value.TenantEmail + '" ></option>').attr("value", value.TenantUniqueKey).text(value.TenantDBName + " " + value.TenantEmail));
                 });
+                loadExamOn_Tooltip();
             }
         }, () => { });
 
@@ -260,6 +261,42 @@
                 $('#txtAvavilableShift').val('');
             }
         });
+
+        for (let elem of document.querySelectorAll('input[type="radio"]')) {
+            elem.addEventListener("click", (event) => {
+                if (event && event.target.id == "txthighSchoolYesCompleted") {
+                    $(".isHighSchoolCompleted input").prop("readonly", false);                   
+                }
+                if (event && event.target.id == "txthighSchoolNotCompleted") {
+                    $(".isHighSchoolCompleted input").prop("readonly", true);
+                    $(".isHighSchoolCompleted input").val('');
+                }
+
+                if (event && event.target.id == "txtInterYesCompleted") {
+                    $(".isIntermediateCompleted input").prop("readonly", false);
+                }
+                if (event && event.target.id == "txtInterNotCompleted") {
+                    $(".isIntermediateCompleted input").prop("readonly", true);
+                    $(".isIntermediateCompleted input").val('');
+                }
+
+                if (event && event.target.id == "txtGraduationYesCompleted") {
+                    $(".isGraduationCompleted input").prop("readonly", false);
+                }
+                if (event && event.target.id == "txtGraduationNotCompleted") {
+                    $(".isGraduationCompleted input").prop("readonly", true);
+                    $(".isGraduationCompleted input").val('');
+                }
+
+                if (event && event.target.id == "txtPostGraduationYesCompleted") {
+                    $(".isPostGraduationCompleted input").prop("readonly", false);
+                }
+                if (event && event.target.id == "txtPostGraduationNotCompleted") {
+                    $(".isPostGraduationCompleted input").prop("readonly", true);
+                    $(".isPostGraduationCompleted input").val('');
+                }
+            });
+        }
     });
 
     function GetCourseShift(isEmpty) {      

@@ -31,14 +31,16 @@ namespace ExamOn.Controllers
             if (tenants != null && tenants.Any())
             {
                 jsonData.StatusCode = 1;
-                List<tblTenantMaster> tenantMasterlist = new List<tblTenantMaster>();
+                List<GetTenantMasterMoreInformation> tenantMasterlist = new List<GetTenantMasterMoreInformation>();
                 tenants.ForEach((tenant) => {
-                    tblTenantMaster tenantMaster = new tblTenantMaster();
-                    var tenantFullData = DapperService.GetDapperData<tbltenant>("Select top 1 TenantName from tblTenant", null, tenant.TenantDBName);
+                    GetTenantMasterMoreInformation tenantMaster = new GetTenantMasterMoreInformation();
+                    var tenantFullData = DapperService.GetDapperData<GetTenantMasterMoreInformation>("Select top 1 * from tblTenant", null, tenant.TenantDBName);
                     if(tenantFullData != null && tenantFullData.Any())
                     {
                         tenantMaster.TenantUniqueKey = tenant.TenantDBName;
                         tenantMaster.TenantDBName = tenantFullData.FirstOrDefault().TenantName;
+                        tenantMaster.TenantAddress = tenantFullData.FirstOrDefault().TenantAddress;
+                        tenantMaster.TenantEmail = tenantFullData.FirstOrDefault().TenantEmail;
                     }
                     tenantMasterlist.Add(tenantMaster);
                 });
