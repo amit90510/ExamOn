@@ -8,6 +8,22 @@
         });
     } catch{
     }
+
+    try {
+        const emailValidatorFields = document.querySelectorAll('[examon_ftype="Email"]');
+        emailValidatorFields.forEach(emailInput => {
+            $(emailInput).on('focusout', () => {
+                let emailValue = $(emailInput).val().trim();
+                if (emailValue && !EmailValidator(emailValue)) {
+                    $(emailInput).val('');
+                    $(emailInput).addClass('emailValidator');
+                } else {
+                    $(emailInput).removeClass('emailValidator');
+                }
+            });
+        });
+    } catch {
+    }
 });
 
 function loadExamOn_Tooltip() {
@@ -19,4 +35,10 @@ function loadExamOn_Tooltip() {
             }
         });
     } catch { }
+}
+
+function EmailValidator(email) {
+    return email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
 }

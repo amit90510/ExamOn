@@ -302,6 +302,7 @@
     <Compile Include="DataLayer\GetDataModel\UserTypeAccessPermission.cs" />
     <Compile Include="DataLayer\JsonResponse.cs" />
     <Compile Include="DataLayer\LoginToDashboardMapper.cs" />
+    <Compile Include="DataLayer\ViewPostData\CreateStudentSignupRequest.cs" />
     <Compile Include="DataLayer\ViewPostData\CreateUserLogins.cs" />
     <Compile Include="DataLayer\ViewPostData\UpdateProfile.cs" />
     <Compile Include="Global.asax.cs">
@@ -429,6 +430,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\boxicons.min.css" />
+    <Content Include="Content\commonStyle.css" />
     <Content Include="Content\Dashboard.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />

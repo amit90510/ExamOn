@@ -23,7 +23,7 @@ namespace ExamOn
                       "~/Scripts/bootstrap.min.js", "~/Scripts/bootstrap.bundle.min.js", "~/Scripts/sweetalert2.all.min.js", "~/Scripts/jquery.signalR-2.4.3.min.js", "~/Scripts/select2.min.js", "~/Scripts/ExamOn_Util_common.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.min.css", "~/Content/bootstrap-grid.min.css","~/Content/font-awesome.css", "~/Content/sweetalert2.min.css","~/Content/Animate.css", "~/Content/select2.min.css"));
+                      "~/Content/bootstrap.min.css", "~/Content/bootstrap-grid.min.css","~/Content/font-awesome.css", "~/Content/sweetalert2.min.css","~/Content/Animate.css", "~/Content/select2.min.css","~/Content/commonStyle.css"));
 
             bundles.Add(new StyleBundle("~/Content/Dashboardcss").Include(
                      "~/Content/Dashboard.css", "~/Content/boxicons.min.css"));
