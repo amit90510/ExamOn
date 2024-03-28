@@ -24,6 +24,40 @@
         });
     } catch {
     }
+
+    try {
+        const ReqValidatorFields = document.querySelectorAll('[examon_fRequired="Yes"]');
+        ReqValidatorFields.forEach(emailInput => {
+            switch ($(emailInput).prop('tagName')) {
+            case "SELECT":
+                // Code to execute if expression === value1
+                    $(emailInput).on('blur', () => {
+                        let fValue = $(emailInput).val();
+                        let txtVal = $(emailInput).text();
+                        let htmlVal = $(emailInput).html();
+                        if (fValue || txtVal || htmlVal) {
+                            $(emailInput).removeClass('emailValidator');
+                        } else {
+                            $(emailInput).addClass('emailValidator');
+                        }
+                    });
+                break;
+            default:
+                    $(emailInput).on('focusout', () => {
+                        let fValue = $(emailInput).val();
+                        let txtVal = $(emailInput).text();
+                        let htmlVal = $(emailInput).html();
+                        if (fValue || txtVal || htmlVal) {
+                            $(emailInput).removeClass('emailValidator');
+                        } else {
+                            $(emailInput).addClass('emailValidator');
+                        }
+                    });
+                    break;
+            }            
+        });
+    } catch {
+    }
 });
 
 function loadExamOn_Tooltip() {
