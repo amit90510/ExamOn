@@ -35,7 +35,7 @@
                     <label for="txtEMail" class="form-label"><span class="text-danger">*</span>Email</label>
                     <div class="input-group" error-For="Email Id">
                         <span class="input-group-text" id="basic-prefix"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-                        <input type="email" class="form-control" id="txtEMail" autocomplete="off" placeholder="" maxlength="50" examon_ftype="Email">
+                        <input type="email" examon_fRequired="Yes" class="form-control" id="txtEMail" autocomplete="off" placeholder="" maxlength="50" examon_ftype="Email">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -75,7 +75,7 @@
                     <div class="select2-results__option--group" error-For="State (राज्य)">
                         <span class="input-group-text" id="basic-prefix">
                             <i class="fa fa-certificate" aria-hidden="true"></i>
-                            <select style="cursor:pointer" id="txtState" class="form-select js-example-basic-single">
+                            <select examon_fRequired="Yes" style="cursor:pointer" id="txtState" class="form-select js-example-basic-single">
                                 <option>Choose state...</option>
                             </select>
                         </span>
@@ -85,11 +85,11 @@
                     <label for="High School" class="form-label"><span class="text-danger"></span>HighSchool Completed</label>
                     <div class="input-group" error-For="High School">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="txtHighSchoolCOmpleted" id="txthighSchoolYesCompleted" checked value="0">
+                            <input class="form-check-input" type="radio" name="txtHighSchoolCOmpleted" id="txthighSchoolYesCompleted" checked value="1">
                             <label class="form-check-label" for="txthighSchoolYesCompleted">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="txtHighSchoolCOmpleted" id="txthighSchoolNotCompleted" value="1">
+                            <input class="form-check-input" type="radio" name="txtHighSchoolCOmpleted" id="txthighSchoolNotCompleted" value="0">
                             <label class="form-check-label" for="txthighSchoolNotCompleted">No</label>
                         </div>
                     </div>
@@ -113,11 +113,11 @@
                     <label for="Inter" class="form-label"><span class="text-danger"></span>Intermediate Completed</label>
                     <div class="input-group" error-For="Inter">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="txtInterCOmpleted" id="txtInterYesCompleted" checked value="0">
+                            <input class="form-check-input" type="radio" name="txtInterCOmpleted" id="txtInterYesCompleted" checked value="1">
                             <label class="form-check-label" for="txtInterYesCompleted">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="txtInterCOmpleted" id="txtInterNotCompleted" value="1">
+                            <input class="form-check-input" type="radio" name="txtInterCOmpleted" id="txtInterNotCompleted" value="0">
                             <label class="form-check-label" for="txtInterNotCompleted">No</label>
                         </div>
                     </div>
@@ -141,11 +141,11 @@
                     <label for="Graduation" class="form-label"><span class="text-danger"></span>Graduation Completed</label>
                     <div class="input-group" error-For="Graduation">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="txtGraduationCOmpleted" id="txtGraduationYesCompleted" checked value="0">
+                            <input class="form-check-input" type="radio" name="txtGraduationCOmpleted" id="txtGraduationYesCompleted" checked value="1">
                             <label class="form-check-label" for="txtGraduationYesCompleted">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="txtGraduationCOmpleted" id="txtGraduationNotCompleted" value="1">
+                            <input class="form-check-input" type="radio" name="txtGraduationCOmpleted" id="txtGraduationNotCompleted" value="0">
                             <label class="form-check-label" for="txtGraduationNotCompleted">No</label>
                         </div>
                     </div>
@@ -169,11 +169,11 @@
                     <label for="PostGraduation" class="form-label"><span class="text-danger"></span>PostGraduation Completed</label>
                     <div class="input-group" error-For="PostGraduation">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="txtPostGraduationCOmpleted" id="txtPostGraduationYesCompleted" checked value="0">
+                            <input class="form-check-input" type="radio" name="txtPostGraduationCOmpleted" id="txtPostGraduationYesCompleted" checked value="1">
                             <label class="form-check-label" for="txtPostGraduationYesCompleted">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="txtPostGraduationCOmpleted" id="txtPostGraduationNotCompleted" value="1">
+                            <input class="form-check-input" type="radio" name="txtPostGraduationCOmpleted" id="txtPostGraduationNotCompleted" value="0">
                             <label class="form-check-label" for="txtPostGraduationNotCompleted">No</label>
                         </div>
                     </div>
@@ -299,8 +299,10 @@
         }
     });
 
-    function GetCourseShift(isEmpty) {      
+    function GetCourseShift(isEmpty) {
+        shiftSelected = [];
         if (isEmpty && isEmpty.value) {
+            $("#shiftDialogBody").html('');
             ServerData("/StudentSignup/GetCourseShiftAvailable?tenantId=" + isEmpty.value.trim(), "Post", null, (data) => {
                 if (data && data.StatusCode == "1") {
                     $("#shiftDialogBody").html('');
@@ -370,25 +372,29 @@
                 "tid": $("#txtInstituionlist").val().trim(),
                 "Name": $("#txtProfileName").val().trim(),
                 "Email": $("#txtEMail").val().trim(),
-                "Mobile": $("#txtEMail").val().trim(),
-                "Address": $("#txtEMail").val().trim(),
-                "State": $("#txtEMail").val().trim(),
-                "City": $("#txtEMail").val().trim(),
-                "highSchoolMarks": $("#txtEMail").val().trim(),
-                "highSchoolCollege": $("#txtEMail").val().trim(),
-                "interMarks": $("#txtEMail").val().trim(),
-                "interCollege": $("#txtEMail").val().trim(),
-                "GradMarks": $("#txtEMail").val().trim(),
-                "GradCollege": $("#txtEMail").val().trim(),
-                "PostGradMarks": $("#txtEMail").val().trim(),
-                "PostGradCollege": $("#txtEMail").val().trim(),
-                "shiftIntrest": $("#txtEMail").val().trim(),
-                "isHigh": $("#txtEMail").val().trim(),
-                "Gender": $("#txtEMail").val().trim(),
-                "isInter": $("#txtEMail").val().trim(),
-                "isGrad": $("#txtEMail").val().trim(),
-                "isPostGrad": $("#txtEMail").val().trim()
+                "Mobile": $("#txtMobile").val().trim(),
+                "Address": $("#txtAddress").val().trim(),
+                "State": $("#txtState").val().trim(),
+                "City": $("#txtCity").val().trim(),
+                "highSchoolMarks": $("#txtHighSchoolPercentage").val().trim(),
+                "highSchoolCollege": $("#txtHighSchoolName").val().trim(),
+                "interMarks": $("#txtIntermediatePercentage").val().trim(),
+                "interCollege": $("#txtIntermediateSchoolName").val().trim(),
+                "GradMarks": $("#txtGraduationercentage").val().trim(),
+                "GradCollege": $("#txtGraduationSchoolName").val().trim(),
+                "PostGradMarks": $("#txtPostGraduationercentage").val().trim(),
+                "PostGradCollege": $("#txtPostGraduationSchoolName").val().trim(),
+                "shiftIntrest": shiftSelected,
+                "isHigh": $("#txthighSchoolYesCompleted").prop('checked') ? 1 : 0,
+                "Gender": $("#txtMaleGender").prop('checked') ? 1 : 0,
+                "isInter": $("#txtInterYesCompleted").prop('checked') ? 1 : 0,
+                "isGrad": $("#txtGraduationYesCompleted").prop('checked') ? 1 : 0,
+                "isPostGrad": $("#txtPostGraduationYesCompleted").prop('checked') ? 1 : 0,
             }
+            ServerData("/StudentSignup/CreateUserEnrollment", "Post", signUpObj, (data) => {
+                if (data && data.StatusCode == "1") {}
+            }, () => { });
+
         } else {
             SwalFire('ExamOn-Alert', '', 'error', null, () => { }, 'Please fill required red fields (*)<br/> कृपया आवश्यक लाल फ़ील्ड भरें.');
         }

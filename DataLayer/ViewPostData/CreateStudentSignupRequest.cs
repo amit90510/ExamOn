@@ -22,7 +22,7 @@ namespace ExamOn.DataLayer.ViewPostData
         public string GradCollege { get; set; }
         public int PostGradMarks { get; set; }
         public string PostGradCollege { get; set; }
-        public List<int> shiftIntrest { get; set; }
+        public int[] shiftIntrest { get; set; }
         public bool isHigh { get; set; }
         public bool Gender { get; set; }
         public bool isInter { get; set; }

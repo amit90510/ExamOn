@@ -1,6 +1,7 @@
 ﻿using ExamOn.Authorize;
 using ExamOn.DataLayer;
 using ExamOn.DataLayer.GetDataModel;
+using ExamOn.DataLayer.ViewPostData;
 using ExamOn.Models;
 using ExamOn.ServiceLayer;
 using ExamOn.SignalRPush;
@@ -88,6 +89,59 @@ namespace ExamOn.Controllers
             {
                 HubContext.Notify(true, "ExamOn Alert", $"We are unable to find instituitions details on {eid}.<br/> क्षमा करें, हम संस्थानों का विवरण ढूंढने में असमर्थ हैं, कृपया सही आईडी दर्ज करें|", false, true, false, ViewBag.srKey);
             }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> CreateUserEnrollment(CreateStudentSignupRequest createStudentSignupRequest)
+        {
+            JsonData jsonData = new JsonData();
+            HubContext.Notify(false, "", $"Please wait while we are getting your institution Details your details<br/>कृपया प्रतीक्षा करें जब तक हमें आपके संस्थान का विवरण मिल रहा है", true, false, false, ViewBag.srKey);
+            string tenantKey = string.Empty;
+            var tenants = DapperService.GetDapperData<tblTenantMaster>("select top 1 TenantUniqueKey from tbltenantMaster where TenantDBName = @tdb", new { @tdb = createStudentSignupRequest.tid}, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            if (tenants != null && tenants.Any())
+            {
+                HubContext.Notify(false, "", $"Please wait while we are uploading your details<br/>कृपया प्रतीक्षा करें जब तक हमें आपका विवरण प्राप्त/अपलोड हो रहा है", true, false, false, ViewBag.srKey);
+                tenantKey = tenants.FirstOrDefault().TenantUniqueKey;
+                string response = DapperService.ExecuteQueryResponse("DECLARE @enrollmentNumber NVARCHAR(50);SELECT @enrollmentNumber = '"+tenantKey+ "-' + CAST(COUNT(*) + 1 AS NVARCHAR(50)) FROM[dbo].[tblStudentEnrollmentSignUp]; INSERT INTO [dbo].[tblStudentEnrollmentSignUp]([TenantId], [ProfileName], [Email], [Mobile], [Address], [City], [State], [EnrollmentNumber], [IsHighSchool], [HighSchoolPercentageCGPA], [IsInter], [InterPercentageCGPA], [HighSchoolCollege], [InterCollege], [IsGraduate], [GradutePercentageCGPA], [GraduateCollege], [IsPostGradute], [PostGradutePercentageCGPA], [InterestedInShift], [Gender], [PostGraduateCollege]) VALUES ( @tid, @pname,@email, @mob,@address, @city,@state,@enrollmentNumber,@isHigh,@highSchoolPercentage, @isinter,@interPercentage,@highSchoolCollege, @interCollege, @isGrad, @gradPercentage, @gradCollege,@isPG,@pgPercentage, null, @gender, @pgCollege)",
+                    new
+                    {
+                        @tid = tenantKey,
+                        @pname = createStudentSignupRequest.Name,
+                        @email = createStudentSignupRequest.Email,
+                        @mob= createStudentSignupRequest.Mobile,
+                        @address = createStudentSignupRequest.Address,
+                        @city = createStudentSignupRequest.City,
+                        @state = createStudentSignupRequest.State,
+                        @isHigh= createStudentSignupRequest.isHigh,
+                        @highSchoolPercentage = createStudentSignupRequest.highSchoolMarks,
+                        @isinter = createStudentSignupRequest.isInter,
+                        @interPercentage = createStudentSignupRequest.interMarks,
+                        @highSchoolCollege = createStudentSignupRequest.highSchoolCollege,
+                        @interCollege = createStudentSignupRequest.interCollege,
+                        @isGrad = createStudentSignupRequest.isGrad,
+                        @gradPercentage = createStudentSignupRequest.GradMarks,
+                        @gradCollege = createStudentSignupRequest.GradCollege,
+                        @isPG = createStudentSignupRequest.isPostGrad,
+                        @pgPercentage = createStudentSignupRequest.PostGradMarks,
+                        @gender = createStudentSignupRequest.Gender,
+                        @pgCollege = createStudentSignupRequest.PostGradCollege
+                    }, createStudentSignupRequest.tid);
+                if (string.IsNullOrEmpty(response))
+                {
+                    jsonData.StatusCode = 1;
+                    HubContext.Notify(true, "ExamOn Alert", $"Your registration/enrollment has been completed. - <div class='alert alert-success d-flex align-items-center' role='alert'><div><i class='fa fa-user-circle-o' aria-hidden='true'></i> { createStudentSignupRequest.tid} </div></div> <br/> आपका पंजीकरण/नामांकन पूरा हो गया है।", false, true, false, ViewBag.srKey);
+                }
+                else
+                {
+                    jsonData.Error = response;
+                    HubContext.Notify(true, "ExamOn Alert", $"Your registration/enrollment can not be completed. - <div class='alert alert-danger d-flex align-items-center' role='alert'><div><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> { response} </div></div> <br/> क्षमा करें, आपका पंजीकरण/नामांकन पूरा नहीं किया जा सका।", false, true, false, ViewBag.srKey);
+                }
+            }
+            else
+            {
+                HubContext.Notify(true, "ExamOn Alert", $"We are unable to find instituitions details.<br/> क्षमा करें, हम संस्थानों का विवरण ढूंढने में असमर्थ हैं|", false, true, false, ViewBag.srKey);
+            }            
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }

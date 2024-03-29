@@ -869,3 +869,6 @@ SET IDENTITY_INSERT [dbo].[tblUserTypeAccess] OFF
 GO
 update tblloginType set TypeName = 'Tenant Admin' where TypeName = 'Admin'
 GO
+ALTER TABLE tblStudentEnrollmentSignUp
+ADD PostGraduateCollege VARCHAR(500) NULL;
+GO
