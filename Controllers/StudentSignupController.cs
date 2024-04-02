@@ -101,41 +101,60 @@ namespace ExamOn.Controllers
             var tenants = DapperService.GetDapperData<tblTenantMaster>("select top 1 TenantUniqueKey from tbltenantMaster where TenantDBName = @tdb", new { @tdb = createStudentSignupRequest.tid}, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
             if (tenants != null && tenants.Any())
             {
-                HubContext.Notify(false, "", $"Please wait while we are uploading your details<br/>कृपया प्रतीक्षा करें जब तक हमें आपका विवरण प्राप्त/अपलोड हो रहा है", true, false, false, ViewBag.srKey);
+                HubContext.Notify(false, "", $"Please wait while we are inspecting provided details exist in institution<br/>कृपया प्रतीक्षा करें जब तक हम यह निरीक्षण नहीं कर रहे हैं कि आपके द्वारा प्रदान किया गया विवरण संस्थान के रिकॉर्ड में मौजूद है या नहीं", true, false, false, ViewBag.srKey);
                 tenantKey = tenants.FirstOrDefault().TenantUniqueKey;
-                string response = DapperService.ExecuteQueryResponse("DECLARE @enrollmentNumber NVARCHAR(50);SELECT @enrollmentNumber = '"+tenantKey+ "-' + CAST(COUNT(*) + 1 AS NVARCHAR(50)) FROM[dbo].[tblStudentEnrollmentSignUp]; INSERT INTO [dbo].[tblStudentEnrollmentSignUp]([TenantId], [ProfileName], [Email], [Mobile], [Address], [City], [State], [EnrollmentNumber], [IsHighSchool], [HighSchoolPercentageCGPA], [IsInter], [InterPercentageCGPA], [HighSchoolCollege], [InterCollege], [IsGraduate], [GradutePercentageCGPA], [GraduateCollege], [IsPostGradute], [PostGradutePercentageCGPA], [InterestedInShift], [Gender], [PostGraduateCollege]) VALUES ( @tid, @pname,@email, @mob,@address, @city,@state,@enrollmentNumber,@isHigh,@highSchoolPercentage, @isinter,@interPercentage,@highSchoolCollege, @interCollege, @isGrad, @gradPercentage, @gradCollege,@isPG,@pgPercentage, null, @gender, @pgCollege)",
-                    new
+                var enrollmentData = DapperService.GetDapperData<tblStudentEnrollmentSignUp>("select top 1 EnrollmentNumber,Status  from tblStudentEnrollmentSignUp where TenantId = @tenKey and profileName = @pfName", new { tenKey = tenantKey, pfName = createStudentSignupRequest.Name.Trim() }, createStudentSignupRequest.tid);
+                bool InsertEnrollment = true;
+                if(enrollmentData != null && enrollmentData.Any())
+                {
+                    switch(enrollmentData.FirstOrDefault().Status)
                     {
-                        @tid = tenantKey,
-                        @pname = createStudentSignupRequest.Name,
-                        @email = createStudentSignupRequest.Email,
-                        @mob= createStudentSignupRequest.Mobile,
-                        @address = createStudentSignupRequest.Address,
-                        @city = createStudentSignupRequest.City,
-                        @state = createStudentSignupRequest.State,
-                        @isHigh= createStudentSignupRequest.isHigh,
-                        @highSchoolPercentage = createStudentSignupRequest.highSchoolMarks,
-                        @isinter = createStudentSignupRequest.isInter,
-                        @interPercentage = createStudentSignupRequest.interMarks,
-                        @highSchoolCollege = createStudentSignupRequest.highSchoolCollege,
-                        @interCollege = createStudentSignupRequest.interCollege,
-                        @isGrad = createStudentSignupRequest.isGrad,
-                        @gradPercentage = createStudentSignupRequest.GradMarks,
-                        @gradCollege = createStudentSignupRequest.GradCollege,
-                        @isPG = createStudentSignupRequest.isPostGrad,
-                        @pgPercentage = createStudentSignupRequest.PostGradMarks,
-                        @gender = createStudentSignupRequest.Gender,
-                        @pgCollege = createStudentSignupRequest.PostGradCollege
-                    }, createStudentSignupRequest.tid);
-                if (string.IsNullOrEmpty(response))
-                {
-                    jsonData.StatusCode = 1;
-                    HubContext.Notify(true, "ExamOn Alert", $"Your registration/enrollment has been completed. - <div class='alert alert-success d-flex align-items-center' role='alert'><div><i class='fa fa-user-circle-o' aria-hidden='true'></i> { createStudentSignupRequest.tid} </div></div> <br/> आपका पंजीकरण/नामांकन पूरा हो गया है।", false, true, false, ViewBag.srKey);
+                        case "InProcess":
+                            InsertEnrollment = false;
+                            HubContext.Notify(true, "ExamOn Alert", $"Enrollment request <span style='color:red'> {enrollmentData.FirstOrDefault().EnrollmentNumber} </span> is already exist for same records. Please contact to your institution to approve it.- <div class='alert alert-danger d-flex align-items-center' role='alert'><div><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> { createStudentSignupRequest.Name + " - " + createStudentSignupRequest.Email} </div></div> <br/> इन विवरणों के लिए नामांकन अनुरोध पहले से ही मौजूद है। कृपया अपने संस्थान से इसे स्वीकृत करने के लिए कहें।।", false, true, false, ViewBag.srKey);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                else
+                if (InsertEnrollment)
                 {
-                    jsonData.Error = response;
-                    HubContext.Notify(true, "ExamOn Alert", $"Your registration/enrollment can not be completed. - <div class='alert alert-danger d-flex align-items-center' role='alert'><div><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> { response} </div></div> <br/> क्षमा करें, आपका पंजीकरण/नामांकन पूरा नहीं किया जा सका।", false, true, false, ViewBag.srKey);
+                    HubContext.Notify(false, "", $"Please wait while we are uploading your details<br/>कृपया प्रतीक्षा करें जब तक हमें आपका विवरण प्राप्त/अपलोड हो रहा है", true, false, false, ViewBag.srKey);
+                    string response = DapperService.ExecuteQueryResponse("DECLARE @enrollmentNumber NVARCHAR(50);SELECT @enrollmentNumber = '" + tenantKey + "-' + CAST(COUNT(*) + 1 AS NVARCHAR(50)) FROM[dbo].[tblStudentEnrollmentSignUp]; INSERT INTO [dbo].[tblStudentEnrollmentSignUp]([TenantId], [ProfileName], [Email], [Mobile], [Address], [City], [State], [EnrollmentNumber], [IsHighSchool], [HighSchoolPercentageCGPA], [IsInter], [InterPercentageCGPA], [HighSchoolCollege], [InterCollege], [IsGraduate], [GradutePercentageCGPA], [GraduateCollege], [IsPostGradute], [PostGradutePercentageCGPA], [InterestedInShift], [Gender], [PostGraduateCollege]) VALUES ( @tid, @pname,@email, @mob,@address, @city,@state,@enrollmentNumber,@isHigh,@highSchoolPercentage, @isinter,@interPercentage,@highSchoolCollege, @interCollege, @isGrad, @gradPercentage, @gradCollege,@isPG,@pgPercentage, null, @gender, @pgCollege)",
+                        new
+                        {
+                            @tid = tenantKey,
+                            @pname = createStudentSignupRequest.Name,
+                            @email = createStudentSignupRequest.Email,
+                            @mob = createStudentSignupRequest.Mobile,
+                            @address = createStudentSignupRequest.Address,
+                            @city = createStudentSignupRequest.City,
+                            @state = createStudentSignupRequest.State,
+                            @isHigh = createStudentSignupRequest.isHigh,
+                            @highSchoolPercentage = createStudentSignupRequest.highSchoolMarks,
+                            @isinter = createStudentSignupRequest.isInter,
+                            @interPercentage = createStudentSignupRequest.interMarks,
+                            @highSchoolCollege = createStudentSignupRequest.highSchoolCollege,
+                            @interCollege = createStudentSignupRequest.interCollege,
+                            @isGrad = createStudentSignupRequest.isGrad,
+                            @gradPercentage = createStudentSignupRequest.GradMarks,
+                            @gradCollege = createStudentSignupRequest.GradCollege,
+                            @isPG = createStudentSignupRequest.isPostGrad,
+                            @pgPercentage = createStudentSignupRequest.PostGradMarks,
+                            @gender = createStudentSignupRequest.Gender,
+                            @pgCollege = createStudentSignupRequest.PostGradCollege
+                        }, createStudentSignupRequest.tid);
+                    if (string.IsNullOrEmpty(response))
+                    {
+                        jsonData.StatusCode = 1;
+                        enrollmentData = DapperService.GetDapperData<tblStudentEnrollmentSignUp>("select top 1 EnrollmentNumber,Status  from tblStudentEnrollmentSignUp where TenantId = @tenKey and profileName = @pfName", new { tenKey = tenantKey, pfName = createStudentSignupRequest.Name.Trim() }, createStudentSignupRequest.tid);
+                        HubContext.Notify(true, "ExamOn Alert", $"Your registration/enrollment has been completed. Please note down below enrollment number - <div class='alert alert-success d-flex align-items-center' role='alert'><div><i class='fa fa-user-circle-o' aria-hidden='true'></i> { enrollmentData.FirstOrDefault().EnrollmentNumber} </div></div> <br/> आपका पंजीकरण/नामांकन पूरा हो गया है। कृपया ऊपर नामांकन संख्या नोट कर लें", false, true, false, ViewBag.srKey);
+                    }
+                    else
+                    {
+                        jsonData.Error = response;
+                        HubContext.Notify(true, "ExamOn Alert", $"Your registration/enrollment can not be completed. - <div class='alert alert-danger d-flex align-items-center' role='alert'><div><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> { response} </div></div> <br/> क्षमा करें, आपका पंजीकरण/नामांकन पूरा नहीं किया जा सका।", false, true, false, ViewBag.srKey);
+                    }
                 }
             }
             else
