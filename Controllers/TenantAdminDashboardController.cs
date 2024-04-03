@@ -12,7 +12,7 @@ namespace ExamOn.Controllers
         [AuthorizeAction]
         public ActionResult Go()
         {
-            return View();
+            return View("Index");
         }
     }
 }
