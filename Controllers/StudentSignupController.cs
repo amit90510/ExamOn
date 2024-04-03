@@ -147,7 +147,16 @@ namespace ExamOn.Controllers
                     if (string.IsNullOrEmpty(response))
                     {
                         jsonData.StatusCode = 1;
-                        enrollmentData = DapperService.GetDapperData<tblStudentEnrollmentSignUp>("select top 1 EnrollmentNumber,Status  from tblStudentEnrollmentSignUp where TenantId = @tenKey and profileName = @pfName", new { tenKey = tenantKey, pfName = createStudentSignupRequest.Name.Trim() }, createStudentSignupRequest.tid);
+                        enrollmentData = DapperService.GetDapperData<tblStudentEnrollmentSignUp>("select top 1 id,EnrollmentNumber,Status  from tblStudentEnrollmentSignUp where TenantId = @tenKey and profileName = @pfName", new { tenKey = tenantKey, pfName = createStudentSignupRequest.Name.Trim() }, createStudentSignupRequest.tid);
+                        if(enrollmentData != null && enrollmentData.Any() && enrollmentData.FirstOrDefault().id > 0)
+                        {
+                            string query = $"Declare @sfid bigint; Declare @eid bigint = {enrollmentData.FirstOrDefault().id};";
+                            foreach (var shift in createStudentSignupRequest.shiftIntrest)
+                            {
+                                query += $"Set @sfid = {shift};";
+                                await DapperService.ExecuteQuery(query + " Insert into tblStudentEnrollmentShifts values(@eid,@sfid);", null, createStudentSignupRequest.tid);
+                            }
+                        }
                         HubContext.Notify(true, "ExamOn Alert", $"Your registration/enrollment has been completed. Please note down below enrollment number - <div class='alert alert-success d-flex align-items-center' role='alert'><div><i class='fa fa-user-circle-o' aria-hidden='true'></i> { enrollmentData.FirstOrDefault().EnrollmentNumber} </div></div> <br/> आपका पंजीकरण/नामांकन पूरा हो गया है। कृपया ऊपर नामांकन संख्या नोट कर लें", false, true, false, ViewBag.srKey);
                     }
                     else
