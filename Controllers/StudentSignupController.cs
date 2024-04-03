@@ -148,7 +148,7 @@ namespace ExamOn.Controllers
                     {
                         jsonData.StatusCode = 1;
                         enrollmentData = DapperService.GetDapperData<tblStudentEnrollmentSignUp>("select top 1 id,EnrollmentNumber,Status  from tblStudentEnrollmentSignUp where TenantId = @tenKey and profileName = @pfName", new { tenKey = tenantKey, pfName = createStudentSignupRequest.Name.Trim() }, createStudentSignupRequest.tid);
-                        if(enrollmentData != null && enrollmentData.Any() && enrollmentData.FirstOrDefault().id > 0)
+                        if(enrollmentData != null && enrollmentData.Any() && enrollmentData.FirstOrDefault().id > 0 && createStudentSignupRequest.shiftIntrest != null && createStudentSignupRequest.shiftIntrest.Length>0)
                         {
                             string query = $"Declare @sfid bigint; Declare @eid bigint = {enrollmentData.FirstOrDefault().id};";
                             foreach (var shift in createStudentSignupRequest.shiftIntrest)
