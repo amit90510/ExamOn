@@ -4,7 +4,7 @@
 }
 <link href="~/Content/gijgo.min.css" rel="stylesheet" type="text/css" />
 <script src="~/Scripts/gijgo.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+<script src="~/Scripts/jquery.table2excel.js"></script>
 <a class="btn btn-danger" href="~/signout"> Logout from web admin?</a>
 <hr />
 <span>All tenants subscriptions - <button onclick="exportToExcel('gridSubscptionEnd')" class="gj-button-md">Download</button></span>
@@ -192,6 +192,7 @@
 </div>
 
 <script type="text/javascript">
+    var newpagesize = 5;
     $(document).ready(() => {
         $("#accordionFlushExample").hide();
         $('.js-example-basic-single').select2({ width: 'resolve' });
@@ -583,8 +584,14 @@
                     { field: 'LastRechargeOn', sortable: true },
                     { field: 'RechargeAmount', sortable: true }
                 ],
-                pager: { limit: 5, sizes: [5, 10, 20] },
+                pager: { limit: 5, sizes: [5, 10, 20, 100, 500] },
                 detailTemplate: '<div data-exclude="true"><table data-exclude="true" class="table table-striped table-sm table-responsive-sm"/></div>'
+            });
+
+            $('#gridSubscptionEnd').grid().on('pageSizeChange', function (e, newSize) {
+                if (newSize && typeof (newSize) == 'number') {
+                    newpagesize = newSize;
+                }
             });
 
             $('#gridSubscptionEnd').grid().on('detailExpand', function (e, $detailWrapper, id) {
@@ -605,7 +612,7 @@
                                 { field: 'RechargeAmount', sortable: true },
                                 { field: 'CreatedDate', sortable: true }
                             ],
-                            pager: { limit: 5 }
+                            pager: { limit: newpagesize, sizes: [5, 10, 20, 100, 500]  }
                         });
                     } else {
                         $detailWrapper.find('table').grid('destroy', true, true);
@@ -622,34 +629,16 @@
     }
 
     function exportToExcel(gridTable) {
-        $('tfoot tr').attr('data-exclude', 'true');
-        //$('thead tr th').each((index, item) => {
-        //    if (!item.innerText) {
-        //        $(item).attr('data-exclude', 'true');
-        //    }
-        // });
-        let table = document.querySelector("#"+gridTable);
-        TableToExcel.convert(table);
-
-
-
-        //const table = document.getElementById("gridSubscptionEnd");
-        //const rows = table.querySelectorAll("tr");
-
-        //let csv = [];
-        //for (let i = 0; i < rows.length; i++) {
-        //    let row = [], cols = rows[i].querySelectorAll("td, th");
-        //    for (let j = 0; j < cols.length; j++)
-        //        row.push(cols[j].innerText);
-        //    csv.push(row.join(","));
-        //}
-
-        //const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
-        //const encodedUri = encodeURI(csvContent);
-        //const link = document.createElement("a");
-        //link.setAttribute("href", encodedUri);
-        //link.setAttribute("download", "AllTenant.csv");
-        //document.body.appendChild(link);
-        //link.click();
+        $('tfoot tr').addClass('examOn_excludeRow');
+        $("#" + gridTable).table2excel({
+            exclude: ".examOn_excludeRow",
+            name: "AdminData",
+            filename: "Admin_Data",
+            fileext: ".xlsx",
+            preserveColors: true,
+            exclude_img: false,
+            exclude_links: false,
+            exclude_inputs: true
+        });
     }
 </script>
