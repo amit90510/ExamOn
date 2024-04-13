@@ -1,12 +1,3 @@
-/*
- *  jQuery table2excel - v1.1.2
- *  jQuery plugin to export an .xls file in browser from an HTML table
- *  https://github.com/rainabba/jquery-table2excel
- *
- *  Made by rainabba
- *  Under MIT License
- */
-//table2excel.js
 (function ( $, window, document, undefined ) {
     var pluginName = "table2excel",
 
@@ -14,7 +5,7 @@
         exclude: ".noExl",
         name: "Table2Excel",
         filename: "table2excel",
-        fileext: ".xls",
+        fileext: ".xlsx",
         exclude_img: true,
         exclude_links: true,
         exclude_inputs: true,
@@ -48,7 +39,7 @@
                 },
                 mid: "</x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body>",
                 table: {
-                    head: "<table>",
+                    head: '<table style="background-repeat: no-repeat; margin: 0;" cellpadding="0" cellspacing="0" border="0">',
                     tail: "</table>"
                 },
                 foot: "</body></html>"
@@ -57,83 +48,12 @@
             e.tableRows = [];
 	
 			// Styling variables
-			var additionalStyles = "";
-			var compStyle = null;
+			//var additionalStyles = "";
+			//var compStyle = null;
 
             // get contents of table except for exclude
-            $(e.element).each( function(i,o) {
-                var tempRows = "";
-                $(o).find("tr").not(e.settings.exclude).each(function (i,p) {
-					
-					// Reset for this row
-					additionalStyles = "";
-					
-					// Preserve background and text colors on the row
-					if(e.settings.preserveColors){
-						compStyle = getComputedStyle(p);
-						additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
-						additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
-					}
-
-					// Create HTML for Row
-                    tempRows += "<tr style='" + additionalStyles + "'>";
-                    
-                    // Loop through each TH and TD
-                    $(p).find("td,th").not(e.settings.exclude).each(function (i,q) { // p did not exist, I corrected
-						
-						// Reset for this column
-						additionalStyles = "";
-						
-						// Preserve background and text colors on the row
-						if(e.settings.preserveColors){
-							compStyle = getComputedStyle(q);
-							additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
-							additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
-						}
-
-                        var rc = {
-                            rows: $(this).attr("rowspan"),
-                            cols: $(this).attr("colspan"),
-                            flag: $(q).find(e.settings.exclude)
-                        };
-
-                        if( rc.flag.length > 0 ) {
-                            tempRows += "<td> </td>"; // exclude it!!
-                        } else {
-                            tempRows += "<td";
-                            if( rc.rows > 0) {
-                                tempRows += " rowspan='" + rc.rows + "' ";
-                            }
-                            if( rc.cols > 0) {
-                                tempRows += " colspan='" + rc.cols + "' ";
-                            }
-                            if(additionalStyles){
-								tempRows += " style='" + additionalStyles + "'";
-							}
-                            tempRows += ">" + $(q).html() + "</td>";
-                        }
-                    });
-
-                    tempRows += "</tr>";
-
-                });
-                // exclude img tags
-                if(e.settings.exclude_img) {
-                    tempRows = exclude_img(tempRows);
-                }
-
-                // exclude link tags
-                if(e.settings.exclude_links) {
-                    tempRows = exclude_links(tempRows);
-                }
-
-                // exclude input tags
-                if(e.settings.exclude_inputs) {
-                    tempRows = exclude_inputs(tempRows);
-                }
-                e.tableRows.push(tempRows);
-            });
-
+            let rows = getExcelExport($(this.element).attr('id'));
+            e.tableRows = rows;
             e.tableToExcel(e.tableRows, e.settings.name, e.settings.sheetName);
         },
 
@@ -142,6 +62,7 @@
 
             e.format = function (s, c) {
                 return s.replace(/{(\w+)}/g, function (m, p) {
+                    console.log('format is ' + c[p]);
                     return c[p];
                 });
             };
@@ -155,11 +76,11 @@
             };
 
             fullTemplate= e.template.head;
-
             if ( $.isArray(table) ) {
                  Object.keys(table).forEach(function(i){
                       //fullTemplate += e.template.sheet.head + "{worksheet" + i + "}" + e.template.sheet.tail;
-                      fullTemplate += e.template.sheet.head + sheetName + i + e.template.sheet.tail;
+                     fullTemplate += e.template.sheet.head + sheetName + i + e.template.sheet.tail;
+                     //fullTemplate = sheetName;
                 });
             }
 
