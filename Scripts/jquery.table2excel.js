@@ -62,7 +62,6 @@
 
             e.format = function (s, c) {
                 return s.replace(/{(\w+)}/g, function (m, p) {
-                    console.log('format is ' + c[p]);
                     return c[p];
                 });
             };
