@@ -11,9 +11,9 @@ function CustomExportMain(JquerygridObject) {
         additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
         additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
         tempRows += "<tr style='font-weight:bold;text-align:center;" + additionalStyles + "'>";
-        $(headElement).find("th div").each((j, headTiltle) => {
+        $(headElement).find("th div[data-role='title']").each((j, headTiltle) => {
             if ($(headTiltle).html()) {
-                tempRows += "<td>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
+                tempRows += "<td style='" + additionalStyles + "'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
             }
         });
         tempRows += "</tr>";
@@ -88,9 +88,9 @@ function getChildRows(JquerygridObject) {
         for (let dl = 0; dl < detaildLevel; dl++) {
             tempRows += "<td> -> </td>";
         }
-        $(headElement).find("th div").each((j, headTiltle) => {
+        $(headElement).find("th div[data-role='title']").each((j, headTiltle) => {
             if ($(headTiltle).html()) {
-                tempRows += "<td>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
+                tempRows += "<td style='" + additionalStyles + "'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
             }
         });
         tempRows += "</tr>";
