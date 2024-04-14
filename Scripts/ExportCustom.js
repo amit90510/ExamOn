@@ -21,10 +21,10 @@ function CustomExportMain(JquerygridObject) {
         compStyle = getComputedStyle(headElement);
         additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
         additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
-        tempRows += "<tr style='font-weight:bold;text-align:center;border: 1px solid;'>";
+        tempRows += "<tr style='font-weight:bold;text-align:center;'>";
         $(headElement).find("th div[data-role='title']").each((j, headTiltle) => {
             if ($(headTiltle).html()) {
-                tempRows += "<td style='background-color: #f5f5f5;'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
+                tempRows += "<td style='background-color: #f5f5f5;border: 1px solid;'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
                 MainTableColumn++;
             }
         });
@@ -106,11 +106,11 @@ function getChildRows(JquerygridObject) {
         compStyle = getComputedStyle(headElement);
         additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
         additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
-        tempRows += "<tr style='font-weight:bold;text-align:center;border: 1px solid;'>";
+        tempRows += "<tr style='font-weight:bold;text-align:center;'>";
         tempRows += "<td style='text-align:center;' colspan='" + detaildLevel + "'> -> </td>";
         $(headElement).find("th div[data-role='title']").each((j, headTiltle) => {
             if ($(headTiltle).html()) {
-                tempRows += "<td style='background-color: #f5f5f5;'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
+                tempRows += "<td style='background-color: #f5f5f5;border: 1px solid;'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
                 ChildTableColumn++;
             }
         });
@@ -144,9 +144,9 @@ function getChildRows(JquerygridObject) {
         ChildTableRecords++;
     });
     if (ChildTableRecords > 0) {
-        let rowEmpty = "<tr><td></td><td style='font-weight:bold;text-align:center;' colspan='" + ChildTableColumn + "'>--End of Records--</td></tr>";
-        tableRows.push(rowEmpty);
-        rowEmpty = "<tr><td></td><td style='font-weight:bold;text-align:center;background-color:yellow;' colspan='" + ChildTableColumn + "'>Total Number of Records - " + ChildTableRecords + "</td></tr>";
+        //let rowEmpty = "<tr><td></td><td style='font-weight:bold;text-align:center;' colspan='" + ChildTableColumn + "'>--End of Records--</td></tr>";
+        //tableRows.push(rowEmpty);
+        let rowEmpty = "<tr><td></td><td style='font-weight:bold;text-align:center;background-color:yellow;' colspan='" + ChildTableColumn + "'>Total Number of Records - " + ChildTableRecords + "</td></tr>";
         tableRows.push(rowEmpty);
     }
     return tableRows;

@@ -42,7 +42,7 @@
 
             e.tableRows = [];
             let rows = getExcelExport($(this.element).attr('id'));
-            e.tableRows = rows;
+            e.tableRows.push(rows.join(''));
             e.tableToExcel(e.tableRows, e.settings.name, e.settings.sheetName);
         },
 
@@ -75,7 +75,7 @@
             fullTemplate += e.template.mid;
 
             if ( $.isArray(table) ) {
-                 Object.keys(table).forEach(function(i){
+                Object.keys(table).forEach(function (i) {
                     fullTemplate += e.template.table.head + "{table" + i + "}" + e.template.table.tail;
                 });
             }
