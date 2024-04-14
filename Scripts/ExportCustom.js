@@ -1,19 +1,31 @@
 ﻿var detaildLevel = 1;
 var totalColumn = 0;
+
+var MainTableColumn = 0;
+var MainTableRecords = 0;
+var ChildTableColumn = 0;
+var ChildTableRecords = 0;
 function CustomExportMain(JquerygridObject) {
     let tableRows = [];
     let tempRows = "";
     let additionalStyles = "";
     let compStyle = null;
     var gijgoGrid = JquerygridObject;
+    MainTableColumn = 0;
+    MainTableRecords = 0;
+    detaildLevel = 1;
+    totalColumn = 0;
+
+
     gijgoGrid.find("thead").eq(0).find("tr[data-role='caption']").each((i, headElement) => {
         compStyle = getComputedStyle(headElement);
         additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
         additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
-        tempRows += "<tr style='font-weight:bold;text-align:center;" + additionalStyles + "'>";
+        tempRows += "<tr style='font-weight:bold;text-align:center;border: 1px solid;'>";
         $(headElement).find("th div[data-role='title']").each((j, headTiltle) => {
             if ($(headTiltle).html()) {
-                tempRows += "<td style='" + additionalStyles + "'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
+                tempRows += "<td style='background-color: #f5f5f5;'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
+                MainTableColumn++;
             }
         });
         tempRows += "</tr>";
@@ -50,14 +62,15 @@ function CustomExportMain(JquerygridObject) {
                 tempRows += "</tr>";
                 tableRows.push(tempRows);
                 totalColumn++;
+                MainTableRecords++;
             }
         } else if ($(rowtdElement).attr('data-role') == 'details') {
             let emptyRow = "<tr>";
-            for (let tColumn = 0; tColumn < totalColumn; tColumn++) {
-                emptyRow += "<td></td>";
-            }
-            emptyRow += "</tr>"
-            tableRows.push(emptyRow);
+            //for (let tColumn = 0; tColumn < totalColumn; tColumn++) {
+            //    emptyRow += "<td></td>";
+            //}
+            //emptyRow += "</tr>"
+            //tableRows.push(emptyRow);
             let trows = getChildRows(($($(rowtdElement).find('table').eq(0))));
             trows.forEach((ti) => {
                 tableRows.push(ti);
@@ -71,6 +84,13 @@ function CustomExportMain(JquerygridObject) {
         }
     });
 
+    if (MainTableRecords > 0) {
+        let rowEmpty = "<tr><td style='font-weight:bold;text-align:center;' colspan='" + MainTableColumn + "'>--End of Records--</td></tr>";
+        tableRows.push(rowEmpty);
+        rowEmpty = "<tr><td style='font-weight:bold;text-align:center;background-color:yellow;' colspan='" + MainTableColumn + "'>Total Number of Records - " + MainTableRecords + "</td></tr>";
+        tableRows.push(rowEmpty);
+    }
+
     return tableRows;
 }
 
@@ -80,17 +100,18 @@ function getChildRows(JquerygridObject) {
     let additionalStyles = "";
     let compStyle = null;
     var gijgoGrid = JquerygridObject;
+    ChildTableColumn = 0;
+    ChildTableRecords = 0;
     gijgoGrid.find("thead").eq(0).find("tr[data-role='caption']").each((i, headElement) => {
         compStyle = getComputedStyle(headElement);
         additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
         additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
-        tempRows += "<tr style='font-weight:bold;text-align:center;" + additionalStyles + "'>";
-        for (let dl = 0; dl < detaildLevel; dl++) {
-            tempRows += "<td> -> </td>";
-        }
+        tempRows += "<tr style='font-weight:bold;text-align:center;border: 1px solid;'>";
+        tempRows += "<td style='text-align:center;' colspan='" + detaildLevel + "'> -> </td>";
         $(headElement).find("th div[data-role='title']").each((j, headTiltle) => {
             if ($(headTiltle).html()) {
-                tempRows += "<td style='" + additionalStyles + "'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
+                tempRows += "<td style='background-color: #f5f5f5;'>" + encodeSpecialCharacters($(headTiltle).html()) + "</td>";
+                ChildTableColumn++;
             }
         });
         tempRows += "</tr>";
@@ -120,8 +141,14 @@ function getChildRows(JquerygridObject) {
         });
         tempRows += "</tr>";
         tableRows.push(tempRows);
+        ChildTableRecords++;
     });
-
+    if (ChildTableRecords > 0) {
+        let rowEmpty = "<tr><td></td><td style='font-weight:bold;text-align:center;' colspan='" + ChildTableColumn + "'>--End of Records--</td></tr>";
+        tableRows.push(rowEmpty);
+        rowEmpty = "<tr><td></td><td style='font-weight:bold;text-align:center;background-color:yellow;' colspan='" + ChildTableColumn + "'>Total Number of Records - " + ChildTableRecords + "</td></tr>";
+        tableRows.push(rowEmpty);
+    }
     return tableRows;
 }
 
