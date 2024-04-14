@@ -46,12 +46,6 @@
             };
 
             e.tableRows = [];
-	
-			// Styling variables
-			//var additionalStyles = "";
-			//var compStyle = null;
-
-            // get contents of table except for exclude
             let rows = getExcelExport($(this.element).attr('id'));
             e.tableRows = rows;
             e.tableToExcel(e.tableRows, e.settings.name, e.settings.sheetName);
