@@ -31,7 +31,8 @@ namespace ExamOn
             bundles.Add(new Bundle("~/bundles/Dashboard").Include(
                      "~/Scripts/Dashboard.js"));
 
-
+            // Enable minification in debug mode
+            BundleTable.EnableOptimizations = true;
         }
     }
 }
