@@ -26,10 +26,10 @@ namespace ExamOn
                       "~/Content/bootstrap.min.css", "~/Content/bootstrap-grid.min.css","~/Content/font-awesome.css", "~/Content/sweetalert2.min.css","~/Content/Animate.css", "~/Content/select2.min.css","~/Content/commonStyle.css"));
 
             bundles.Add(new StyleBundle("~/Content/Dashboardcss").Include(
-                     "~/Content/Dashboard.css", "~/Content/boxicons.min.css"));
+                     "~/Content/Dashboard.css", "~/Content/boxicons.min.css", "~/Content/gijgo.min.css"));
 
             bundles.Add(new Bundle("~/bundles/Dashboard").Include(
-                     "~/Scripts/Dashboard.js"));
+                     "~/Scripts/Dashboard.js", "~/Scripts/gijgo.min.js", "~/Scripts/ExportCustom.js", "~/Scripts/jquery.table2excel.js"));
 
             // Enable minification in debug mode
             BundleTable.EnableOptimizations = true;
