@@ -542,10 +542,10 @@
                         });
                         $detailWrapper.find('table').grid({
                             dataSource: data.Data, columns: [
-                                { field: 'SubscptionStartFrom', sortable: true },
-                                { field: 'SubscriptionEndAt', sortable: true },
-                                { field: 'RechargeAmount', sortable: true },
-                                { field: 'CreatedDate', sortable: true }
+                                { field: 'SubscptionStartFrom', sortable: true, cssClass: 'childGrid1' },
+                                { field: 'SubscriptionEndAt', sortable: true, cssClass: 'childGrid1'  },
+                                { field: 'RechargeAmount', sortable: true, cssClass: 'childGrid1'  },
+                                { field: 'CreatedDate', sortable: true, cssClass: 'childGrid1'  }
                             ],
                             pager: { limit: 5 }
                         });
@@ -633,6 +633,15 @@
             });
         }, () => { });
     }
+    var maincol = {
+        7: ""
+    };
+
+    var childcol = {
+        1: "",
+        2: "",
+        3: ""
+    };
 
     function exportToExcel(gridTable) {
         $('th[data-field="SubscptionStartFrom"]').addClass('childGrid1');
@@ -645,7 +654,9 @@
             exclude_img: false,
             exclude_links: false,
             exclude_inputs: true,
-            sheetName: "Admin_Data"
+            sheetName: "Admin_Data",
+            maincolumnsum: maincol,
+            childcolumnsum: childcol
         });
     }
 </script>

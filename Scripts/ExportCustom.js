@@ -5,7 +5,7 @@ var MainTableColumn = 0;
 var MainTableRecords = 0;
 var ChildTableColumn = 0;
 var ChildTableRecords = 0;
-function CustomExportMain(JquerygridObject) {
+function CustomExportMain(JquerygridObject, maincolumnsum, childcolumnsum) {
     let tableRows = [];
     let tempRows = "";
     let additionalStyles = "";
@@ -52,11 +52,15 @@ function CustomExportMain(JquerygridObject) {
                         if ($($(rowchildTiltle).find("div").eq(0).html()).hasClass('fa-angle-right') || $($(rowchildTiltle).find("div").eq(0).html()).hasClass('fa-angle-down')) {
                         }
                         else {
-                            tempRows += "<td type='string'>" + encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html()) + "</td>";
+                            let writeVal = encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html());
+                            tempRows += "<td type='string'>" + writeVal + "</td>";
+                            updateColumnSum(maincolumnsum, writeVal, q);
                         }
                     }
                     catch {
-                        tempRows += "<td type='string'>" + encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html()) + "</td>";
+                        let writeVal = encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html());
+                        tempRows += "<td type='string'>" + writeVal + "</td>";
+                        updateColumnSum(maincolumnsum, writeVal, q);
                     }
                 });
                 tempRows += "</tr>";
@@ -71,7 +75,7 @@ function CustomExportMain(JquerygridObject) {
             //}
             //emptyRow += "</tr>"
             //tableRows.push(emptyRow);
-            let trows = getChildRows(($($(rowtdElement).find('table').eq(0))));
+            let trows = getChildRows(($($(rowtdElement).find('table').eq(0))), childcolumnsum);
             trows.forEach((ti) => {
                 tableRows.push(ti);
             });
@@ -85,6 +89,18 @@ function CustomExportMain(JquerygridObject) {
     });
 
     if (MainTableRecords > 0) {
+        if (maincolumnsum && typeof (maincolumnsum) === 'object') {
+            let sumRow = "<tr>";
+            try {
+                for (let mtloop = 1; mtloop <= MainTableColumn; mtloop++) {
+                    sumRow += maincolumnsum[mtloop] ? "<td style='font-weight:bold;text-align:center;background-color:yellow;text-align:right;'>" + maincolumnsum[mtloop] + "</td>" : "<td></td>";
+                }
+                sumRow += "</tr>";
+                tableRows.push(sumRow);
+            }
+            catch {
+            }
+        }
         let rowEmpty = "<tr><td style='font-weight:bold;text-align:center;' colspan='" + MainTableColumn + "'>--End of Records--</td></tr>";
         tableRows.push(rowEmpty);
         rowEmpty = "<tr><td style='font-weight:bold;text-align:center;background-color:yellow;' colspan='" + MainTableColumn + "'>Total Number of Records - " + MainTableRecords + "</td></tr>";
@@ -94,7 +110,19 @@ function CustomExportMain(JquerygridObject) {
     return tableRows;
 }
 
-function getChildRows(JquerygridObject) {
+function updateColumnSum(colobj, currentval, index1) {
+    if (colobj && colobj != null && colobj.hasOwnProperty(index1)) {
+        try {
+
+            let getVal = colobj[index1] ? colobj[index1] : "0";
+            let finalValue = BigInt(getVal) + BigInt(currentval);
+            colobj[index1] = finalValue.toString();
+        }
+        catch { }
+    }
+}
+
+function getChildRows(JquerygridObject, childcolsum) {
     let tableRows = [];
     let tempRows = "";
     let additionalStyles = "";
@@ -124,19 +152,25 @@ function getChildRows(JquerygridObject) {
         additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
         additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
         tempRows += "<tr style='" + additionalStyles + "'>";
+        let maincount = 0;
         for (let rdl = 0; rdl < detaildLevel; rdl++) {
             tempRows += "<td>  </td>";
         }
         $(rowtdElement).find("td").each((q, rowchildTiltle) => {
+            maincount = q;
             try {
                 if ($($(rowchildTiltle).find("div").eq(0).html()).hasClass('fa-angle-right') || $($(rowchildTiltle).find("div").eq(0).html()).hasClass('fa-angle-down')) {
                 }
                 else {
-                    tempRows += "<td type='string'>" + encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html()) + "</td>";
+                    let writeVal = encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html());
+                    tempRows += "<td type='string'>" + writeVal + "</td>";
+                    updateColumnSum(childcolsum, writeVal, (++maincount));
                 }
             }
             catch {
-                tempRows += "<td type='string'>" + encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html()) + "</td>";
+                let writeVal = encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html());
+                tempRows += "<td type='string'>" + writeVal + "</td>";
+                updateColumnSum(childcolsum, writeVal, (++maincount));
             }
         });
         tempRows += "</tr>";
@@ -146,14 +180,29 @@ function getChildRows(JquerygridObject) {
     if (ChildTableRecords > 0) {
         //let rowEmpty = "<tr><td></td><td style='font-weight:bold;text-align:center;' colspan='" + ChildTableColumn + "'>--End of Records--</td></tr>";
         //tableRows.push(rowEmpty);
+
+        if (childcolsum && typeof (childcolsum) === 'object') {
+            let sumRow = "<tr><td></td>";
+            try {
+                for (let mtloop = 1; mtloop <= ChildTableColumn; mtloop++) {
+                    sumRow += childcolsum[mtloop] ? "<td style='font-weight:bold;text-align:center;background-color:yellow;text-align:right;'>" + childcolsum[mtloop] + "</td>" : "<td></td>";
+                }
+                sumRow += "</tr>";
+                tableRows.push(sumRow);
+            }
+            catch {
+            }
+        }
+
+
         let rowEmpty = "<tr><td></td><td style='font-weight:bold;text-align:center;background-color:yellow;' colspan='" + ChildTableColumn + "'>Total Number of Records - " + ChildTableRecords + "</td></tr>";
         tableRows.push(rowEmpty);
     }
     return tableRows;
 }
 
-function getExcelExport(gridId) {
-    let getRows = CustomExportMain($('#' + gridId));
+function getExcelExport(gridId, maincolumnsum, childcolumnsum) {
+    let getRows = CustomExportMain($('#' + gridId), maincolumnsum, childcolumnsum);
     let AllGridRows = [];
     getRows.forEach((allrows) => {
         AllGridRows.push(allrows);

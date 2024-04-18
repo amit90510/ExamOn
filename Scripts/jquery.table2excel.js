@@ -9,7 +9,9 @@
         exclude_img: true,
         exclude_links: true,
         exclude_inputs: true,
-        preserveColors: true
+        preserveColors: true,
+        maincolumnsum: null,
+        childcolumnsum: null
     };
 
     // The actual plugin constructor
@@ -41,7 +43,7 @@
             };
 
             e.tableRows = [];
-            let rows = getExcelExport($(this.element).attr('id'));
+            let rows = getExcelExport($(this.element).attr('id'), this.settings.maincolumnsum, this.settings.childcolumnsum);
             e.tableRows.push(rows.join(''));
             e.tableToExcel(e.tableRows, e.settings.name, e.settings.sheetName);
         },
