@@ -2,6 +2,157 @@
 @{
     Layout = "~/Views/Shared/_DashboardLayoutPage.cshtml";
 }
+<br />
+<style>
+    .progress {
+        width: 150px;
+        height: 150px;
+        background: none;
+        position: relative;
+    }
 
-<h2>Index</h2>
+        .progress::after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid #eee;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .progress > span {
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            z-index: 1;
+        }
+
+        .progress .progress-left {
+            left: 0;
+        }
+
+        .progress .progress-bar {
+            width: 100%;
+            height: 100%;
+            background: none;
+            border-width: 6px;
+            border-style: solid;
+            position: absolute;
+            top: 0;
+        }
+
+        .progress .progress-left .progress-bar {
+            left: 100%;
+            border-top-right-radius: 80px;
+            border-bottom-right-radius: 80px;
+            border-left: 0;
+            -webkit-transform-origin: center left;
+            transform-origin: center left;
+        }
+
+        .progress .progress-right {
+            right: 0;
+        }
+
+            .progress .progress-right .progress-bar {
+                left: -100%;
+                border-top-left-radius: 80px;
+                border-bottom-left-radius: 80px;
+                border-right: 0;
+                -webkit-transform-origin: center right;
+                transform-origin: center right;
+            }
+
+        .progress .progress-value {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header text-dark text-center" style="background-color: #6199e9;">
+                Dashboard Statics
+            </div>
+            <div class="card-body">
+                <div class="col-xl-3 col-lg-6 mb-4">
+                    <div class="bg-white rounded-lg p-5 shadow">
+                        <h2 class="h6 font-weight-bold text-center mb-4">Subscription Left</h2>
+                        <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+                            <span class="progress-left">
+                                <span class="progress-bar border-danger"></span>
+                            </span>
+                            <span class="progress-right">
+                                <span class="progress-bar border-danger"></span>
+                            </span>
+                            <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                                <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                            </div>
+                        </div>
+                        <div class="row text-center mt-4">
+                            <div class="col-6 border-right">
+                                <div class="h4 font-weight-bold mb-0 text-small">Last Recharge</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">{recharge Amount here}</span>
+                            </div>
+                            <div class="col-6">
+                                <div class="h4 font-weight-bold mb-0">Valid Upto</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">{Last Date}</span>
+                            </div>
+                        </div>
+                        <!-- END -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function percentageToDegrees(percentage) {
+        return percentage / 100 * 360
+    }
+    function StartProgreeBar() {
+        var value = $("#txtSubscriptionLeftPercentage").attr('data-value');
+        var left = $("#txtSubscriptionLeftPercentage").find('.progress-left .progress-bar');
+        var right = $("#txtSubscriptionLeftPercentage").find('.progress-right .progress-bar');
+
+        if (value > 0) {
+            if (value <= 50) {
+                right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+            } else {
+                right.css('transform', 'rotate(180deg)')
+                left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+            }
+        }
+    }
+
+    function getGetLicenceExpireHistory() {
+        ServerData("/TenantAdminDashboard/GetLicenceExpire", "Post", null, (data) => {
+            if (data.Error) {
+                //this case is for offcanvas
+                $("#txtSubscriptionLeftPercentage").attr('data-value', 0);
+                $("#spanSubscriptionLeftPercentage").text(0);
+            } else {
+                if (data.Data[0].SubscriptionEndMessage > 100) {
+                    $("#txtSubscriptionLeftPercentage").attr('data-value', 100);
+                    $("#spanSubscriptionLeftPercentage").text(100);
+                } else {
+                    $("#txtSubscriptionLeftPercentage").attr('data-value', data.Data[0].SubscriptionEndMessage);
+                    $("#spanSubscriptionLeftPercentage").text(data.Data[0].SubscriptionEndMessage);
+                }
+            }
+            //cont here for charts
+            $("#txtsubscriptionLastDate").text(toShowSqlDateinUI(data.Data[0].SubscriptionEndDate));
+            $("#txtLastRechargeAmount").text(data.Data[0].RechargeAmount);
+            StartProgreeBar();
+        }, () => { });
+    }
+
+    $(document).ready(() => {
+        getGetLicenceExpireHistory();
+    });
+
+</script>
 
