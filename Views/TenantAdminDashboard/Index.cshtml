@@ -76,9 +76,6 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header text-dark text-center" style="background-color: #6199e9;">
-                Dashboard Statics
-            </div>
             <div class="card-body">
                 <div class="col-xl-3 col-lg-6 mb-4">
                     <div class="bg-white rounded-lg p-5 shadow">
@@ -109,6 +106,20 @@
         </div>
     </div>
 </div>
+<button class="btn btn-primary" style="display:none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" id="subscriptionExpire">Toggle top offcanvas</button>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasTop" data-bs-scroll="true" data-bs-backdrop="false" aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasTopLabel">ExamOn - Alert !!</h5>
+    </div>
+    <div class="offcanvas-body container">
+        Your subscription has been expired, Please recharge subscription by calling customer care or web administrator.
+        <br />
+        <b>
+            आपकी सदस्यता समाप्त हो गई है, कृपया ग्राहक सेवा या वेब व्यवस्थापक को कॉल करके सदस्यता को रिचार्ज करें।
+        </b>
+    </div>
+    <button type="button" class="btn-danger" data-bs-dismiss="offcanvas">Close</button>
+</div>
 <script>
     function percentageToDegrees(percentage) {
         return percentage / 100 * 360
@@ -134,6 +145,7 @@
                 //this case is for offcanvas
                 $("#txtSubscriptionLeftPercentage").attr('data-value', 0);
                 $("#spanSubscriptionLeftPercentage").text(0);
+                $("#subscriptionExpire").click();
             } else {
                 if (data.Data[0].SubscriptionEndMessage > 100) {
                     $("#txtSubscriptionLeftPercentage").attr('data-value', 100);
