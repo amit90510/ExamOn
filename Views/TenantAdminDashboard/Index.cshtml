@@ -74,33 +74,201 @@
         }
 </style>
 <div class="row">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="col-xl-3 col-lg-6 mb-4">
-                    <div class="bg-white rounded-lg p-5 shadow">
-                        <h2 class="h6 font-weight-bold text-center mb-4">Subscription Left</h2>
-                        <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
-                            <span class="progress-left">
-                                <span class="progress-bar border-danger"></span>
-                            </span>
-                            <span class="progress-right">
-                                <span class="progress-bar border-danger"></span>
-                            </span>
-                            <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                                <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
-                            </div>
-                        </div>
-                        <div class="row text-center mt-4">
-                            <div class="col-6 border-right">
-                                <div class="h4 font-weight-bold mb-0 text-small">Last Recharge</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">{recharge Amount here}</span>
-                            </div>
-                            <div class="col-6">
-                                <div class="h4 font-weight-bold mb-0">Valid Upto</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">{Last Date}</span>
-                            </div>
-                        </div>
-                        <!-- END -->
-                    </div>
+    <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
+        <div class="bg-white rounded-lg p-4 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Subscription Left</h2>
+            <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+                <span class="progress-left">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                </div>
+            </div>
+            <div class="row text-center mt-4">
+                <div class="col-6 border-right">
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Last Recharge</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">Getting..</span>
+                </div>
+                <div class="col-6">
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Valid Upto</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">Getting..</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
+        <div class="bg-white rounded-lg p-4 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Active Student(s)</h2>
+            <div id="txtActiveStudentPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+                <span class="progress-left">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="h2 font-weight-bold"><span id="spanActiveStudentPercentage">0</span></div>
+                </div>
+            </div>
+            <div class="row text-center mt-4">
+                <div class="col-6 border-right">
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total Inactive</div><span class="small text-gray animate__animated animate__bounce" id="txtInActiveStudent">Getting..</span>
+                </div>
+                <div class="col-6">
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Total Blocked</div><span class="small text-gray animate__animated animate__bounce" id="txtBlockedStudent">Getting..</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
+        <div class="bg-white rounded-lg p-4 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Enrollment(s) Query</h2>
+            <div id="txtEnrollmentLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+                <span class="progress-left">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="h2 font-weight-bold"><span id="spanEnrollmentLeftPercentage">0</span></div>
+                </div>
+            </div>
+            <div class="row text-center mt-4">
+                <div class="col-6 border-right">
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Enrolled</div><span class="small text-gray animate__animated animate__bounce" id="txtEnrooled">Getting..</span>
+                </div>
+                <div class="col-6">
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Not Enrolled</div><span class="small text-gray animate__animated animate__bounce" id="txtNotEnrooled">Getting..</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
+        <div class="bg-white rounded-lg p-4 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Instructor</h2>
+            <div id="txtTeacherLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+                <span class="progress-left">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="h2 font-weight-bold"><span id="spanTeacherLeftPercentage">0</span></div>
+                </div>
+            </div>
+            <div class="row text-center mt-4">
+                <div class="col-6 border-right">
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total Active</div><span class="small text-gray animate__animated animate__bounce" id="txtActiveTeacher">Getting..</span>
+                </div>
+                <div class="col-6">
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Total Blocked</div><span class="small text-gray animate__animated animate__bounce" id="txtNotActiveTeacher">Getting..</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
+        <div class="bg-white rounded-lg p-4 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Total CLass</h2>
+            <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+                <span class="progress-left">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                </div>
+            </div>
+            <div class="row text-center mt-4">
+                <div class="col-6 border-right">
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total Batch</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">Getting..</span>
+                </div>
+                <div class="col-6">
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Total Section</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">Getting..</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
+        <div class="bg-white rounded-lg p-4 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">DataBase Space in MB</h2>
+            <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+                <span class="progress-left">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                </div>
+            </div>
+            <div class="row text-center mt-4">
+                <div class="col-6 border-right">
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total Size</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">Getting..</span>
+                </div>
+                <div class="col-6">
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Free Space</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">Getting..</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
+        <div class="bg-white rounded-lg p-4 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Exams</h2>
+            <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+                <span class="progress-left">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                </div>
+            </div>
+            <div class="row text-center mt-4">
+                <div class="col-6 border-right">
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Completed</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">Getting..</span>
+                </div>
+                <div class="col-6">
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">NonCompleted</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">Getting..</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
+        <div class="bg-white rounded-lg p-4 shadow">
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Mails</h2>
+            <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+                <span class="progress-left">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                </div>
+            </div>
+            <div class="row text-center mt-4">
+                <div class="col-6 border-right">
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Sent</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">Getting..</span>
+                </div>
+                <div class="col-6">
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Not Sent</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">Getting..</span>
                 </div>
             </div>
         </div>
@@ -124,17 +292,22 @@
     function percentageToDegrees(percentage) {
         return percentage / 100 * 360
     }
-    function StartProgreeBar() {
-        var value = $("#txtSubscriptionLeftPercentage").attr('data-value');
-        var left = $("#txtSubscriptionLeftPercentage").find('.progress-left .progress-bar');
-        var right = $("#txtSubscriptionLeftPercentage").find('.progress-right .progress-bar');
+    function StartProgreeBar(dv, isCustom) {
+        if (dv) {
+            var value = $("#" + dv).attr('data-value');
+            var left = $("#" + dv).find('.progress-left .progress-bar');
+            var right = $("#" + dv).find('.progress-right .progress-bar');
 
-        if (value > 0) {
-            if (value <= 50) {
-                right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
-            } else {
-                right.css('transform', 'rotate(180deg)')
-                left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+            if (value > 0) {
+                if (isCustom) {
+                    value = Math.floor(Math.random() * 90) + 10;
+                }
+                if (value <= 50) {
+                    right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+                } else {
+                    right.css('transform', 'rotate(180deg)')
+                    left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+                }
             }
         }
     }
@@ -158,12 +331,54 @@
             //cont here for charts
             $("#txtsubscriptionLastDate").text(toShowSqlDateinUI(data.Data[0].SubscriptionEndDate));
             $("#txtLastRechargeAmount").text(data.Data[0].RechargeAmount);
-            StartProgreeBar();
+            StartProgreeBar('txtSubscriptionLeftPercentage');
+        }, () => { });
+    }
+    
+    function getStudentCountHistory() {
+        ServerData("/TenantAdminDashboard/GetStudentHistory", "Post", null, (data) => {
+            if (data.Data) {
+                $("#txtActiveStudentPercentage").attr('data-value', data.Data[0].Active);
+                //cont here for charts
+                $("#txtInActiveStudent").text(data.Data[0].NonActive);
+                $("#spanActiveStudentPercentage").text(data.Data[0].Active);
+                $("#txtBlockedStudent").text(data.Data[0].Blocked);
+                StartProgreeBar('txtActiveStudentPercentage', true);
+            }
+        }, () => { });
+    }
+
+    function getStudentEnrollmentCountHistory() {
+        ServerData("/TenantAdminDashboard/GetStudentEnrollmentHistory", "Post", null, (data) => {
+            if (data.Data) {
+                $("#txtEnrollmentLeftPercentage").attr('data-value', data.Data[0].Total);
+                //cont here for charts
+                $("#txtEnrooled").text(data.Data[0].Enrolled);
+                $("#spanEnrollmentLeftPercentage").text(data.Data[0].Total);
+                $("#txtNotEnrooled").text(data.Data[0].NotEnrolled);
+                StartProgreeBar('txtEnrollmentLeftPercentage', true);
+            }
+        }, () => { });
+    }
+
+    function getTeacherCountHistory() {
+        ServerData("/TenantAdminDashboard/GetTeacherHistory", "Post", null, (data) => {
+            if (data.Data) {
+                $("#txtTeacherLeftPercentage").attr('data-value', data.Data[0].Active);
+                //cont here for charts
+                $("#txtActiveTeacher").text(data.Data[0].NonActive);
+                $("#spanTeacherLeftPercentage").text(data.Data[0].Active);
+                $("#txtNotActiveTeacher").text(data.Data[0].Blocked);
+                StartProgreeBar('txtTeacherLeftPercentage');
+            }
         }, () => { });
     }
 
     $(document).ready(() => {
         getGetLicenceExpireHistory();
+        getStudentCountHistory();
+        getStudentEnrollmentCountHistory();
+        getTeacherCountHistory();
     });
 
 </script>

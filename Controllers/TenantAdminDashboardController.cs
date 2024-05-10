@@ -1,5 +1,6 @@
 ﻿using ExamOn.Authorize;
 using ExamOn.DataLayer;
+using ExamOn.DataLayer.GetDataModel;
 using ExamOn.Models;
 using ExamOn.ServiceLayer;
 using System;
@@ -31,6 +32,45 @@ namespace ExamOn.Controllers
                 {
                     jsonData.Error = $"{tenantData.FirstOrDefault().SubscriptionEndMessage} <br/> (आपका लाइसेंस समाप्त हो गया है, कृपया वेब प्रशासक/ग्राहक सेवा से संपर्क करें।)";
                 }
+                jsonData.Data = tenantData;
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetStudentHistory()
+        {
+            JsonData jsonData = new JsonData();
+            var tenantData = DapperService.GetDapperData<GetStudentStaticHistory>("SELECT SUM(CASE WHEN tl.Active = 0 THEN 1 ELSE 0 END) AS NonActive, SUM(CASE WHEN tl.Active = 1 THEN 1 ELSE 0 END) AS Active, SUM(CASE WHEN tl.BlockLogin = 1 THEN 1 ELSE 0 END) AS Blocked FROM tbllogin tl INNER JOIN tblloginType ty ON tl.LoginType = ty.id WHERE ty.TypeName = 'Student'", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) });
+            if (tenantData != null && tenantData.Any())
+            {
+                jsonData.Data = tenantData;
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetStudentEnrollmentHistory()
+        {
+            JsonData jsonData = new JsonData();
+            var tenantData = DapperService.GetDapperData<GetStudentEnrollmentStaticsHistory>("SELECT Count(id) AS Total, SUM(CASE WHEN status = 'Enrolled' THEN 1 ELSE 0 END) AS Enrolled, SUM(CASE WHEN status = 'Rejected' THEN 1 ELSE 0 END) AS NotEnrolled FROM tblStudentEnrollmentSignUp", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) });
+            if (tenantData != null && tenantData.Any())
+            {
+                jsonData.Data = tenantData;
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetTeacherHistory()
+        {
+            JsonData jsonData = new JsonData();
+            var tenantData = DapperService.GetDapperData<GetStudentStaticHistory>("SELECT SUM(CASE WHEN tl.Active = 0 THEN 1 ELSE 0 END) AS NonActive, SUM(CASE WHEN tl.Active = 1 THEN 1 ELSE 0 END) AS Active, SUM(CASE WHEN tl.BlockLogin = 1 THEN 1 ELSE 0 END) AS Blocked FROM tbllogin tl INNER JOIN tblloginType ty ON tl.LoginType = ty.id WHERE ty.TypeName = 'Teacher'", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) });
+            if (tenantData != null && tenantData.Any())
+            {
                 jsonData.Data = tenantData;
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
