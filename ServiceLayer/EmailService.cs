@@ -36,13 +36,13 @@ namespace ExamOn.ServiceLayer
                         mail.IsBodyHtml = true;                        
                         using (SmtpClient smtp = new SmtpClient(WebConfigurationManager.AppSettings["SMTPClient"].ToString(), Int32.Parse(WebConfigurationManager.AppSettings["SMTPPort"].ToString())))
                         {
-                            Mailguid = CreateEmailHistory(_data.FirstOrDefault().EmailFromAddress, Toaddress, subject, templatebody, "SendEmail");
+                            //Mailguid = CreateEmailHistory(_data.FirstOrDefault().EmailFromAddress, Toaddress, subject, templatebody, "SendEmail");
                             smtp.Credentials = new NetworkCredential(_data.FirstOrDefault().EmailFromAddress, EncryptionDecryption.DecryptString(_data.FirstOrDefault().Password));
                             smtp.EnableSsl = true;
                             smtp.Send(mail);
                             if (!string.IsNullOrEmpty(Mailguid))
                             {
-                                UpdateEmailHistory(Mailguid, string.Empty);
+                               // UpdateEmailHistory(Mailguid, string.Empty);
                             }
                         }
                     }
@@ -51,7 +51,7 @@ namespace ExamOn.ServiceLayer
             catch(Exception TT){
                 if(!string.IsNullOrEmpty(Mailguid))
                 {
-                    UpdateEmailHistory(Mailguid, !string.IsNullOrEmpty(TT.Message) ? TT.Message : "MailSending Failed without an exception.");
+                   // UpdateEmailHistory(Mailguid, !string.IsNullOrEmpty(TT.Message) ? TT.Message : "MailSending Failed without an exception.");
                 }
             }
         }
@@ -80,13 +80,13 @@ namespace ExamOn.ServiceLayer
                         mail.IsBodyHtml = true;
                         using (SmtpClient smtp = new SmtpClient(WebConfigurationManager.AppSettings["SMTPClient"].ToString(), Int32.Parse(WebConfigurationManager.AppSettings["SMTPPort"].ToString())))
                         {
-                            Mailguid = CreateEmailHistory(_data.FirstOrDefault().EmailFromAddress, Toaddress, subject, templatebody, "SendEmailAsync");
+                            //Mailguid = CreateEmailHistory(_data.FirstOrDefault().EmailFromAddress, Toaddress, subject, templatebody, "SendEmailAsync");
                             smtp.Credentials = new NetworkCredential(_data.FirstOrDefault().EmailFromAddress, EncryptionDecryption.DecryptString(_data.FirstOrDefault().Password));
                             smtp.EnableSsl = true;
                             await smtp.SendMailAsync(mail);
                             if (!string.IsNullOrEmpty(Mailguid))
                             {
-                                UpdateEmailHistory(Mailguid, string.Empty);
+                               // UpdateEmailHistory(Mailguid, string.Empty, dbName);
                             }
                         }
                     }
@@ -96,7 +96,7 @@ namespace ExamOn.ServiceLayer
             {
                 if (!string.IsNullOrEmpty(Mailguid))
                 {
-                    UpdateEmailHistory(Mailguid, !string.IsNullOrEmpty(TT.Message) ? TT.Message : "MailSending Failed without an exception.");
+                   // UpdateEmailHistory(Mailguid, !string.IsNullOrEmpty(TT.Message) ? TT.Message : "MailSending Failed without an exception.");
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace ExamOn.ServiceLayer
                         mail.IsBodyHtml = true;
                         using (SmtpClient smtp = new SmtpClient(WebConfigurationManager.AppSettings["SMTPClient"].ToString(), Int32.Parse(WebConfigurationManager.AppSettings["SMTPPort"].ToString())))
                         {
-                            Mailguid = CreateEmailHistory(_data.FirstOrDefault().EmailFromAddress, Toaddress, subject, templatebody, "SendEmailResponse");
+                            Mailguid = CreateEmailHistory(_data.FirstOrDefault().EmailFromAddress, Toaddress, subject, templatebody, "SendEmailResponse", dbName);
                             smtp.Credentials = new NetworkCredential(_data.FirstOrDefault().EmailFromAddress, EncryptionDecryption.DecryptString(_data.FirstOrDefault().Password));
                             smtp.EnableSsl = true;
                             smtp.Send(mail);
@@ -138,18 +138,18 @@ namespace ExamOn.ServiceLayer
                 isError = TT.Message;
                 if (!string.IsNullOrEmpty(Mailguid))
                 {
-                    UpdateEmailHistory(Mailguid, !string.IsNullOrEmpty(TT.Message)? TT.Message : "MailSending Failed without an exception.");
+                    UpdateEmailHistory(Mailguid, !string.IsNullOrEmpty(TT.Message)? TT.Message : "MailSending Failed without an exception.", dbName);
                 }
             }
 
             return isError;
         }
 
-        public static string CreateEmailHistory(string fromAddress, string[] toAddress, string subject, string mailBody, string fromMethod)
+        public static string CreateEmailHistory(string fromAddress, string[] toAddress, string subject, string mailBody, string fromMethod, string dbname)
         {
             try
             {
-                var guidMail = new Guid();
+                var guidMail = Guid.NewGuid();
                 DapperService.ExecuteQuery("Insert into tblEmailsHistory([MailFrom], [MailTo] , [Subject] , [MailBody], [SendSuccess], MailGuid, FromMethodName) values(@MailFrom, @MailTo , @Subject , @MailBody, @SendSuccess, @mailGuid, @fromMethod)", new
                 {
                     @MailFrom = fromAddress,
@@ -157,9 +157,9 @@ namespace ExamOn.ServiceLayer
                     @Subject = subject,
                     @MailBody = mailBody,
                     @SendSuccess = 0,
-                    @mailGuid = guidMail,
+                    @mailGuid = guidMail.ToString(),
                     @fromMethod = fromMethod
-                }).ConfigureAwait(true);
+                }, dbname).ConfigureAwait(true);
                 return guidMail.ToString();
             }
             catch {
@@ -167,7 +167,7 @@ namespace ExamOn.ServiceLayer
             }
         }
 
-        public static void UpdateEmailHistory(string MailGUID,string error)
+        public static void UpdateEmailHistory(string MailGUID,string error, string dbName)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace ExamOn.ServiceLayer
                     @error = !string.IsNullOrEmpty(error) ? error : string.Empty,
                     @SendSuccess = !string.IsNullOrEmpty(error) ? 0 : 1,
                     @mailGuid = MailGUID
-                }).ConfigureAwait(true);
+                }, dbName).ConfigureAwait(true);
             }
             catch { }
         }

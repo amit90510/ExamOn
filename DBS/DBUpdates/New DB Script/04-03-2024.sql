@@ -913,3 +913,9 @@ GO
   
 ALTER TABLE tblEmailsHistory ADD FromMethodName Varchar(50) NOT NULL;
 GO
+
+ALTER TABLE [tblEmailsHistory] ALTER COLUMN MailGuid varchar(100);
+Go
+ALTER TABLE [tblEmailsHistory]
+ADD CONSTRAINT UC_MailGuid_EMailHistory UNIQUE (MailGuid);
+Go
