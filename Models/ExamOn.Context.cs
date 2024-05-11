@@ -57,6 +57,6 @@ namespace ExamOn.Models
 
         public virtual DbSet<tblStudentEnrollmentShift> tblStudentEnrollmentShifts { get; set; }
         public virtual DbSet<tblTenantRechargeHistory> tblTenantRechargeHistories { get; set; }
-
+        public virtual DbSet<tblEmailsHistory> tblEmailsHistories { get; set; }
     }
 }
