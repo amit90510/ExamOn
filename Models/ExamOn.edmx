@@ -48,6 +48,22 @@
           <Property Name="EmailFromAddress" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblEmailsHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MailFrom" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="MailTo" Type="varchar" MaxLength="5000" Nullable="false" />
+          <Property Name="Subject" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="MailBody" Type="varchar(max)" />
+          <Property Name="Attachments" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="SendTryAt" Type="datetime" Nullable="false" />
+          <Property Name="Error" Type="varchar(max)" />
+          <Property Name="SendSuccess" Type="bit" Nullable="false" />
+          <Property Name="LastUpdate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblexam">
           <Key>
             <PropertyRef Name="id" />
@@ -206,6 +222,7 @@
           <Property Name="InterestedInShift" Type="int" />
           <Property Name="Gender" Type="bit" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostGraduateCollege" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="tblTeacherInstructorShifts">
           <Key>
@@ -622,6 +639,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySet Name="tblBatch" EntityType="Self.tblBatch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClass" EntityType="Self.tblClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEmailCredientials" EntityType="Self.tblEmailCredientials" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblEmailsHistory" EntityType="Self.tblEmailsHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblexam" EntityType="Self.tblexam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblexamLive" EntityType="Self.tblexamLive" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblexamQuestions" EntityType="Self.tblexamQuestions" Schema="dbo" store:Type="Tables" />
@@ -1288,6 +1306,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
             <End Role="tblStudentEnrollmentShift" EntitySet="tblStudentEnrollmentShifts" />
           </AssociationSet>
           <EntitySet Name="tblTenantRechargeHistories" EntityType="ExamOn_DummyModel.tblTenantRechargeHistory" />
+          <EntitySet Name="tblEmailsHistories" EntityType="ExamOn_DummyModel.tblEmailsHistory" />
         </EntityContainer>
         <EntityType Name="tblForgotPasswordMailCounter">
           <Key>
@@ -1456,6 +1475,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <Property Name="Gender" Type="Boolean" Nullable="false" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="tblStudentEnrollmentShifts" Relationship="ExamOn_DummyModel.FK_tblStudentEnrollmentShifts_tblStudentEnrollmentSignUp" FromRole="tblStudentEnrollmentSignUp" ToRole="tblStudentEnrollmentShift" />
+          <Property Name="PostGraduateCollege" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_tblStudentEnrollmentSignUp_tbltenant">
           <End Type="ExamOn_DummyModel.tbltenant" Role="tbltenant" Multiplicity="1" />
@@ -1517,6 +1537,22 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <Property Name="RechargeAmount" Type="Double" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblEmailsHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MailFrom" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MailTo" Type="String" Nullable="false" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="Subject" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MailBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Attachments" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SendTryAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Error" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SendSuccess" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1780,6 +1816,7 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
           <EntitySetMapping Name="tblStudentEnrollmentSignUps">
             <EntityTypeMapping TypeName="ExamOn_DummyModel.tblStudentEnrollmentSignUp">
               <MappingFragment StoreEntitySet="tblStudentEnrollmentSignUp">
+                <ScalarProperty Name="PostGraduateCollege" ColumnName="PostGraduateCollege" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="InterestedInShift" ColumnName="InterestedInShift" />
@@ -1825,6 +1862,23 @@ warning 6035: The relationship 'FK_tblUserProfileImage_tbllogin' has columns tha
                 <ScalarProperty Name="SubscriptionEndAt" ColumnName="SubscriptionEndAt" />
                 <ScalarProperty Name="SubscptionStartFrom" ColumnName="SubscptionStartFrom" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblEmailsHistories">
+            <EntityTypeMapping TypeName="ExamOn_DummyModel.tblEmailsHistory">
+              <MappingFragment StoreEntitySet="tblEmailsHistory">
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="SendSuccess" ColumnName="SendSuccess" />
+                <ScalarProperty Name="Error" ColumnName="Error" />
+                <ScalarProperty Name="SendTryAt" ColumnName="SendTryAt" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Attachments" ColumnName="Attachments" />
+                <ScalarProperty Name="MailBody" ColumnName="MailBody" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="MailTo" ColumnName="MailTo" />
+                <ScalarProperty Name="MailFrom" ColumnName="MailFrom" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

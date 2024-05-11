@@ -308,6 +308,9 @@
     <Compile Include="Models\tblEmailCrediential.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tblEmailsHistory.cs">
+      <DependentUpon>ExamOn.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblexam.cs">
       <DependentUpon>ExamOn.tt</DependentUpon>
     </Compile>
