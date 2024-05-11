@@ -26,5 +26,6 @@ namespace ExamOn.Models
         public string Error { get; set; }
         public bool SendSuccess { get; set; }
         public System.DateTime LastUpdate { get; set; }
+        public Guid MailGuid { get; set; }
     }
 }

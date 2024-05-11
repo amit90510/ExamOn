@@ -15,7 +15,7 @@ namespace ExamOn.ServiceLayer
         public static void SendEmail(string[] Toaddress, string subject, string bodyHeader, string bodyText)
         {
             try
-            {
+            {                
                 using (MailMessage mail = new MailMessage())
                 {
                     var _data = DapperService.GetDapperData<tblEmailCrediential>("select top 1 * from tblEmailCredientials");
@@ -116,13 +116,38 @@ namespace ExamOn.ServiceLayer
             return isError;
         }
 
-        public static void CreateEmailHistory(string fromAddress, string[] toAddress, string subject, string mailBody, string dbName)
+        public static string CreateEmailHistory(string fromAddress, string[] toAddress, string subject, string mailBody, string dbName)
         {
-
+            try
+            {
+                var guidMail = new Guid();
+                DapperService.ExecuteQuery("Insert into tblEmailsHistory([MailFrom], [MailTo] , [Subject] , [MailBody], [SendSuccess], MailGuid) values(@MailFrom, @MailTo , @Subject , @MailBody, @SendSuccess, @mailGuid)", new
+                {
+                    @MailFrom = fromAddress,
+                    @MailTo = string.Join(";", toAddress.SelectMany(s => s.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))),
+                    @Subject = subject,
+                    @MailBody = mailBody,
+                    @SendSuccess = 0,
+                    @mailGuid = guidMail
+                }, dbName).ConfigureAwait(true);
+                return guidMail.ToString();
+            }
+            catch {
+                return string.Empty;
+            }
         }
-        public static void UpdateEmailHistory(string MailGUID, string fromAddress, string[] toAddress, string subject, string mailBody, string dbName )
+        public static void UpdateEmailHistory(string MailGUID,string error, string dbName)
         {
-
+            try
+            {
+                DapperService.ExecuteQuery($"Update tblEmailsHistory set Error = @error, SendSuccess = @SendSuccess, SendTryAt = GetDate(), LastUpdate = GetDate() where MailGuid = @mailGuid", new
+                {
+                    @error = !string.IsNullOrEmpty(error) ? error : string.Empty,
+                    @SendSuccess = !string.IsNullOrEmpty(error) ? 0 : 1,
+                    @mailGuid = MailGUID
+                }, dbName).ConfigureAwait(true);
+            }
+            catch { }
         }
     }
 }
