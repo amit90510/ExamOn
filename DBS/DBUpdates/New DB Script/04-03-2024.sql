@@ -872,3 +872,39 @@ GO
 ALTER TABLE tblStudentEnrollmentSignUp
 ADD PostGraduateCollege VARCHAR(500) NULL;
 GO
+CREATE TABLE [dbo].[tblEmailsHistory](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[MailFrom] [varchar](500) NOT NULL,
+	[MailTo] [varchar](5000) NOT NULL,
+	[Subject] [varchar](500) NOT NULL,
+	[MailBody] [varchar](max) NULL,
+	[Attachments] [int] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[SendTryAt] [datetime] NOT NULL,
+	[Error] [varchar](max) NULL,
+	[SendSuccess] [bit] NOT NULL,
+	[LastUpdate] [datetime] NOT NULL,
+ CONSTRAINT [PK_tblEmailsHistory] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblEmailsHistory] ADD  CONSTRAINT [DF_Table_1_Attachements]  DEFAULT ((0)) FOR [Attachments]
+GO
+
+ALTER TABLE [dbo].[tblEmailsHistory] ADD  CONSTRAINT [DF_tblEmailsHistory_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+
+ALTER TABLE [dbo].[tblEmailsHistory] ADD  CONSTRAINT [DF_tblEmailsHistory_SendTryAt]  DEFAULT (getdate()) FOR [SendTryAt]
+GO
+
+ALTER TABLE [dbo].[tblEmailsHistory] ADD  CONSTRAINT [DF_tblEmailsHistory_SendSuccess]  DEFAULT ((0)) FOR [SendSuccess]
+GO
+
+ALTER TABLE [dbo].[tblEmailsHistory] ADD  CONSTRAINT [DF_tblEmailsHistory_LastUpdate]  DEFAULT (getdate()) FOR [LastUpdate]
+GO
+
+  create nonclustered index idxNc_emailHistory On [dbo].[tblEmailsHistory](sendSuccess) include (Error) 
+  GO
