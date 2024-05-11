@@ -120,7 +120,7 @@ namespace ExamOn.ServiceLayer
         {
 
         }
-        public static void UpdateEmailHistory(string fromAddress, string[] toAddress, string subject, string mailBody, string dbName, )
+        public static void UpdateEmailHistory(string MailGUID, string fromAddress, string[] toAddress, string subject, string mailBody, string dbName )
         {
 
         }
