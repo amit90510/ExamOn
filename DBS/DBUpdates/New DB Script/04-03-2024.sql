@@ -910,3 +910,6 @@ GO
   GO
   ALTER TABLE tblEmailsHistory ADD MailGuid UNIQUEIDENTIFIER NOT NULL;
   GO
+  
+ALTER TABLE tblEmailsHistory ADD FromMethodName Varchar(50) NOT NULL;
+GO

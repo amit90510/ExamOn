@@ -20,6 +20,7 @@ namespace ExamOn.Models
         public string MailTo { get; set; }
         public string Subject { get; set; }
         public string MailBody { get; set; }
+        public string FromMethodName { get; set; }
         public int Attachments { get; set; }
         public System.DateTime CreateDate { get; set; }
         public System.DateTime SendTryAt { get; set; }
