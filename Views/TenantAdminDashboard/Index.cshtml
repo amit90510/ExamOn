@@ -72,6 +72,11 @@
             top: 0;
             left: 0;
         }
+
+    .shadow:hover {
+        box-shadow: 0px 30px 18px -8px rgba(0, 0, 0,0.1);
+        transform: scale(1.05, 1.05);
+    }
 </style>
 <div class="row">
     <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
@@ -98,6 +103,7 @@
             </div>
         </div>
     </div>
+
     <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
         <div class="bg-white rounded-lg p-4 shadow">
             <h2 class="h6 font-weight-bold text-center mb-4">Total Active Student(s)</h2>
@@ -175,8 +181,8 @@
 
     <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
         <div class="bg-white rounded-lg p-4 shadow">
-            <h2 class="h6 font-weight-bold text-center mb-4">Total CLass</h2>
-            <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Class(s)</h2>
+            <div id="txtTotalClassLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
                 <span class="progress-left">
                     <span class="progress-bar border-danger"></span>
                 </span>
@@ -184,25 +190,24 @@
                     <span class="progress-bar border-danger"></span>
                 </span>
                 <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                    <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                    <div class="h2 font-weight-bold"><span id="spanTotalClassLeftPercentage">0</span></div>
                 </div>
             </div>
             <div class="row text-center mt-4">
                 <div class="col-6 border-right">
-                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total Batch</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">Getting..</span>
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total Batch(s)</div><span class="small text-gray animate__animated animate__bounce" id="txtBatchCount">Getting..</span>
                 </div>
                 <div class="col-6">
-                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Total Section</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">Getting..</span>
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Total Shift(s)</div><span class="small text-gray animate__animated animate__bounce" id="txtShiftCount">Getting..</span>
                 </div>
             </div>
         </div>
     </div>
 
-
     <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
         <div class="bg-white rounded-lg p-4 shadow">
-            <h2 class="h6 font-weight-bold text-center mb-4">DataBase Space in MB</h2>
-            <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+            <h2 class="h6 font-weight-bold text-center mb-4">DataBase Space</h2>
+            <div id="txtDBSizeLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
                 <span class="progress-left">
                     <span class="progress-bar border-danger"></span>
                 </span>
@@ -210,15 +215,15 @@
                     <span class="progress-bar border-danger"></span>
                 </span>
                 <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                    <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                    <div class="h2 font-weight-bold"><span id="spanDBSizeLeftPercentage">0</span> MB</div>
                 </div>
             </div>
             <div class="row text-center mt-4">
                 <div class="col-6 border-right">
-                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total Size</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">Getting..</span>
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total Size</div><span class="small text-gray animate__animated animate__bounce" id="txtTotalSize">Getting..</span>
                 </div>
                 <div class="col-6">
-                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Free Space</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">Getting..</span>
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Free Space</div><span class="small text-gray animate__animated animate__bounce" id="txtFreeSize">Getting..</span>
                 </div>
             </div>
         </div>
@@ -325,12 +330,15 @@
                     $("#spanSubscriptionLeftPercentage").text(100);
                 } else {
                     $("#txtSubscriptionLeftPercentage").attr('data-value', data.Data[0].SubscriptionEndMessage);
-                    $("#spanSubscriptionLeftPercentage").text(data.Data[0].SubscriptionEndMessage);
+                    //$("#spanSubscriptionLeftPercentage").text(data.Data[0].SubscriptionEndMessage);
+                    NumberCountersAnimation('spanSubscriptionLeftPercentage', data.Data[0].SubscriptionEndMessage);
+
                 }
             }
             //cont here for charts
             $("#txtsubscriptionLastDate").text(toShowSqlDateinUI(data.Data[0].SubscriptionEndDate));
-            $("#txtLastRechargeAmount").text(data.Data[0].RechargeAmount);
+            //$("#txtLastRechargeAmount").text(data.Data[0].RechargeAmount);
+            NumberCountersAnimation('txtLastRechargeAmount', data.Data[0].RechargeAmount);
             StartProgreeBar('txtSubscriptionLeftPercentage');
         }, () => { });
     }
@@ -341,7 +349,8 @@
                 $("#txtActiveStudentPercentage").attr('data-value', data.Data[0].Active);
                 //cont here for charts
                 $("#txtInActiveStudent").text(data.Data[0].NonActive);
-                $("#spanActiveStudentPercentage").text(data.Data[0].Active);
+               // $("#spanActiveStudentPercentage").text(data.Data[0].Active);
+                NumberCountersAnimation('spanActiveStudentPercentage', data.Data[0].Active);
                 $("#txtBlockedStudent").text(data.Data[0].Blocked);
                 StartProgreeBar('txtActiveStudentPercentage', true);
             }
@@ -354,7 +363,8 @@
                 $("#txtEnrollmentLeftPercentage").attr('data-value', data.Data[0].Total);
                 //cont here for charts
                 $("#txtEnrooled").text(data.Data[0].Enrolled);
-                $("#spanEnrollmentLeftPercentage").text(data.Data[0].Total);
+               // $("#spanEnrollmentLeftPercentage").text(data.Data[0].Total);
+                NumberCountersAnimation('spanEnrollmentLeftPercentage', data.Data[0].Total);
                 $("#txtNotEnrooled").text(data.Data[0].NotEnrolled);
                 StartProgreeBar('txtEnrollmentLeftPercentage', true);
             }
@@ -367,9 +377,36 @@
                 $("#txtTeacherLeftPercentage").attr('data-value', data.Data[0].Active);
                 //cont here for charts
                 $("#txtActiveTeacher").text(data.Data[0].NonActive);
-                $("#spanTeacherLeftPercentage").text(data.Data[0].Active);
+               // $("#spanTeacherLeftPercentage").text(data.Data[0].Active);
+                NumberCountersAnimation('spanTeacherLeftPercentage', data.Data[0].Active);
                 $("#txtNotActiveTeacher").text(data.Data[0].Blocked);
                 StartProgreeBar('txtTeacherLeftPercentage');
+            }
+        }, () => { });
+    }
+
+    function getClassBatchSectionCountHistory() {
+        ServerData("/TenantAdminDashboard/GetClassBatchSectionHistory", "Post", null, (data) => {
+            if (data.Data && data.StatusCode == 1) {
+                $("#txtTotalClassLeftPercentage").attr('data-value', data.Data[0].ClassCount);
+                //cont here for charts
+                $("#txtBatchCount").text(data.Data[0].BatchCount);
+                NumberCountersAnimation('spanTotalClassLeftPercentage', data.Data[0].ClassCount);
+                $("#txtShiftCount").text(data.Data[0].ShiftCount);
+                StartProgreeBar('txtTotalClassLeftPercentage', true);
+            }
+        }, () => { });
+    }
+
+    function getDatabaseStaticsHistory() {
+        ServerData("/TenantAdminDashboard/GetDatabaseStaticsHistory", "Post", null, (data) => {
+            if (data.Data && data.StatusCode == 1) {
+                $("#txtDBSizeLeftPercentage").attr('data-value', data.Data[0].DBUsedSize.toFixed(2));
+                //cont here for charts
+                $("#txtTotalSize").text(data.Data[0].DBTotalSize.toFixed(2) + ' MB');
+                NumberCountersAnimation('spanDBSizeLeftPercentage', data.Data[0].DBUsedSize.toFixed(2));
+                $("#txtFreeSize").text(data.Data[0].DBFreeSize.toFixed(2) + ' MB');
+                StartProgreeBar('txtDBSizeLeftPercentage', true);
             }
         }, () => { });
     }
@@ -379,6 +416,8 @@
         getStudentCountHistory();
         getStudentEnrollmentCountHistory();
         getTeacherCountHistory();
+        getClassBatchSectionCountHistory();
+        getDatabaseStaticsHistory();
     });
 
 </script>

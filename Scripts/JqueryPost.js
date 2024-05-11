@@ -75,3 +75,28 @@ function examOn_dateParse_util(val) {
         return new Date(dateVal);
     }
 }
+
+function NumberCountersAnimation(ele, finalval) {
+    if (ele) {
+        try {
+            const counter = document.getElementById(ele);
+            const speed = 500000000;
+            const animate = () => {
+                const value = finalval;
+                const data = +counter.innerText;
+
+                const time = value / speed;
+                if (data < value) {
+                    counter.innerText = Math.ceil(data + time);
+                    setTimeout(animate, 1);
+                } else {
+                    counter.innerText = finalval;
+                }
+            }
+            animate();
+        }
+        catch {
+            counter.innerText = finalval;
+        }
+    }
+}

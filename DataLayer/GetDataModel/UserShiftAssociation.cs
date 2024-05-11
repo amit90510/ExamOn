@@ -12,5 +12,9 @@ namespace ExamOn.DataLayer.GetDataModel
         public string Shift { get; set; }
 
         public long ShiftID { get; set; }
+
+        public long ClassCount { get; set; }
+        public long BatchCount { get; set; }
+        public long ShiftCount { get; set; }
     }
 }
