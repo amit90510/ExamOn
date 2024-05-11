@@ -115,5 +115,14 @@ namespace ExamOn.ServiceLayer
 
             return isError;
         }
+
+        public static void CreateEmailHistory(string fromAddress, string[] toAddress, string subject, string mailBody, string dbName)
+        {
+
+        }
+        public static void UpdateEmailHistory(string fromAddress, string[] toAddress, string subject, string mailBody, string dbName, )
+        {
+
+        }
     }
 }

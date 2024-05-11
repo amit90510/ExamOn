@@ -908,3 +908,5 @@ GO
 
   create nonclustered index idxNc_emailHistory On [dbo].[tblEmailsHistory](sendSuccess) include (Error) 
   GO
+  ALTER TABLE tblEmailsHistory ADD MailGuid UNIQUEIDENTIFIER NOT NULL;
+  GO
