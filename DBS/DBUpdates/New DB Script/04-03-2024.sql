@@ -905,17 +905,17 @@ GO
 
 ALTER TABLE [dbo].[tblEmailsHistory] ADD  CONSTRAINT [DF_tblEmailsHistory_LastUpdate]  DEFAULT (getdate()) FOR [LastUpdate]
 GO
-
-  create nonclustered index idxNc_emailHistory On [dbo].[tblEmailsHistory](sendSuccess) include (Error) 
-  GO
-  ALTER TABLE tblEmailsHistory ADD MailGuid UNIQUEIDENTIFIER NOT NULL;
-  GO
-  
+create nonclustered index idxNc_emailHistory On [dbo].[tblEmailsHistory](sendSuccess) include (Error) 
+GO
+ALTER TABLE tblEmailsHistory ADD MailGuid UNIQUEIDENTIFIER NOT NULL;
+GO
 ALTER TABLE tblEmailsHistory ADD FromMethodName Varchar(50) NOT NULL;
 GO
-
 ALTER TABLE [tblEmailsHistory] ALTER COLUMN MailGuid varchar(100);
 Go
-ALTER TABLE [tblEmailsHistory]
-ADD CONSTRAINT UC_MailGuid_EMailHistory UNIQUE (MailGuid);
-Go
+ALTER TABLE [tblEmailsHistory] ADD CONSTRAINT UC_MailGuid_EMailHistory UNIQUE (MailGuid);
+GO
+ALTER TABLE tblexam ADD AnyoneCompleted BIT NOT NULL DEFAULT 0;
+GO
+CREATE NONCLUSTERED INDEX IX_HasAnyoneCompletedON On tblexam (AnyoneCompleted);
+GO

@@ -156,7 +156,7 @@
 
     <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
         <div class="bg-white rounded-lg p-4 shadow">
-            <h2 class="h6 font-weight-bold text-center mb-4">Total Instructor</h2>
+            <h2 class="h6 font-weight-bold text-center mb-4">Total Active Instructor</h2>
             <div id="txtTeacherLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
                 <span class="progress-left">
                     <span class="progress-bar border-danger"></span>
@@ -170,7 +170,7 @@
             </div>
             <div class="row text-center mt-4">
                 <div class="col-6 border-right">
-                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total Active</div><span class="small text-gray animate__animated animate__bounce" id="txtActiveTeacher">Getting..</span>
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Total InActive</div><span class="small text-gray animate__animated animate__bounce" id="txtActiveTeacher">Getting..</span>
                 </div>
                 <div class="col-6">
                     <div class="h5 font-weight-bold mb-0 flex-nowrap">Total Blocked</div><span class="small text-gray animate__animated animate__bounce" id="txtNotActiveTeacher">Getting..</span>
@@ -257,7 +257,7 @@
     <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
         <div class="bg-white rounded-lg p-4 shadow">
             <h2 class="h6 font-weight-bold text-center mb-4">Total Mails</h2>
-            <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+            <div id="txtTotalMailsLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
                 <span class="progress-left">
                     <span class="progress-bar border-danger"></span>
                 </span>
@@ -265,15 +265,15 @@
                     <span class="progress-bar border-danger"></span>
                 </span>
                 <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                    <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                    <div class="h2 font-weight-bold"><span id="spantxtTotalMailsLeftPercentage">0</span></div>
                 </div>
             </div>
             <div class="row text-center mt-4">
                 <div class="col-6 border-right">
-                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Sent</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">Getting..</span>
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Sent</div><span class="small text-gray animate__animated animate__bounce" id="txtsuccessTotalMailsLeftPercentage">Getting..</span>
                 </div>
                 <div class="col-6">
-                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Not Sent</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">Getting..</span>
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">Not Sent</div><span class="small text-gray animate__animated animate__bounce" id="txtFailedTotalMailsLeftPercentage">Getting..</span>
                 </div>
             </div>
         </div>
@@ -411,14 +411,32 @@
         }, () => { });
     }
 
+    function getMailCountStaticsHistory() {
+        ServerData("/TenantAdminDashboard/GetMailStaticsHistory", "Post", null, (data) => {
+            if (data.Data && data.StatusCode == 1) {
+                $("#txtTotalMailsLeftPercentage").attr('data-value', data.Data[0].TotalMails);
+                //cont here for charts
+                $("#txtsuccessTotalMailsLeftPercentage").text(data.Data[0].TotalSuccessMails);
+                NumberCountersAnimation('spantxtTotalMailsLeftPercentage', data.Data[0].TotalMails);
+                $("#txtFailedTotalMailsLeftPercentage").text(data.Data[0].TotalFailedMails);
+                StartProgreeBar('txtTotalMailsLeftPercentage', true);
+            }
+        }, () => { });
+    }
+
     $(document).ready(() => {
+        setTimeout(startCount, 1000);
+    });
+
+    function startCount() {
         getGetLicenceExpireHistory();
         getStudentCountHistory();
         getStudentEnrollmentCountHistory();
         getTeacherCountHistory();
         getClassBatchSectionCountHistory();
         getDatabaseStaticsHistory();
-    });
+        getMailCountStaticsHistory();
+    }
 
 </script>
 

@@ -107,5 +107,19 @@ namespace ExamOn.Controllers
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetMailStaticsHistory()
+        {
+            JsonData jsonData = new JsonData();
+            var userShiftProfile = DapperService.GetDapperDataDynamic<GetAllMailCountStatics>("SELECT COUNT(*) AS TotalMails, SUM(CASE WHEN sendSuccess = 0 THEN 1 ELSE 0 END) AS TotalFailedMails, SUM(CASE WHEN sendSuccess = 1 THEN 1 ELSE 0 END) AS TotalSuccessMails FROM tblEmailsHistory;", null, AuthorizeService.GetUserDBName(HttpContext.User.Identity.Name));
+            if (userShiftProfile != null && userShiftProfile.Any())
+            {
+                jsonData.StatusCode = 1;
+                jsonData.Data = userShiftProfile.ToList();
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -78,8 +78,8 @@ function examOn_dateParse_util(val) {
 
 function NumberCountersAnimation(ele, finalval) {
     if (ele) {
-        try {
-            const counter = document.getElementById(ele);
+        const counter = document.getElementById(ele);
+        try {            
             const speed = 500000000;
             const animate = () => {
                 const value = finalval;
@@ -96,7 +96,10 @@ function NumberCountersAnimation(ele, finalval) {
             animate();
         }
         catch {
-            counter.innerText = finalval;
+            try {
+                counter.innerText = finalval;
+            }
+            catch {}
         }
     }
 }
