@@ -121,5 +121,19 @@ namespace ExamOn.Controllers
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetExamStaticsHistory()
+        {
+            JsonData jsonData = new JsonData();
+            var userShiftProfile = DapperService.GetDapperDataDynamic<GetTotalExamCountStatics>("SELECT COUNT(*) AS TotalExam, SUM(CASE WHEN AnyoneCompleted = 1 THEN 1 ELSE 0 END) AS TotalCompletedExam, SUM(CASE WHEN AnyoneCompleted = 0 THEN 1 ELSE 0 END) AS TotalNotCompletedExam FROM tblExam where Active = 1;", null, AuthorizeService.GetUserDBName(HttpContext.User.Identity.Name));
+            if (userShiftProfile != null && userShiftProfile.Any())
+            {
+                jsonData.StatusCode = 1;
+                jsonData.Data = userShiftProfile.ToList();
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
     }
 }

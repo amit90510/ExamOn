@@ -72,11 +72,15 @@
             top: 0;
             left: 0;
         }
-
-    .shadow:hover {
-        box-shadow: 0px 30px 18px -8px rgba(0, 0, 0,0.1);
-        transform: scale(1.05, 1.05);
+    .shadow {
+        transition: box-shadow 0.5s ease, transform 0.5s ease; /* Add transitions */
     }
+        .shadow:hover {
+            box-shadow: 0px 30px 18px -8px rgba(0.1, 0.1, 0.1,0.1);
+            transform: scale(1.1, 1.1);
+            border-radius: 10px; /* Change border radius */
+            opacity: 0.9; /* Change opacity */
+        }
 </style>
 <div class="row">
     <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
@@ -232,7 +236,7 @@
     <div class="col-xl-3 col-lg-6 mb-4 border-1 border-top rounded-pill">
         <div class="bg-white rounded-lg p-4 shadow">
             <h2 class="h6 font-weight-bold text-center mb-4">Total Exams</h2>
-            <div id="txtSubscriptionLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
+            <div id="txtTotalExamLeftPercentage" class="progress mx-auto animate__animated animate__flash" data-value='0'>
                 <span class="progress-left">
                     <span class="progress-bar border-danger"></span>
                 </span>
@@ -240,15 +244,15 @@
                     <span class="progress-bar border-danger"></span>
                 </span>
                 <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                    <div class="h2 font-weight-bold"><span id="spanSubscriptionLeftPercentage">0</span>%</div>
+                    <div class="h2 font-weight-bold"><span id="spanTotalExamLeftPercentage">0</span></div>
                 </div>
             </div>
             <div class="row text-center mt-4">
                 <div class="col-6 border-right">
-                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Completed</div><span class="small text-gray animate__animated animate__bounce" id="txtLastRechargeAmount">Getting..</span>
+                    <div class="h5 font-weight-bold mb-0 text-small flex-nowrap">Completed</div><span class="small text-gray animate__animated animate__bounce" id="txtCOmpletedExamLeftPercentage">Getting..</span>
                 </div>
                 <div class="col-6">
-                    <div class="h5 font-weight-bold mb-0 flex-nowrap">NonCompleted</div><span class="small text-gray animate__animated animate__bounce" id="txtsubscriptionLastDate">Getting..</span>
+                    <div class="h5 font-weight-bold mb-0 flex-nowrap">NonCompleted</div><span class="small text-gray animate__animated animate__bounce" id="txtNotCOmpletedExamLeftPercentage">Getting..</span>
                 </div>
             </div>
         </div>
@@ -308,10 +312,28 @@
                     value = Math.floor(Math.random() * 90) + 10;
                 }
                 if (value <= 50) {
-                    right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+                    // right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+                    right.animate({ rotation: percentageToDegrees(value) }, {
+                        duration: 1000, // Adjust the duration as needed
+                        step: function (now) {
+                            $(this).css('transform', 'rotate(' + now + 'deg)');
+                        }
+                    });
                 } else {
-                    right.css('transform', 'rotate(180deg)')
-                    left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+                    //right.css('transform', 'rotate(180deg)')
+                   // left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+                    right.animate({ rotation: 180 }, {
+                        duration: 1000, // Adjust the duration as needed
+                        step: function (now) {
+                            $(this).css('transform', 'rotate(' + now + 'deg)');
+                        }
+                    });
+                    left.animate({ rotation: percentageToDegrees(value - 50) }, {
+                        duration: 1000, // Adjust the duration as needed
+                        step: function (now) {
+                            $(this).css('transform', 'rotate(' + now + 'deg)');
+                        }
+                    });
                 }
             }
         }
@@ -424,6 +446,19 @@
         }, () => { });
     }
 
+    function getExamCountStaticsHistory() {
+        ServerData("/TenantAdminDashboard/GetExamStaticsHistory", "Post", null, (data) => {
+            if (data.Data && data.StatusCode == 1) {
+                $("#txtTotalExamLeftPercentage").attr('data-value', data.Data[0].TotalExam);
+                //cont here for charts
+                $("#txtCOmpletedExamLeftPercentage").text(data.Data[0].TotalCompletedExam);
+                NumberCountersAnimation('spanTotalExamLeftPercentage', data.Data[0].TotalExam);
+                $("#txtNotCOmpletedExamLeftPercentage").text(data.Data[0].TotalNotCompletedExam);
+                StartProgreeBar('txtTotalExamLeftPercentage', true);
+            }
+        }, () => { });
+    }
+
     $(document).ready(() => {
         setTimeout(startCount, 1000);
     });
@@ -436,6 +471,7 @@
         getClassBatchSectionCountHistory();
         getDatabaseStaticsHistory();
         getMailCountStaticsHistory();
+        getExamCountStaticsHistory();
     }
 
 </script>
