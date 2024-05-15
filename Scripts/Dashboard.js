@@ -57,6 +57,11 @@ $(document).ready(function () {
         showProgress ? $("#signalRModalSpinner").show() : $("#signalRModalSpinner").hide();
         showFooter ? $("#signalRModalBodyFooterVisible").show() : $("#signalRModalBodyFooterVisible").hide();
         if (closeModal) { $("#signalRModal").hide(); }
+        if (showFooter) {
+            if ($("#signalRModalBodyFooterVisible")) {
+                $("#signalRModalBodyFooterVisible button").focus();
+            }
+        }
     }
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');
