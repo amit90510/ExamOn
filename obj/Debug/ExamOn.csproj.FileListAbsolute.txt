@@ -83,6 +83,8 @@ C:\Users\Amit\Desktop\ExamoN\obj\Debug\ExamOn.csproj.CopyComplete
 C:\Users\Amit\Desktop\ExamoN\obj\Debug\ExamOn.dll
 C:\Users\Amit\Desktop\ExamoN\obj\Debug\ExamOn.pdb
 C:\Users\Amit\Desktop\ExamoN\obj\Debug\ExamOn.csproj.AssemblyReference.cache
+D:\ExamOn\obj\Debug\ExamOn.csproj.AssemblyReference.cache
+D:\ExamOn\obj\Debug\ExamOn.csproj.CoreCompileInputs.cache
 D:\ExamOn\bin\ExamOn.dll.config
 D:\ExamOn\bin\ExamOn.dll
 D:\ExamOn\bin\ExamOn.pdb
@@ -167,6 +169,7 @@ D:\ExamOn\bin\Microsoft.Owin.Security.Cookies.dll
 D:\ExamOn\bin\Microsoft.Owin.Security.dll
 D:\ExamOn\bin\Microsoft.Owin.Security.OAuth.dll
 D:\ExamOn\bin\Microsoft.Web.Infrastructure.dll
+D:\ExamOn\bin\Newtonsoft.Json.Bson.dll
 D:\ExamOn\bin\Newtonsoft.Json.dll
 D:\ExamOn\bin\Owin.dll
 D:\ExamOn\bin\System.Buffers.dll
@@ -176,6 +179,7 @@ D:\ExamOn\bin\System.IdentityModel.Tokens.Jwt.dll
 D:\ExamOn\bin\System.Memory.dll
 D:\ExamOn\bin\System.Net.Http.Formatting.dll
 D:\ExamOn\bin\System.Numerics.Vectors.dll
+D:\ExamOn\bin\System.Runtime.CompilerServices.Unsafe.dll
 D:\ExamOn\bin\System.Threading.Tasks.Extensions.dll
 D:\ExamOn\bin\System.Web.Helpers.dll
 D:\ExamOn\bin\System.Web.Http.dll
@@ -220,12 +224,15 @@ D:\ExamOn\bin\Microsoft.Owin.Host.SystemWeb.xml
 D:\ExamOn\bin\Microsoft.Owin.Security.xml
 D:\ExamOn\bin\Microsoft.Owin.Security.Cookies.xml
 D:\ExamOn\bin\Microsoft.Owin.Security.OAuth.xml
+D:\ExamOn\bin\Newtonsoft.Json.Bson.pdb
+D:\ExamOn\bin\Newtonsoft.Json.Bson.xml
 D:\ExamOn\bin\System.Buffers.xml
 D:\ExamOn\bin\System.Collections.Immutable.xml
 D:\ExamOn\bin\System.IdentityModel.Tokens.Jwt.xml
 D:\ExamOn\bin\System.Memory.xml
 D:\ExamOn\bin\System.Net.Http.Formatting.xml
 D:\ExamOn\bin\System.Numerics.Vectors.xml
+D:\ExamOn\bin\System.Runtime.CompilerServices.Unsafe.xml
 D:\ExamOn\bin\System.Threading.Tasks.Extensions.xml
 D:\ExamOn\bin\System.Web.Helpers.xml
 D:\ExamOn\bin\System.Web.Http.xml
@@ -247,8 +254,6 @@ D:\ExamOn\bin\pt-BR\Microsoft.Data.SqlClient.resources.dll
 D:\ExamOn\bin\ru\Microsoft.Data.SqlClient.resources.dll
 D:\ExamOn\bin\zh-Hans\Microsoft.Data.SqlClient.resources.dll
 D:\ExamOn\bin\zh-Hant\Microsoft.Data.SqlClient.resources.dll
-D:\ExamOn\obj\Debug\ExamOn.csproj.AssemblyReference.cache
-D:\ExamOn\obj\Debug\ExamOn.csproj.CoreCompileInputs.cache
 D:\ExamOn\obj\Debug\ExamOn.csproj.Up2Date
 D:\ExamOn\obj\Debug\ExamOn.dll
 D:\ExamOn\obj\Debug\ExamOn.pdb
