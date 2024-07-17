@@ -87,7 +87,9 @@ function loadViews(url, jsonData, menuoptionActive,scriptPath,closeMenu = true, 
         if ($('#menuOptions').find('a')) {
             $('#menuOptions a').removeClass('active');
         }
-        $("#" + menuoptionActive).addClass('active');
+        if (menuoptionActive) {
+            $("#" + menuoptionActive).addClass('active');
+        }
         document.getElementById(targetdiv).innerHTML = data;
         if (scriptPath) {
             try {

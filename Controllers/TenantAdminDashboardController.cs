@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace ExamOn.Controllers
@@ -132,6 +133,36 @@ namespace ExamOn.Controllers
             {
                 jsonData.StatusCode = 1;
                 jsonData.Data = userShiftProfile.ToList();
+            }
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<PartialViewResult> GetDetailedSubscriptionPage()
+        {
+            return PartialView("dashboard_SubscriptionDetailedView");
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<JsonResult> GetTenantSubscriptionDetails()
+        {
+            JsonData jsonData = new JsonData();
+            var tenants = DapperService.GetDapperData<tblTenantMaster>("Select * from tbltenantMaster where tenantUniqueKey = @id", new { id = AuthorizeService.GetDBToken(HttpContext.User.Identity.Name) }, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
+            if (tenants != null && tenants.Any())
+            {
+                jsonData.StatusCode = 1;
+                List<tbltenant> tbltenants = new List<tbltenant>();
+                foreach (var tblTenant in tenants)
+                {
+                    var tenantDetails = DapperService.GetDapperData<tbltenant>("SELECT [id] ,[TenantName], [TenantEmail], [TenantMobile],[SubscriptionEndDate] , [LastRechargeOn] ,[RechargeAmount] FROM [" + tblTenant.TenantDBName + "].dbo.tbltenant;", null, tblTenant.TenantDBName);
+                    if (tenantDetails != null && tenantDetails.Any())
+                    {
+                        tbltenants.Add(tenantDetails.FirstOrDefault());
+                    }
+                }
+                jsonData.Data = tbltenants.OrderByDescending(e => e.SubscriptionEndDate).ToList();
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }

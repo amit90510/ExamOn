@@ -15,6 +15,9 @@
     box-sizing: border-box
 }
 
+.childGrid1 {
+}
+
 body {
     position: relative;
     margin: var(--header-height) 0 0 0;

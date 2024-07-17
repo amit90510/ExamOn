@@ -538,6 +538,7 @@
     <Content Include="Scripts\StudDashboard\updatePassword.js" />
     <Content Include="Scripts\StudDashboard\updateProfile.js" />
     <Content Include="Scripts\sweetalert2.all.min.js" />
+    <Content Include="Scripts\TenantAdminDashboard\TenantAdminDasboard.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -559,6 +560,7 @@
     <Content Include="Views\InstructorTeacherDashboard\Index.cshtml" />
     <Content Include="Views\StudentSignup\Index.cshtml" />
     <Content Include="Views\TenantAdminDashboard\Index.cshtml" />
+    <Content Include="Views\TenantAdminDashboard\dashboard_SubscriptionDetailedView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
