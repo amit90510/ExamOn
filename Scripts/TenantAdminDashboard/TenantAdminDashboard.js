@@ -14,7 +14,7 @@ function exportToExcel(gridTable, fileName = "examOn_file", sheetName = "examOn"
     $('tfoot tr').addClass('examOn_excludeRow');
     $("#" + gridTable).table2excel({
         exclude: ".examOn_excludeRow",
-        filename: fileName + "_" + $.now(),
+        filename: fileName,
         fileext: ".xlsx",
         preserveColors: true,
         exclude_img: false,
@@ -28,6 +28,13 @@ function exportToExcel(gridTable, fileName = "examOn_file", sheetName = "examOn"
 function loadSubscriptionGrid() {
     $('#gridSubscptionEnd').grid('destroy', true, true);
     ServerData("/TenantAdminDashboard/GetTenantSubscriptionDetails", "Post", null, (data) => {
+        $.each(data.Data, function (key, value) {
+            try {
+                value.SubscriptionEndDate = toShowSqlDateinUI(value.SubscriptionEndDate);
+                value.LastRechargeOn = toShowSqlDateinUI(value.LastRechargeOn);
+            }
+            catch (error) { console.error(error); }
+        });
         $('#gridSubscptionEnd').grid({
             primaryKey: 'ID',
             uiLibrary: "bootstrap4",
@@ -43,7 +50,7 @@ function loadSubscriptionGrid() {
                 { field: 'LastRechargeOn', sortable: true },
                 { field: 'RechargeAmount', sortable: true }
             ],
-            pager: { limit: 5, sizes: [5, 10, 20, 100, 500] },
+            pager: { limit: 5, sizes: [5, 10, 20, 100, 500, 1000, 10000] },
             detailTemplate: '<div data-exclude="true"><table class="table table-striped table-sm table-responsive-sm"/></div>'
         });
         $('#gridSubscptionEnd').grid().on('pageSizeChange', function (e, newSize) {
@@ -70,7 +77,7 @@ function loadSubscriptionGrid() {
                             { field: 'RechargeAmount', sortable: true, cssClass: 'childGrid1' },
                             { field: 'CreatedDate', sortable: true, cssClass: 'childGrid1' }
                         ],
-                        pager: { limit: newpagesize, sizes: [5, 10, 20, 100, 500] }
+                        pager: { limit: newpagesize, sizes: [5, 10, 20, 100, 500, 1000, 10000] }
                     });
                 } else {
                     $detailWrapper.find('table').grid('destroy', true, true);

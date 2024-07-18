@@ -78,7 +78,17 @@ function examOn_dateParse(val) {
     return new Date();
 }
 
-function loadViews(url, jsonData, menuoptionActive,scriptPath,closeMenu = true, targetdiv = 'pageViewId') {
+function executeFunctionByName(functionName, context, arguments) {
+    if (arguments) {
+        var args = Array.prototype.slice.call(arguments, 2);
+        return context[functionName].apply(context, args);
+    }
+    else {
+        return context[functionName].apply(context);
+    }
+}
+
+function loadViews(url, jsonData, menuoptionActive,scriptPath,closeMenu = true, targetdiv = 'pageViewId', initialLoadMethod = null) {
     const animate = ["animate__bounce", "animate__flash", "animate__pulse", "animate__headShake", "animate__backInDown", "animate__backInUp", "animate__backInLeft", "animate__bounceInRight", "animate__bounceInRight","animate__fadeInDownBig"];
     ServerData(url, "POST", jsonData, (data) => {
         $('#' + targetdiv).html('');
@@ -96,6 +106,11 @@ function loadViews(url, jsonData, menuoptionActive,scriptPath,closeMenu = true, 
                 var newScript = document.createElement("script");
                 newScript.src = window.location.origin + "/Scripts/" + scriptPath;
                 document.getElementById(targetdiv).appendChild(newScript);
+                if (initialLoadMethod) {
+                    setTimeout(() => {
+                        executeFunctionByName(initialLoadMethod, window, null);
+                    }, 500);
+                }
             }
             catch {
                 SwalFire('ExamOn - Alert', 'There is some issue with getting information of this page', 'error', '', () => { location.href = "signOut"; }, 'इस पृष्ठ की जानकारी प्राप्त करने में कुछ समस्या है');
