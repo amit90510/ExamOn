@@ -9,7 +9,8 @@
     <br />
     <div class="col-12">
         <div class="card-footer text-muted " style="text-align:center; margin:auto 0">
-            <button onclick="exportToExcel('gridSubscptionEnd')" class="btn btn-secondary" style="text-align:Center"><i class="fa fa-list-alt" aria-hidden="true"></i> Download</button>
+            <button onclick="exportToExcel('gridSubscptionEnd', 'Subscription_details')" class="btn btn-secondary" style="text-align:Center"><i class="fa fa-list-alt" aria-hidden="true"></i> Download (Excel)</button>
+            <button onclick="@Url.Action("GetTenantSubscriptionHistoryPDF", "TenantAdminDashboard")" class="btn btn-secondary" style="text-align:Center"><i class="fa fa-list-alt" aria-hidden="true"></i> Complete Receipt (Pdf)</button>
             <button onclick="location.reload();" type="submit" class="btn btn-primary" style="text-align:Center"><i class="fa fa-key" aria-hidden="true"></i> Go to Dashboard (डैशबोर्ड पर जाएँ)</button>
         </div>
     </div>

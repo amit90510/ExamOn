@@ -282,3 +282,7 @@ D:\ExamOn\bin\System.Security.Principal.Windows.xml
 D:\ExamOn\bin\System.Text.Encodings.Web.xml
 D:\ExamOn\bin\System.Text.Json.xml
 D:\ExamOn\bin\System.ValueTuple.xml
+D:\ExamOn\bin\BouncyCastle.Cryptography.dll
+D:\ExamOn\bin\itextsharp.dll
+D:\ExamOn\bin\BouncyCastle.Cryptography.xml
+D:\ExamOn\bin\itextsharp.xml

@@ -38,7 +38,16 @@ function loadSubscriptionGrid() {
         var receiptButtonRender = function (value, record, $cell, $displayEl) {
             var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Receipt</button>').on('click', function () {
                 if (record.id) {
-
+                    ServerData("/TenantAdminDashboard/GetTenantSubscriptionHistoryPDF?tid=" + record.id, "GET", null, (data) => {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'Subscrption_details.pdf';
+                        document.body.append(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        a.remove();
+                    }, () => { }, 'application/json; charset=utf-8', false, 'blob');
                 }
             });
             $displayEl.empty().append($btn);

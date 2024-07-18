@@ -3,13 +3,17 @@ using ExamOn.DataLayer;
 using ExamOn.DataLayer.GetDataModel;
 using ExamOn.Models;
 using ExamOn.ServiceLayer;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using System.Runtime.CompilerServices;
 
 namespace ExamOn.Controllers
 {
@@ -175,7 +179,7 @@ namespace ExamOn.Controllers
             var tenantDB = DapperService.GetDapperData<tblTenantMaster>("Select [TenantDBName] from tbltenantMaster where TenantUniqueKey = @tid", new { @tid = tid }, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
             if (tenantDB != null && tenantDB.Any())
             {
-                var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT [id],[SubscptionStartFrom],[SubscriptionEndAt],[RechargeAmount],[CreatedDate] from [dbo].[tblTenantRechargeHistory] where TID = '" + tid + "'", null, tenantDB.FirstOrDefault().TenantDBName);
+                var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT [id],[SubscptionStartFrom],[SubscriptionEndAt],[RechargeAmount],[CreatedDate] from [dbo].[tblTenantRechargeHistory] where TID = @td", new { @td = tid }, tenantDB.FirstOrDefault().TenantDBName);
                 if (tenants != null && tenants.Any())
                 {   
                     jsonData.StatusCode = 1;
@@ -183,6 +187,53 @@ namespace ExamOn.Controllers
                 }
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<ActionResult> GetTenantSubscriptionHistoryPDF(string tid)
+        {
+            JsonData jsonData = new JsonData();
+            var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT * from [dbo].[tblTenantRechargeHistory] where ID = @tid", new { @tid = tid }, AuthorizeService.GetUserDBName(HttpContext.User.Identity.Name));
+            if (tenants != null && tenants.Any())
+            {
+                jsonData.StatusCode = 1;
+                jsonData.Data = tenants.OrderByDescending(e => e.CreatedDate).ToList();
+                //write a code using itextsharp to generate pdf
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    Document document = new Document(PageSize.A4);
+                    PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                    document.Open();
+
+                    // Add content to the PDF
+                    document.Add(new Paragraph("Hello, this is a test PDF document."));
+
+                    document.Close();
+                    writer.Close();
+
+                    byte[] pdfData = ms.ToArray();
+                    return File(pdfData, "application/pdf", "SubscriptionHistory.pdf");
+                }
+            }
+            else
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    Document document = new Document(PageSize.A4);
+                    PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                    document.Open();
+
+                    // Add content to the PDF
+                    document.Add(new Paragraph("No Data !! found"));
+
+                    document.Close();
+                    writer.Close();
+
+                    byte[] pdfData = ms.ToArray();
+                    return File(pdfData, "application/pdf", "SubscriptionHistory.pdf");
+                }
+            }
         }
     }
 }
