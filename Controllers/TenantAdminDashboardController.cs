@@ -175,9 +175,9 @@ namespace ExamOn.Controllers
             var tenantDB = DapperService.GetDapperData<tblTenantMaster>("Select [TenantDBName] from tbltenantMaster where TenantUniqueKey = @tid", new { @tid = tid }, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
             if (tenantDB != null && tenantDB.Any())
             {
-                var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT [SubscptionStartFrom],[SubscriptionEndAt],[RechargeAmount],[CreatedDate] from [dbo].[tblTenantRechargeHistory] where TID = '" + tid + "'", null, tenantDB.FirstOrDefault().TenantDBName);
+                var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT [id],[SubscptionStartFrom],[SubscriptionEndAt],[RechargeAmount],[CreatedDate] from [dbo].[tblTenantRechargeHistory] where TID = '" + tid + "'", null, tenantDB.FirstOrDefault().TenantDBName);
                 if (tenants != null && tenants.Any())
-                {
+                {   
                     jsonData.StatusCode = 1;
                     jsonData.Data = tenants.OrderByDescending(e => e.CreatedDate).ToList();
                 }

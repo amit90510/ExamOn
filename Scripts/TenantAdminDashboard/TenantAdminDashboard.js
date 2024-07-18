@@ -3,10 +3,10 @@ var maincol = {
     7: ""
 };
 
-var childcol = {
-    1: "",
+var childcol = {   
     2: "",
-    3: ""
+    3: "",
+    4:""
 };
 
 function exportToExcel(gridTable, fileName = "examOn_file", sheetName = "examOn") {
@@ -37,7 +37,9 @@ function loadSubscriptionGrid() {
         });
         var receiptButtonRender = function (value, record, $cell, $displayEl) {
             var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Receipt</button>').on('click', function () {
-                alert('clicky');
+                if (record.id) {
+
+                }
             });
             $displayEl.empty().append($btn);
         };
@@ -79,6 +81,7 @@ function loadSubscriptionGrid() {
                     });
                     $detailWrapper.find('table').grid({
                         dataSource: data.Data, columns: [
+                            { field: 'id', width: 50, hidden: true, sortable: true },
                             { field: 'SubscptionStartFrom', title: 'Subscription Start', sortable: true, cssClass: 'childGrid1' },
                             { field: 'SubscriptionEndAt', title: 'Subscription End', sortable: true, cssClass: 'childGrid1' },
                             { field: 'RechargeAmount', title: 'Recharge Amount', sortable: true, cssClass: 'childGrid1' },
