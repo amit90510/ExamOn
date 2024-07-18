@@ -53,12 +53,18 @@ function CustomExportMain(JquerygridObject, maincolumnsum, childcolumnsum) {
                         }
                         else {
                             let writeVal = encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html());
+                            if (writeVal) {
+                                writeVal = (writeVal.includes('class=&quot;ignoreContent') || writeVal.includes("class=&#39;ignoreContent")) ? "" : writeVal;
+                            }
                             tempRows += "<td type='string'>" + writeVal + "</td>";
                             updateColumnSum(maincolumnsum, writeVal, q);
                         }
                     }
                     catch {
                         let writeVal = encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html());
+                        if (writeVal) {
+                            writeVal = (writeVal.includes('class=&quot;ignoreContent') || writeVal.includes("class=&#39;ignoreContent")) ? "" : writeVal;
+                        }
                         tempRows += "<td type='string'>" + writeVal + "</td>";
                         updateColumnSum(maincolumnsum, writeVal, q);
                     }
@@ -163,12 +169,18 @@ function getChildRows(JquerygridObject, childcolsum) {
                 }
                 else {
                     let writeVal = encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html());
+                    if (writeVal) {
+                        writeVal = (writeVal.includes('class=&quot;ignoreContent') || writeVal.includes("class=&#39;ignoreContent")) ? "" : writeVal;
+                    }
                     tempRows += "<td type='string'>" + writeVal + "</td>";
                     updateColumnSum(childcolsum, writeVal, (++maincount));
                 }
             }
             catch {
                 let writeVal = encodeSpecialCharacters($(rowchildTiltle).find("div").eq(0).html());
+                if (writeVal) {
+                    writeVal = (writeVal.includes('class=&quot;ignoreContent') || writeVal.includes("class=&#39;ignoreContent")) ? "" : writeVal;
+                }
                 tempRows += "<td type='string'>" + writeVal + "</td>";
                 updateColumnSum(childcolsum, writeVal, (++maincount));
             }

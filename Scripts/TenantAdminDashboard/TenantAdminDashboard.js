@@ -35,6 +35,13 @@ function loadSubscriptionGrid() {
             }
             catch (error) { console.error(error); }
         });
+        var receiptButtonRender = function (value, record, $cell, $displayEl) {
+            var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Receipt</button>').on('click', function () {
+                alert('clicky');
+            });
+            $displayEl.empty().append($btn);
+        };
+
         $('#gridSubscptionEnd').grid({
             primaryKey: 'ID',
             uiLibrary: "bootstrap4",
@@ -42,13 +49,13 @@ function loadSubscriptionGrid() {
             iconsLibrary: 'fontawesome',
             headerFilter: true,
             columns: [
-                { field: 'id', width: 50, sortable: true },
-                { field: 'TenantName', sortable: true },
-                { field: 'TenantEmail', sortable: true },
-                { field: 'TenantMobile', sortable: true },
-                { field: 'SubscriptionEndDate', sortable: true },
-                { field: 'LastRechargeOn', sortable: true },
-                { field: 'RechargeAmount', sortable: true }
+                { field: 'id', width: 50, hidden: true, sortable: true },
+                { field: 'TenantName', title: 'Name', sortable: true },
+                { field: 'TenantEmail', title: 'Email', sortable: true },
+                { field: 'TenantMobile', title: 'Mobile', sortable: true },
+                { field: 'SubscriptionEndDate', title: 'Subscription End', sortable: true },
+                { field: 'LastRechargeOn', title: 'Last Recharge On', sortable: true },
+                { field: 'RechargeAmount', title: 'Last Recharge Amount', sortable: true }
             ],
             pager: { limit: 5, sizes: [5, 10, 20, 100, 500, 1000, 10000] },
             detailTemplate: '<div data-exclude="true"><table class="table table-striped table-sm table-responsive-sm"/></div>'
@@ -72,10 +79,11 @@ function loadSubscriptionGrid() {
                     });
                     $detailWrapper.find('table').grid({
                         dataSource: data.Data, columns: [
-                            { field: 'SubscptionStartFrom', sortable: true, cssClass: 'childGrid1' },
-                            { field: 'SubscriptionEndAt', sortable: true, cssClass: 'childGrid1' },
-                            { field: 'RechargeAmount', sortable: true, cssClass: 'childGrid1' },
-                            { field: 'CreatedDate', sortable: true, cssClass: 'childGrid1' }
+                            { field: 'SubscptionStartFrom', title: 'Subscription Start', sortable: true, cssClass: 'childGrid1' },
+                            { field: 'SubscriptionEndAt', title: 'Subscription End', sortable: true, cssClass: 'childGrid1' },
+                            { field: 'RechargeAmount', title: 'Recharge Amount', sortable: true, cssClass: 'childGrid1' },
+                            { field: 'CreatedDate', title: 'Date', sortable: true, cssClass: 'childGrid1' },
+                            { field: '', cssClass: 'childGrid1', renderer: receiptButtonRender }
                         ],
                         pager: { limit: newpagesize, sizes: [5, 10, 20, 100, 500, 1000, 10000] }
                     });
