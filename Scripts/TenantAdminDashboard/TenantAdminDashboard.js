@@ -135,3 +135,96 @@ function loadSubscriptionGrid() {
 
     }, () => { });
 }
+
+function loadRegisteredStudentsGrid() {
+    $('#gridSubscptionEnd').grid('destroy', true, true);
+    ServerData("/TenantAdminDashboard/GetTenantSubscriptionDetails", "Post", null, (data) => {
+        $.each(data.Data, function (key, value) {
+            try {
+                value.SubscriptionEndDate = toShowSqlDateinUI(value.SubscriptionEndDate);
+                value.LastRechargeOn = toShowSqlDateinUI(value.LastRechargeOn);
+            }
+            catch (error) { console.error(error); }
+        });
+        var receiptButtonRender = function (value, record, $cell, $displayEl) {
+            var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Receipt</button>').on('click', function () {
+                if (record.id) {
+                    //chane this button text to download
+                    $(this).text('Processing, Please Wait.');
+                    ServerData("/TenantAdminDashboard/GetTenantSubscriptionHistoryPDF?tid=" + record.id, "GET", null, (data) => {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'Subscrption_details.pdf';
+                        document.body.append(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        a.remove();
+                        $(this).text('Renew');
+                    }, () => {
+                        $(this).text('Renew');
+                    }, 'application/json; charset=utf-8', false, 'blob');
+                }
+            });
+            $displayEl.empty().append($btn);
+        };
+
+        $('#gridSubscptionEnd').grid({
+            primaryKey: 'ID',
+            uiLibrary: "bootstrap4",
+            dataSource: data.Data,
+            iconsLibrary: 'fontawesome',
+            headerFilter: true,
+            columns: [
+                { field: 'id', width: 50, hidden: true, sortable: true },
+                { field: 'TenantName', title: 'Name', sortable: true },
+                { field: 'TenantEmail', title: 'Email', sortable: true },
+                { field: 'TenantMobile', title: 'Mobile', sortable: true },
+                { field: 'SubscriptionEndDate', title: 'Subscription End', sortable: true },
+                { field: 'LastRechargeOn', title: 'Last Recharge On', sortable: true },
+                { field: 'RechargeAmount', title: 'Last Recharge Amount', sortable: true }
+            ],
+            pager: { limit: 5, sizes: [5, 10, 20, 100, 500, 1000, 10000] },
+            detailTemplate: '<div data-exclude="true"><table class="table table-striped table-sm table-responsive-sm"/></div>'
+        });
+        $('#gridSubscptionEnd').grid().on('pageSizeChange', function (e, newSize) {
+            if (newSize && typeof (newSize) == 'number') {
+                newpagesize = newSize;
+            }
+        });
+
+        $('#gridSubscptionEnd').grid().on('detailExpand', function (e, $detailWrapper, id) {
+            ServerData("/TenantAdminDashboard/GetTenantSubscriptionHistory?tid=" + $('#gridSubscptionEnd').grid().get(id).id, "Post", null, (data) => {
+                if (data && data.StatusCode == "1") {
+                    $.each(data.Data, function (key, value) {
+                        try {
+                            value.SubscptionStartFrom = toShowSqlDateinUI(value.SubscptionStartFrom);
+                            value.SubscriptionEndAt = toShowSqlDateinUI(value.SubscriptionEndAt);
+                            value.CreatedDate = toShowSqlDatetimeinUI(value.CreatedDate);
+                        }
+                        catch (error) { console.error(error); }
+                    });
+                    $detailWrapper.find('table').grid({
+                        dataSource: data.Data, columns: [
+                            { field: 'id', width: 50, hidden: true, sortable: true },
+                            { field: 'SubscptionStartFrom', title: 'Subscription Start', sortable: true, cssClass: 'childGrid1' },
+                            { field: 'SubscriptionEndAt', title: 'Subscription End', sortable: true, cssClass: 'childGrid1' },
+                            { field: 'RechargeAmount', title: 'Recharge Amount', sortable: true, cssClass: 'childGrid1' },
+                            { field: 'CreatedDate', title: 'Date', sortable: true, cssClass: 'childGrid1' },
+                            { field: '', cssClass: 'childGrid1', renderer: receiptButtonRender }
+                        ],
+                        pager: { limit: newpagesize, sizes: [5, 10, 20, 100, 500, 1000, 10000] }
+                    });
+                } else {
+                    $detailWrapper.find('table').grid('destroy', true, true);
+                }
+            });
+        });
+        $('#gridSubscptionEnd').grid().on('detailCollapse', function (e, $detailWrapper, id) {
+            $detailWrapper.find('table').grid('destroy', true, true);
+        });
+        $('#gridSubscptionEnd').grid().on('rowSelect', function (e, $row, id, record) {
+        });
+
+    }, () => { });
+}

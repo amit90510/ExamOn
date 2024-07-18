@@ -569,6 +569,7 @@
     <Content Include="Views\StudentSignup\Index.cshtml" />
     <Content Include="Views\TenantAdminDashboard\Index.cshtml" />
     <Content Include="Views\TenantAdminDashboard\dashboard_SubscriptionDetailedView.cshtml" />
+    <Content Include="Views\TenantAdminDashboard\dashboard_AvailableRegisteredStudents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

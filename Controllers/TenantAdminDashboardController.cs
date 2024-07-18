@@ -347,5 +347,12 @@ namespace ExamOn.Controllers
                 return Content("ExamOn !! Alert - NO Pdf data.");
             }
         }
+
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public async Task<PartialViewResult> GetRegistredStudentsPage()
+        {
+            return PartialView("dashboard_AvailableRegisteredStudents");
+        }
     }
 }
