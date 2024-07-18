@@ -442,6 +442,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLayer\DapperService.cs" />
     <Compile Include="ServiceLayer\EmailService.cs" />
+    <Compile Include="ServiceLayer\iTextPdfExportService.cs" />
     <Compile Include="SignalRPush\HubContext.cs" />
     <Compile Include="SignalRPush\NotificationHub.cs" />
     <Compile Include="Startup.cs" />
