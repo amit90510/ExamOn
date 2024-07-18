@@ -476,6 +476,7 @@
     <Content Include="Content\images\UserProfile.jpg" />
     <Content Include="Content\logo\logo-Compress.png" />
     <Content Include="Content\logo\logo.png" />
+    <Content Include="Content\logo\logo_Pdf.png" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\sweetalert2.min.css" />
     <Content Include="Content\Template\EmailTemplate.html" />

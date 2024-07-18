@@ -14,6 +14,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Runtime.CompilerServices;
+using System.Drawing;
 
 namespace ExamOn.Controllers
 {
@@ -191,48 +192,159 @@ namespace ExamOn.Controllers
 
         [AuthorizeAction]
         [ForgeryTokenAuthorize]
-        public async Task<ActionResult> GetTenantSubscriptionHistoryPDF(string tid)
+        public ActionResult GetTenantSubscriptionHistoryPDF(string tid)
         {
-            JsonData jsonData = new JsonData();
+            List<tblTenantRechargeHistory> tblTenantRechargeHistoryList = new List<tblTenantRechargeHistory>();
             var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT * from [dbo].[tblTenantRechargeHistory] where ID = @tid", new { @tid = tid }, AuthorizeService.GetUserDBName(HttpContext.User.Identity.Name));
             if (tenants != null && tenants.Any())
             {
-                jsonData.StatusCode = 1;
-                jsonData.Data = tenants.OrderByDescending(e => e.CreatedDate).ToList();
-                //write a code using itextsharp to generate pdf
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    Document document = new Document(PageSize.A4);
-                    PdfWriter writer = PdfWriter.GetInstance(document, ms);
-                    document.Open();
-
-                    // Add content to the PDF
-                    document.Add(new Paragraph("Hello, this is a test PDF document."));
-
-                    document.Close();
-                    writer.Close();
-
-                    byte[] pdfData = ms.ToArray();
-                    return File(pdfData, "application/pdf", "SubscriptionHistory.pdf");
-                }
+                tblTenantRechargeHistoryList = tenants.OrderByDescending(e => e.CreatedDate).ToList();
+            }
+            BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+            iTextSharp.text.Font times = new iTextSharp.text.Font(bfTimes, 9, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+            List<IElement> pdfElement = new List<IElement>();
+            Paragraph paragraph = new Paragraph("Subscription History", times);
+            paragraph.Add(Environment.NewLine);
+            paragraph.Add(Environment.NewLine);
+            paragraph.Alignment = Element.ALIGN_CENTER;
+            pdfElement.Add(paragraph);
+            PdfPTable tableMain = new PdfPTable(6);
+            float[] widths = new float[] { 10f, 60f, 30f, 30f, 40f, 50f };
+            tableMain.SetWidths(widths);
+            tableMain.HorizontalAlignment = Element.ALIGN_LEFT;
+            tableMain.WidthPercentage = 100;
+            tableMain.HeaderRows = 1;
+            Phrase phraseSNo = new Phrase("SNO", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));            
+            Phrase phrasePItem = new Phrase("Purchase Item", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));            
+            Phrase phraseSubStart = new Phrase("Subscription Start Date", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));            
+            Phrase phraseSubEnd = new Phrase("Subscription End Date", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));            
+            Phrase phraseRecAmt = new Phrase("Recharge Amount", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));            
+            Phrase phraseDate = new Phrase("Date", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));            
+            tableMain.AddCell(phraseSNo);
+            tableMain.AddCell(phrasePItem);
+            tableMain.AddCell(phraseSubStart);
+            tableMain.AddCell(phraseSubEnd);
+            tableMain.AddCell(phraseRecAmt);
+            tableMain.AddCell(phraseDate);
+            //add some empty row in pdfptable
+            int sno = 1;
+            foreach (var item in tblTenantRechargeHistoryList)
+            {
+                tableMain.AddCell(new Paragraph(sno.ToString(), times));
+                tableMain.AddCell(new Paragraph("ExamOn - Tenant Subscription Renew/Purchase.", times));
+                tableMain.AddCell(new Paragraph(item.SubscptionStartFrom.ToString("dd-MM-yyyy"), times));
+                tableMain.AddCell(new Paragraph(item.SubscriptionEndAt.ToString("dd-MM-yyyy"), times));
+                tableMain.AddCell(new Paragraph(item.RechargeAmount.ToString(), times));
+                tableMain.AddCell(new Paragraph(item.CreatedDate.ToString(), times));
+                sno++;
+            }
+            pdfElement.Add(tableMain);
+            PdfPTable tableTotal = new PdfPTable(2);
+            float[] widthsTotal = new float[] { 59f, 41f };
+            tableTotal.SetWidths(widthsTotal);
+            tableTotal.HorizontalAlignment = Element.ALIGN_RIGHT;
+            tableTotal.WidthPercentage = 100;
+            tableTotal.HeaderRows = 0;
+            Phrase phraseTotal = new Phrase("Total Amount", times);
+            double totalAmount = 0;
+            var tenantsSum = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT top 1 Sum(RechargeAmount) as RechargeAmount from [dbo].[tblTenantRechargeHistory] where ID = @tid", new { @tid = tid }, AuthorizeService.GetUserDBName(HttpContext.User.Identity.Name));
+            if (tenantsSum != null && tenantsSum.Any())
+            {
+                totalAmount = tenantsSum.FirstOrDefault().RechargeAmount;
+            }
+            Phrase phraseTotalValue = new Phrase(totalAmount.ToString() + " INR", times);
+            tableTotal.AddCell(phraseTotal);
+            tableTotal.AddCell(phraseTotalValue);
+            pdfElement.Add(tableTotal);
+            iTextPdfExportService iTextPdfExportService = new iTextPdfExportService();
+            byte[] pdfData = iTextPdfExportService.ExportPdfData(pdfElement);
+            //handle null scenario in below code
+            if (pdfData != null)
+            {
+                return File(pdfData, "application/pdf", "SubscriptionHistory.pdf");
             }
             else
             {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    Document document = new Document(PageSize.A4);
-                    PdfWriter writer = PdfWriter.GetInstance(document, ms);
-                    document.Open();
+                return Content("ExamOn !! Alert - NO Pdf data.");
+            }
+        }
 
-                    // Add content to the PDF
-                    document.Add(new Paragraph("No Data !! found"));
-
-                    document.Close();
-                    writer.Close();
-
-                    byte[] pdfData = ms.ToArray();
-                    return File(pdfData, "application/pdf", "SubscriptionHistory.pdf");
-                }
+        [AuthorizeAction]
+        [ForgeryTokenAuthorize]
+        public ActionResult GetTenantSubscriptionFullHistoryPDF()
+        {
+            List<tblTenantRechargeHistory> tblTenantRechargeHistoryList = new List<tblTenantRechargeHistory>();
+            var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT * from [dbo].[tblTenantRechargeHistory] order by createdDate desc", null, AuthorizeService.GetUserDBName(HttpContext.User.Identity.Name));
+            if (tenants != null && tenants.Any())
+            {
+                tblTenantRechargeHistoryList = tenants.OrderByDescending(e => e.CreatedDate).ToList();
+            }
+            BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+            iTextSharp.text.Font times = new iTextSharp.text.Font(bfTimes, 9, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+            List<IElement> pdfElement = new List<IElement>();
+            Paragraph paragraph = new Paragraph("Subscription History", times);
+            paragraph.Add(Environment.NewLine);
+            paragraph.Add(Environment.NewLine);
+            paragraph.Alignment = Element.ALIGN_CENTER;
+            pdfElement.Add(paragraph);
+            PdfPTable tableMain = new PdfPTable(6);
+            float[] widths = new float[] { 10f, 60f, 30f, 30f, 40f, 50f };
+            tableMain.SetWidths(widths);
+            tableMain.HorizontalAlignment = Element.ALIGN_LEFT;
+            tableMain.WidthPercentage = 100;
+            tableMain.HeaderRows = 1;
+            Phrase phraseSNo = new Phrase("SNO", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));
+            Phrase phrasePItem = new Phrase("Purchase Item", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));
+            Phrase phraseSubStart = new Phrase("Subscription Start Date", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));
+            Phrase phraseSubEnd = new Phrase("Subscription End Date", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));
+            Phrase phraseRecAmt = new Phrase("Recharge Amount", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));
+            Phrase phraseDate = new Phrase("Date", FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(0, 0, 0)));
+            tableMain.AddCell(phraseSNo);
+            tableMain.AddCell(phrasePItem);
+            tableMain.AddCell(phraseSubStart);
+            tableMain.AddCell(phraseSubEnd);
+            tableMain.AddCell(phraseRecAmt);
+            tableMain.AddCell(phraseDate);
+            //add some empty row in pdfptable
+            int sno = 1;
+            foreach (var item in tblTenantRechargeHistoryList)
+            {
+                tableMain.AddCell(new Paragraph(sno.ToString(), times));
+                tableMain.AddCell(new Paragraph("ExamOn - Tenant Subscription Renew/Purchase.", times));
+                tableMain.AddCell(new Paragraph(item.SubscptionStartFrom.ToString("dd-MM-yyyy"), times));
+                tableMain.AddCell(new Paragraph(item.SubscriptionEndAt.ToString("dd-MM-yyyy"), times));
+                tableMain.AddCell(new Paragraph(item.RechargeAmount.ToString(), times));
+                tableMain.AddCell(new Paragraph(item.CreatedDate.ToString(), times));
+                sno++;
+            }
+            pdfElement.Add(tableMain);
+            PdfPTable tableTotal = new PdfPTable(2);
+            float[] widthsTotal = new float[] { 59f, 41f };
+            tableTotal.SetWidths(widthsTotal);
+            tableTotal.HorizontalAlignment = Element.ALIGN_RIGHT;
+            tableTotal.WidthPercentage = 100;
+            tableTotal.HeaderRows = 0;
+            Phrase phraseTotal = new Phrase("Total Amount", times);
+            double totalAmount = 0;
+            var tenantsSum = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT top 1 Sum(RechargeAmount) as RechargeAmount from [dbo].[tblTenantRechargeHistory]", null, AuthorizeService.GetUserDBName(HttpContext.User.Identity.Name));
+            if (tenantsSum != null && tenantsSum.Any())
+            {
+                totalAmount = tenantsSum.FirstOrDefault().RechargeAmount;
+            }
+            Phrase phraseTotalValue = new Phrase(totalAmount.ToString() + " INR", times);
+            tableTotal.AddCell(phraseTotal);
+            tableTotal.AddCell(phraseTotalValue);
+            pdfElement.Add(tableTotal);
+            iTextPdfExportService iTextPdfExportService = new iTextPdfExportService();
+            byte[] pdfData = iTextPdfExportService.ExportPdfData(pdfElement);
+            //handle null scenario in below code
+            if (pdfData != null)
+            {
+                return File(pdfData, "application/pdf", "SubscriptionHistory.pdf");
+            }
+            else
+            {
+                return Content("ExamOn !! Alert - NO Pdf data.");
             }
         }
     }

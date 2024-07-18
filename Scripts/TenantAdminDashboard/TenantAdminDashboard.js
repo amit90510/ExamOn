@@ -25,6 +25,24 @@ function exportToExcel(gridTable, fileName = "examOn_file", sheetName = "examOn"
         childcolumnsum: childcol
     });
 }
+
+function getSubscriptionHistoryFullDetails(e) {
+    let oldText = $(e).text();
+    $(e).text('Processing, Please Wait.');
+    ServerData("/TenantAdminDashboard/GetTenantSubscriptionFullHistoryPDF", "GET", null, (data) => {
+        var a = document.createElement('a');
+        var url = window.URL.createObjectURL(data);
+        a.href = url;
+        a.download = 'Subscrption_details_All.pdf';
+        document.body.append(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+        $(e).text(oldText);
+    }, () => {
+        $(e).text(oldText);
+    }, 'application/json; charset=utf-8', false, 'blob');
+}
 function loadSubscriptionGrid() {
     $('#gridSubscptionEnd').grid('destroy', true, true);
     ServerData("/TenantAdminDashboard/GetTenantSubscriptionDetails", "Post", null, (data) => {
@@ -38,6 +56,8 @@ function loadSubscriptionGrid() {
         var receiptButtonRender = function (value, record, $cell, $displayEl) {
             var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Receipt</button>').on('click', function () {
                 if (record.id) {
+                    //chane this button text to download
+                    $(this).text('Processing, Please Wait.');
                     ServerData("/TenantAdminDashboard/GetTenantSubscriptionHistoryPDF?tid=" + record.id, "GET", null, (data) => {
                         var a = document.createElement('a');
                         var url = window.URL.createObjectURL(data);
@@ -47,7 +67,10 @@ function loadSubscriptionGrid() {
                         a.click();
                         window.URL.revokeObjectURL(url);
                         a.remove();
-                    }, () => { }, 'application/json; charset=utf-8', false, 'blob');
+                        $(this).text('Renew');
+                    }, () => {
+                        $(this).text('Renew');
+                    }, 'application/json; charset=utf-8', false, 'blob');
                 }
             });
             $displayEl.empty().append($btn);
