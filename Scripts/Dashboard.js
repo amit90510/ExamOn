@@ -89,7 +89,7 @@ function executeFunctionByName(functionName, context, arguments) {
 }
 
 function loadViews(url, jsonData, menuoptionActive,scriptPath,closeMenu = true, targetdiv = 'pageViewId', initialLoadMethod = null) {
-    const animate = ["animate__bounce", "animate__flash", "animate__pulse", "animate__headShake", "animate__backInDown", "animate__backInUp", "animate__backInLeft", "animate__bounceInRight", "animate__bounceInRight","animate__fadeInDownBig"];
+    const animate = ["animate__slideInRight", "animate__backInDown", "animate__backInUp", "animate__backInLeft", "animate__bounceInRight", "animate__bounceInRight","animate__fadeInDownBig"];
     ServerData(url, "POST", jsonData, (data) => {
         $('#' + targetdiv).html('');
         $('#' + targetdiv).hide('fast');

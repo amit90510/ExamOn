@@ -138,33 +138,29 @@ function loadSubscriptionGrid() {
 
 function loadRegisteredStudentsGrid() {
     $('#gridSubscptionEnd').grid('destroy', true, true);
-    ServerData("/TenantAdminDashboard/GetTenantSubscriptionDetails", "Post", null, (data) => {
+    ServerData("/TenantAdminDashboard/GetloadRegisteredStudentsGrid", "Post", null, (data) => {
         $.each(data.Data, function (key, value) {
             try {
-                value.SubscriptionEndDate = toShowSqlDateinUI(value.SubscriptionEndDate);
-                value.LastRechargeOn = toShowSqlDateinUI(value.LastRechargeOn);
+                value.CreatedOn = toShowSqlDatetimeinUI(value.CreatedOn);
             }
             catch (error) { console.error(error); }
         });
-        var receiptButtonRender = function (value, record, $cell, $displayEl) {
-            var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Receipt</button>').on('click', function () {
-                if (record.id) {
-                    //chane this button text to download
-                    $(this).text('Processing, Please Wait.');
-                    ServerData("/TenantAdminDashboard/GetTenantSubscriptionHistoryPDF?tid=" + record.id, "GET", null, (data) => {
-                        var a = document.createElement('a');
-                        var url = window.URL.createObjectURL(data);
-                        a.href = url;
-                        a.download = 'Subscrption_details.pdf';
-                        document.body.append(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-                        a.remove();
-                        $(this).text('Renew');
-                    }, () => {
-                        $(this).text('Renew');
-                    }, 'application/json; charset=utf-8', false, 'blob');
-                }
+        var editButtonRender = function (value, record, $cell, $displayEl) {
+            var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Edit</button>').on('click', function () {
+                if (record.id) {}
+            });
+            $displayEl.empty().append($btn);
+        };
+        var inactiveButtonRender = function (value, record, $cell, $displayEl) {
+            var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Inactive</button>').on('click', function () {
+                if (record.id) { }
+            });
+            $displayEl.empty().append($btn);
+        };
+
+        var blockButtonRender = function (value, record, $cell, $displayEl) {
+            var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Block</button>').on('click', function () {
+                if (record.id) { }
             });
             $displayEl.empty().append($btn);
         };
@@ -176,13 +172,20 @@ function loadRegisteredStudentsGrid() {
             iconsLibrary: 'fontawesome',
             headerFilter: true,
             columns: [
-                { field: 'id', width: 50, hidden: true, sortable: true },
-                { field: 'TenantName', title: 'Name', sortable: true },
-                { field: 'TenantEmail', title: 'Email', sortable: true },
-                { field: 'TenantMobile', title: 'Mobile', sortable: true },
-                { field: 'SubscriptionEndDate', title: 'Subscription End', sortable: true },
-                { field: 'LastRechargeOn', title: 'Last Recharge On', sortable: true },
-                { field: 'RechargeAmount', title: 'Last Recharge Amount', sortable: true }
+                { field: 'id', width: 40, hidden: true, sortable: true },
+                { field: 'UserName', title: 'User Name', sortable: true },
+                { field: 'RealName', title: 'Student Name', sortable: true },
+                { field: 'Mobile', title: 'Mobile', sortable: true },
+                { field: 'EmailId', title: 'Email', sortable: true },
+                { field: 'Active', title: 'User Active', sortable: true },
+                { field: 'BlockLogin', title: 'User Blocked', sortable: true },
+                { field: 'CreatedOn', title: 'Create Date', sortable: true },
+                { field: 'Address', title: 'Address', sortable: true },
+                { field: 'City', title: 'City', sortable: true },
+                { field: 'State', title: 'State', sortable: true },
+                { field: '', renderer: editButtonRender },
+                { field: 'Active', renderer: inactiveButtonRender },
+                { field: 'BlockLogin', renderer: blockButtonRender }
             ],
             pager: { limit: 5, sizes: [5, 10, 20, 100, 500, 1000, 10000] },
             detailTemplate: '<div data-exclude="true"><table class="table table-striped table-sm table-responsive-sm"/></div>'
