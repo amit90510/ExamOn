@@ -15,6 +15,8 @@ using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Runtime.CompilerServices;
 using System.Drawing;
+using System.Security.Cryptography;
+using System.Web.Script.Serialization;
 
 namespace ExamOn.Controllers
 {
@@ -360,14 +362,20 @@ namespace ExamOn.Controllers
         public async Task<JsonResult> GetloadRegisteredStudentsGrid()
         {
             JsonData jsonData = new JsonData();
-            var tenantDB = DapperService.GetDapperData<tblTenantMaster>("Select [TenantDBName] from tbltenantMaster where TenantUniqueKey = @tid", new { @tid = tid }, WebConfigurationManager.AppSettings["ExamOnMasterDB"]);
-            if (tenantDB != null && tenantDB.Any())
+            var studentData = DapperService.GetDapperData<GetStudentInformationdata>("select ROW_NUMBER() OVER (ORDER BY tl.username) Id, tp.UserName, tp.RealName, tp.address, tp.City,tp.State, EmailId,Mobile, case when Active = 0 then 'No' else 'Yes' end as Active, case when BlockLogin = 0 then 'No' else 'Yes' end as BlockLogin, CreatedOn, tt.TypeName from tbllogin tl\r\n  inner join tblloginType tt on tl.LoginType = tt.id and tt.Type = 'S' \r\n  inner join tbluserProfile tp on tl.UserName = tp.UserName", null, AuthorizeService.GetUserDBName(HttpContext.User.Identity.Name));
+            if (studentData != null && studentData.Any())
             {
-                var tenants = DapperService.GetDapperData<tblTenantRechargeHistory>("SELECT [id],[SubscptionStartFrom],[SubscriptionEndAt],[RechargeAmount],[CreatedDate] from [dbo].[tblTenantRechargeHistory] where TID = @td", new { @td = tid }, tenantDB.FirstOrDefault().TenantDBName);
-                if (tenants != null && tenants.Any())
+                jsonData.StatusCode = 1;
+                jsonData.Data = studentData.OrderByDescending(e => e.CreatedOn).ToList();
+                using (StreamReader reader = new StreamReader(Server.MapPath("~/DataLayer/States.json")))
                 {
-                    jsonData.StatusCode = 1;
-                    jsonData.Data = tenants.OrderByDescending(e => e.CreatedDate).ToList();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    var stateInfo = serializer.Deserialize<dynamic>(reader.ReadToEnd());
+                    foreach (var studentitem in studentData.Where(e => !string.IsNullOrEmpty(e.State)))
+                    {
+                        stateInfo.TryGetValue(studentitem.State, out dynamic stateName);
+                        studentitem.State = stateName;
+                    }
                 }
             }
             return Json(jsonData, JsonRequestBehavior.AllowGet);

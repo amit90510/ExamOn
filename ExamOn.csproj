@@ -327,6 +327,7 @@
     <Compile Include="DataLayer\GetDataModel\GetAllTenantDeepInformation.cs" />
     <Compile Include="DataLayer\GetDataModel\GetDatabaseSizeStatics.cs" />
     <Compile Include="DataLayer\GetDataModel\GetStudentEnrollmentStaticsHistory.cs" />
+    <Compile Include="DataLayer\GetDataModel\GetStudentInformationdata.cs" />
     <Compile Include="DataLayer\GetDataModel\GetStudentStaticHistory.cs" />
     <Compile Include="DataLayer\GetDataModel\GetTenantMasterMoreInformation.cs" />
     <Compile Include="DataLayer\GetDataModel\GetTotalExamCountStatics.cs" />

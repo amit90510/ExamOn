@@ -172,7 +172,7 @@ function loadRegisteredStudentsGrid() {
             iconsLibrary: 'fontawesome',
             headerFilter: true,
             columns: [
-                { field: 'id', width: 40, hidden: true, sortable: true },
+                { field: 'Id', title: 'Sno', width: 40, filterable: false, sortable: true, hidden: true },
                 { field: 'UserName', title: 'User Name', sortable: true },
                 { field: 'RealName', title: 'Student Name', sortable: true },
                 { field: 'Mobile', title: 'Mobile', sortable: true },
@@ -183,9 +183,9 @@ function loadRegisteredStudentsGrid() {
                 { field: 'Address', title: 'Address', sortable: true },
                 { field: 'City', title: 'City', sortable: true },
                 { field: 'State', title: 'State', sortable: true },
-                { field: '', renderer: editButtonRender },
-                { field: 'Active', renderer: inactiveButtonRender },
-                { field: 'BlockLogin', renderer: blockButtonRender }
+                { field: '', title: '', sortable: false, filterable: false, renderer: editButtonRender },
+                { field: 'Active', title: '', sortable: false, filterable: false, renderer: inactiveButtonRender },
+                { field: 'BlockLogin', title: '', sortable: false, filterable: false, renderer: blockButtonRender }
             ],
             pager: { limit: 5, sizes: [5, 10, 20, 100, 500, 1000, 10000] },
             detailTemplate: '<div data-exclude="true"><table class="table table-striped table-sm table-responsive-sm"/></div>'
