@@ -14,7 +14,13 @@
 *, ::before, ::after {
     box-sizing: border-box
 }
+.gijgoWordWrap {
+    white-space: nowrap
+}
 
+    .gijgoWordWrap div {
+        white-space: nowrap
+    }
 .childGrid1 {
 }
 

@@ -146,20 +146,20 @@ function loadRegisteredStudentsGrid() {
             catch (error) { console.error(error); }
         });
         var editButtonRender = function (value, record, $cell, $displayEl) {
-            var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Edit</button>').on('click', function () {
+            var $btn = $('<button type="button" style="white-space:nowrap;font-size: x-small;flex-wrap: nowrap;word-wrap: normal;" class="ignoreContent btn btn-danger">Edit</button>').on('click', function () {
                 if (record.id) {}
             });
             $displayEl.empty().append($btn);
         };
         var inactiveButtonRender = function (value, record, $cell, $displayEl) {
-            var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Inactive</button>').on('click', function () {
+            var $btn = $('<button type="button" style="white-space:nowrap;font-size: x-small;flex-wrap: nowrap;word-wrap: normal;" class="ignoreContent btn btn-danger">Inactive</button>').on('click', function () {
                 if (record.id) { }
             });
             $displayEl.empty().append($btn);
         };
 
         var blockButtonRender = function (value, record, $cell, $displayEl) {
-            var $btn = $('<button type="button" class="ignoreContent btn btn-danger">Block</button>').on('click', function () {
+            var $btn = $('<button type="button" style="white-space:nowrap;font-size: x-small;flex-wrap: nowrap;word-wrap: normal;" class="ignoreContent btn btn-danger">Block</button>').on('click', function () {
                 if (record.id) { }
             });
             $displayEl.empty().append($btn);
@@ -173,19 +173,19 @@ function loadRegisteredStudentsGrid() {
             headerFilter: true,
             columns: [
                 { field: 'Id', title: 'Sno', width: 40, filterable: false, sortable: true, hidden: true },
-                { field: 'UserName', title: 'User Name', sortable: true },
-                { field: 'RealName', title: 'Student Name', sortable: true },
-                { field: 'Mobile', title: 'Mobile', sortable: true },
-                { field: 'EmailId', title: 'Email', sortable: true },
-                { field: 'Active', title: 'User Active', sortable: true },
-                { field: 'BlockLogin', title: 'User Blocked', sortable: true },
-                { field: 'CreatedOn', title: 'Create Date', sortable: true },
-                { field: 'Address', title: 'Address', sortable: true },
-                { field: 'City', title: 'City', sortable: true },
-                { field: 'State', title: 'State', sortable: true },
-                { field: '', title: '', sortable: false, filterable: false, renderer: editButtonRender },
-                { field: 'Active', title: '', sortable: false, filterable: false, renderer: inactiveButtonRender },
-                { field: 'BlockLogin', title: '', sortable: false, filterable: false, renderer: blockButtonRender }
+                { field: 'UserName', cssClass: 'gijgoWordWrap', width: 50, title: 'User Name', sortable: true },
+                { field: 'RealName', cssClass: 'gijgoWordWrap', width: 80, title: 'Student Name', sortable: true },
+                { field: 'Mobile', cssClass: 'gijgoWordWrap', width: 50, title: 'Mobile', sortable: true },
+                { field: 'EmailId', cssClass: 'gijgoWordWrap', width: 80, title: 'Email', sortable: true },
+                { field: 'Active', cssClass: 'gijgoWordWrap', width: 30, title: 'User Active', sortable: true },
+                { field: 'BlockLogin', cssClass: 'gijgoWordWrap', width: 30, title: 'User Blocked', sortable: true },
+                { field: 'CreatedOn', cssClass: 'gijgoWordWrap', width: 50, title: 'Create Date', sortable: true },
+                { field: 'Address', cssClass: 'gijgoWordWrap', width: 40, title: 'Address', sortable: true },
+                { field: 'City', cssClass: 'gijgoWordWrap', width: 50, title: 'City', sortable: true },
+                { field: 'State', cssClass: 'gijgoWordWrap', width: 50, title: 'State', sortable: true },
+                { field: '', title: '', cssClass: 'gijgoWordWrap', width: 30, sortable: false, filterable: false, renderer: editButtonRender },
+                { field: 'Active', title: '', cssClass: 'gijgoWordWrap', width: 30, sortable: false, filterable: false, renderer: inactiveButtonRender },
+                { field: 'BlockLogin', title: '', cssClass: 'gijgoWordWrap', width: 30, sortable: false, filterable: false, renderer: blockButtonRender }
             ],
             pager: { limit: 5, sizes: [5, 10, 20, 100, 500, 1000, 10000] },
             detailTemplate: '<div data-exclude="true"><table class="table table-striped table-sm table-responsive-sm"/></div>'
